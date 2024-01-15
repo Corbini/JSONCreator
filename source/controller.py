@@ -1,6 +1,6 @@
 from source.frame.main import Main
 from source.json_structure import JSONStructure
-from source.file import load, save_as
+from source.window.file import load, save_as
 
 class Controller():
     def __init__(self, view: Main, model: JSONStructure):
