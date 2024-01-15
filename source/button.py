@@ -24,13 +24,10 @@ class Button(Button):
         
 
     def _load_normal_image(self):
-        print("loading normal_image")
         self["image"] = self.normal_image
         
     def _load_hover_image(self):
-        print("loading hover_image")
         self["image"] = self.hover_image
         
     def _load_clicked_image(self):
-        print("loading clicked_image")
         self["image"] = self.clicked_image

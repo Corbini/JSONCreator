@@ -1,5 +1,4 @@
 from tkinter import Tk, PhotoImage
-from source.frame.main import Main
 
 
 class MainWindow(Tk):
@@ -11,5 +10,4 @@ class MainWindow(Tk):
         self.icon = PhotoImage(file = "assets/icon.png")
         self.iconphoto(True, self.icon)
 
-        self.main = Main(self)
 
