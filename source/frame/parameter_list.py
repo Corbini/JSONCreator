@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import Canvas, PhotoImage, Text
 from source.button import Button
+from source.frame.parameter import Parameter
+
 
 class ParameterList(tk.Frame):
     def __init__(self, window):
@@ -18,7 +20,9 @@ class ParameterList(tk.Frame):
             master=self,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_1 clicked"),
+            command=lambda: self.create_parameter(
+                "new_parameter"
+            ),
             relief="flat"
         )
         self.new_button.load_image("assets/button_1.png")

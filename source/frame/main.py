@@ -15,6 +15,7 @@ class Main(tk.Frame):
             y=75
         )
 
+        self.event_add("<<save_as>>", "<Control-S>")
         
     def _create_menu(self):
         self.canvas = Canvas(
@@ -50,9 +51,10 @@ class Main(tk.Frame):
             master=self,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_2 clicked"),
-            relief="flat"
+            relief="flat",
+            command=lambda: self.event_generate("<<load>>"),
         )
+        # self.button_2.event_add("<<load>>", "<Button-1>")
         self.button_2.load_image("assets/frame_main/button_2.png")
         self.button_2.place(
             x=779.0,
@@ -65,8 +67,8 @@ class Main(tk.Frame):
             master=self,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_3 clicked"),
-            relief="flat"
+            relief="flat",
+            command=lambda: self.event_generate("<<save_as>>"),
         )
         self.button_3.load_image("assets/frame_main/button_3.png")
         self.button_3.place(
@@ -80,7 +82,7 @@ class Main(tk.Frame):
             master=self,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_4 clicked"),
+            command=lambda: self.event_generate("<<quit>>"),
             relief="flat"
         )
         self.button_4.load_image("assets/frame_main/button_4.png")
@@ -119,3 +121,4 @@ class Main(tk.Frame):
             width=250.0,
             height=48.0
         )
+
