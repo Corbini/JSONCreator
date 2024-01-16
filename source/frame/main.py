@@ -3,6 +3,7 @@ from tkinter import Canvas, PhotoImage, Text
 from source.button import Button
 from source.frame.parameter_list import ParameterList
 
+
 class Main(tk.Frame):
     def __init__(self, window):
         super().__init__(master=window, width=1000, height=800)

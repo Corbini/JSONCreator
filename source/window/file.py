@@ -8,7 +8,7 @@ def load() -> str:
 
     filename = fd.askopenfilename(
         title='Open a file',
-        initialdir='/',
+        initialdir='',
         filetypes=filetypes)
 
     print(
@@ -23,9 +23,9 @@ def save_as() -> str:
         ('All files', '*.*')
     )
 
-    filename = fd.askopenfilename(
+    filename = fd.asksaveasfilename(
         title='Select a file',
-        initialdir='/',
+        initialdir='',
         filetypes=filetypes)
 
     print(

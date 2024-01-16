@@ -1,23 +1,14 @@
 import json
-from source.window.file import load, save_as
-from source.window.main import MainWindow
 
 class JSONStructure():
     def __init__(self, name="", filename =""):
 
         self.filename = filename
         self.json = None
-
         if filename != "":
-            f = open(filename, "r")
-
-
-            self.json = json.loads(f.read())
-            f.close()
+            self.file_load(filename)
         else:
             self.json = {"name": name}
-
-        self.file_load("C:/Users/PatrykStrama/Desktop/python projects/JSONCreator/elgamaDrivers0001g35pge308k2022.json")
 
     def remove_comments(self, data):
         sequence = "//"
@@ -35,9 +26,27 @@ class JSONStructure():
         
         return clean_data
 
+    def show(self, parents:list, parameter=''):
+        data = self.json
+        for parent in parents:
+            data = data[parent]
+        
+        if parameter != '':
+            print(data[parameter])
+        else:
+            print(data.keys())
 
-            
+    def file_save(self, filename: str):
+        file = open(filename, "w")
 
+        text = json.dumps(
+            obj=self.json,
+            sort_keys=True,
+            indent=2
+        )
+        
+        file.write(text)
+        file.close()
 
     def file_load(self, filename: str):
         f = open(filename, "r")
@@ -49,22 +58,9 @@ class JSONStructure():
         data = f.read()
         f.close()
 
-        # print(data)
-
         clean_data = self.remove_comments(data)
 
         self.json = json.loads(clean_data)
 
-        print(self.json)
-
-    def save_as(self, filename: str):
-        pass
-
     def change_param(self, rel_path, data):
         pass
-
-
-
-my_json = JSONStructure()
-
-my_json.file_load("C:/Users/PatrykStrama/Desktop/python projects/JSONCreator/elgamaDrivers0001g35pge308k2022.json")

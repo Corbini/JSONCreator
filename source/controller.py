@@ -11,8 +11,20 @@ class Controller():
     def connect_main_menu(self):
         self.view.bind_all("<<quit>>", lambda w: self.view.master.destroy())
 
-        self.view.bind("<<load>>", lambda w: load())
+        self.view.bind("<<load>>", self.load)
 
-        self.view.bind("<<save_as>>", lambda w: save_as())
+        self.view.bind("<<save_as>>", self.save)
         print(self.view.event_info("<<save_as>>"))
 
+        # self.model.file_load("test.json")
+        # self.model.show(['content', 'properties','id','userName'], 'obis')
+
+    def save(self, w):
+        self.model.file_save(
+            save_as()
+        )
+
+    def load(self, w):
+        self.model.file_load(
+            load()
+        )
