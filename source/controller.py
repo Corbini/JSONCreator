@@ -14,10 +14,9 @@ class Controller():
         self.view.bind("<<load>>", self.load)
 
         self.view.bind("<<save_as>>", self.save)
-        print(self.view.event_info("<<save_as>>"))
 
         # self.model.file_load("test.json")
-        # self.model.show(['content', 'properties','id','userName'], 'obis')
+        # self.model.show(['content', 'properties','id'], 'userName', 'obis')
 
     def save(self, w):
         self.model.file_save(

@@ -26,13 +26,13 @@ class JSONStructure():
         
         return clean_data
 
-    def show(self, parents:list, parameter=''):
+    def show(self, parents:list, object_name, content=''):
         data = self.json
         for parent in parents:
             data = data[parent]
         
-        if parameter != '':
-            print(data[parameter])
+        if content != '':
+            print(data[content])
         else:
             print(data.keys())
 
