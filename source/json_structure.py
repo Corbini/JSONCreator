@@ -3,12 +3,15 @@ import json
 class JSONStructure():
     def __init__(self, name="", filename =""):
 
+        self.generate_object = lambda parents, name, data: print(parents, name, "\n", data, "\n")
+
         self.filename = filename
         self.json = None
         if filename != "":
             self.file_load(filename)
         else:
             self.json = {"name": name}
+
 
     def remove_comments(self, data):
         sequence = "//"
@@ -61,6 +64,23 @@ class JSONStructure():
         clean_data = self.remove_comments(data)
 
         self.json = json.loads(clean_data)
+
+        self.generate_tree(self.json['content']['open'], ['open'])
+
+        self.generate_tree(self.json['content']['properties'], ['properties'])
+
+    def generate_tree(self, position, parents = list()):
+        
+        for node in position.keys():
+            if type(position[node]) is dict:
+                parents.append(node)
+                self.generate_object(parents, node, None)
+                self.generate_tree(position[node], parents)
+            else:
+                self.generate_object(parents, node, position[node])
+
+        parents.pop()
+
 
     def change_param(self, rel_path, data):
         pass

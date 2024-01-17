@@ -1,0 +1,346 @@
+{
+  "application": "golink",
+  "type": "deviceDescriptor",
+  "content": {
+    "device": {
+      "nameRik": "/drv/g35Pge308k/name"
+    },
+    "generators": {
+    },
+
+    "internal": {
+
+      "connection": {
+        "test2": "vv",
+        "test3": "vv"
+      },
+
+      "session": { //G35 308k, G14 308k, G35.144
+        "parametrizationIdStartByte": 160, //0xA0
+        "parametrizationIdentificationObis": "0.0.96.57.82.255",
+        "idLength": 8,
+        "initializeObis": "0.0.96.50.90.255",
+        "initializeValue": 1,
+        "activateObis": "0.0.96.50.90.255",
+        "activateValue": 2
+      } 
+    },
+
+    "open": {
+      "base": {
+        "meterSn": {
+          "valueAccess": "A",
+          "valueDefault": "22052406",
+          "valueInitial": "22052406",
+          "valueMaximum": 20,
+          "valueType": "String"
+        },
+
+        //"groupUser": {
+        //  "valueType": "GroupBranch",
+        //  "valueSelection": {
+        //    "valueType": "String",
+        //    "valueAccess": "A",
+        //    "valueMaximum": 20,
+        //    "valueDefault": "managementUser",
+        //    "valueInitial": "managementUser"
+        //  },
+
+        //  "publicUser": {
+        //  },
+        //  "readOnlyUser": {
+        //  },
+        //  "managementUser": {
+        //  }
+        //},
+
+        "accessUser": {
+          "valueType": "String",
+          "valueDefault": "Management",
+          "valueInitial": "Management",
+          "valueMaximum": 20
+        }
+      },
+
+      "authType": {
+        "valueType": "GroupBranch",
+        "valueSelection": {
+          "valueType": "String",
+          "valueAccess": "A",
+          "valueMaximum": 20,
+          "valueDefault": "withPwd",
+          "valueInitial": "withPwd"
+        },
+        "withoutPwd": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": false,
+            "valueInitial": false,
+            "valueType": "Boolean"
+          }
+        },
+        "withPwd": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": true,
+            "valueInitial": true,
+            "valueType": "Boolean"
+          },
+          "password": {
+            "valueAccess": "A",
+            "valueDefault": "22222222",
+            "valueInitial": "22222222",
+            "valueMaximum": 20,
+            "valueType": "String"
+          }
+        },
+        "hlsGmac": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": false,
+            "valueInitial": false,
+            "valueType": "Boolean"
+          },
+          "password": {
+            "valueAccess": "A",
+            "valueDefault": "22222222",
+            "valueInitial": "22222222",
+            "valueMaximum": 20,
+            "valueType": "String"
+          },
+          "keyEncryption": {
+            "valueType": "String",
+            "valueAccess": "A",
+            "valueDefault": "31313131313131313131313131313131",
+            "valueInitial": "31313131313131313131313131313131",
+            "valueMaximum": 32
+          },
+          "keyAuthentication": {
+            "valueType": "String",
+            "valueAccess": "A",
+            "valueDefault": "31313131313131313131313131313131",
+            "valueInitial": "31313131313131313131313131313131",
+            "valueMaximum": 32
+          }
+        }
+      },
+
+      "transportType": {
+        "valueType": "GroupBranch",
+        //"valueUser": "overNet",
+
+        "valueSelection": {
+          "valueType": "String",
+          "valueAccess": "A",
+          "valueMaximum": 20,
+          "valueDefault": "overOptical",
+          "valueInitial": "overOptical"
+        },
+
+        "overOptical": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": false,
+            "valueInitial": true,
+            "valueType": "Boolean"
+          },
+          "comPortName": {
+            "valueAccess": "A",
+            "valueInitial": "COM3",
+            "valueMaximum": 20,
+            "valueType": "String"
+          },
+          //todo: change to combobox
+          "initialPortBaudRate": {
+            "valueAccess": "A",
+            "valueInitial": 300,
+            "valueMaximum": 10,
+            "valueType": "String"
+          },
+          "advanced": {
+            //todo: change to combobox
+            "targetPortBaudRate": {
+              "valueAccess": "A",
+              "valueInitial": "Auto", //Auto/19200/9600/...
+              "valueMaximum": 20,
+              "valueType": "String"
+            },
+            //todo: change to combobox
+            "dlmsConnectionMode": {
+              "valueAccess": "A",
+              "valueInitial": "IecModeE", //IecModeE|Hdlc
+              "valueMaximum": 20,
+              "valueType": "String"
+            }
+          }
+        },
+
+        "overNet": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": true,
+            "valueInitial": false,
+            "valueType": "Boolean"
+          },
+          "ipAddressAndPort": {
+            "valueAccess": "A",
+            "valueDefault": "178.183.179.20:2002",
+            "valueInitial": "178.183.179.20:2002",
+            "valueMaximum": 20,
+            "valueType": "String"
+          },
+          "serialOverModem": { //TcpWrapper|Hdlc
+            "valueAccess": "A",
+            "valueDefault": false,
+            "valueInitial": false,
+            "valueType": "Boolean"
+          }
+          //"advanced": {
+          //  "dlmsConnectionMode": {
+          //    "valueAccess": "A",
+          //    "valueInitial": "TcpWrapper|Hdlc", //A1uto/19200/9600/...
+          //    "valueMaximum": 20,
+          //    "valueType": "String"
+          //  }
+          //}
+        },
+
+        "overSerial": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": false,
+            "valueInitial": false,
+            "valueType": "Boolean"
+          },
+          "comPortName": {
+            "valueAccess": "A",
+            "valueInitial": "COM3",
+            "valueMaximum": 20,
+            "valueType": "String"
+          },
+          //todo: change to combobox
+          "portBaudRate": {
+            "valueAccess": "A",
+            "valueInitial": "9600",
+            "valueMaximum": 20,
+            "valueType": "String"
+          }
+
+          //"advanced": {
+          //  "dlmsConnectionMode": {
+          //    "valueAccess": "A",
+          //    "valueInitial": "HDLC", //Auto/19200/9600/...
+          //    "valueMaximum": 20,
+          //    "valueType": "String"
+          //  }
+          //}
+        }
+      },
+
+      "advanced": {
+        "echo": {
+          "valueType": "Boolean",
+          "valueAccess": "A",
+          "valueDefault": false,
+          "valueInitial": false
+        },
+
+        "connectionType": {
+          "valueType": "String",
+          "valueMaximum": 16,
+          "valueAccess": "A",
+          "valueDefault": "LNConnection",
+          "valueInitial": "LNConnection"
+        },
+
+        "maxPduSize": {
+          "valueType": "UInt16",
+          "valueAccess": "A",
+          "valueUnit": "bytes",
+          "valueDefault": 65535,
+          "valueInitial": 65535,
+          "valueLenght": 2,
+          "valueMax": 65535,
+          "valueMin": 16,
+          "valueStep": 1
+        }
+      }
+    },
+
+    "properties": {
+
+      "identification": {
+
+        "readOnOpen": true,
+
+        "logicalDeviceName": {
+          "valueType": "String",
+          "valueMaximum": 255,
+          "valueAccess": "R",
+          "obis": "1:0.0.42.0.0.255;2"
+        },
+
+        "meterSerialNumer": {
+          "valueType": "String",
+          "valueMaximum": 255,
+          "obis": "1:0.0.96.1.0.255;2",
+          "valueAccess": "R",
+          "langEn": "Meter serial number",
+          "langPl": "Numer seryjny licznika"
+        },
+
+        "meterType": {
+          "valueType": "String",
+          "valueMaximum": 255,
+          "obis": "1:0.0.96.1.1.255;2",
+          "valueAccess": "R",
+          "langEn": "Meter type",
+          "langPl": "Typ licznika"
+        },
+        "meterModification": {
+          "valueType": "String",
+          "valueMaximum": 255,
+          "obis": "1:0.0.96.1.0.255;2",
+          "valueAccess": "R",
+          "langEn": "Meter serial number",
+          "langPl": "Numer seryjny licznika"
+        },
+        "metrologicalFw": {
+          "valueType": "String",
+          "valueMaximum": 255,
+          "obis": "1:1.0.0.2.0.255;2",
+          "valueAccess": "R",
+          "langEn": "None",
+          "langPl": "None",
+          "iProp": "FirmwareVersion"
+        },
+        "metrologicalFwChecksum": {
+          "valueType": "String",
+          "type": "HexString",
+          "valueMaximum": 255,
+          "obis": "1:1.0.0.2.8.255;2",
+          "valueAccess": "R",
+          "langEn": "None",
+          "langPl": "None"
+        },
+        "functionallFw": {
+          "valueType": "String",
+          "valueMaximum": 255,
+          "obis": "1:1.1.0.2.0.255;2",
+          "valueAccess": "R",
+          "langEn": "Metrological FW",
+          "langPl": "Wersja firmware metrologicznego"
+        },
+        "functionallFwChecksum": {
+          "valueType": "String",
+          "type": "HexString",
+          "valueMaximum": 255,
+          "obis": "1:1.1.0.2.8.255;2",
+          "valueAccess": "R",
+          "langEn": "Metrological FW checksum",
+          "langPl": "Suma kontrolna firmware metrologicznego"
+        }
+      }
+    }
+  }
+}

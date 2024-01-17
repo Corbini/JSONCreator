@@ -32,6 +32,7 @@ class ParameterList(tk.Frame):
             pady=20
         )
 
+
     def create_parameter(self, name = "", type = "branch", pl_name = "", en_name= ""):
         new_button = Button(
             master=self,
