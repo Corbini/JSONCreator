@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import Canvas, PhotoImage, Text
 from source.button import Button
-from source.frame.parameter_list import ParameterList
 
 
 class Main(tk.Frame):
@@ -9,12 +8,6 @@ class Main(tk.Frame):
         super().__init__(master=window, width=1000, height=800)
         self._create_menu()
         self.grid()
-
-        self.parameter_list = ParameterList(self)
-        self.parameter_list.place(
-            x=50,
-            y=75
-        )
 
         self.event_add("<<save_as>>", "<Control-S>")
         
