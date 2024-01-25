@@ -2,25 +2,25 @@ from tkinter import Frame, Text, Canvas
 
 
 class Setting(Frame):
-    def __init__(self, parent, name, data = ""):
+    def __init__(self, parent, frame, name, data=""):
         super().__init__(
-            master=parent,
-            height = 40,
-            width = 280
+            master=frame,
+            height=40,
+            width=280
         )
-        print(name)
+        self.par_parent = parent
         
         self.pack(side='top', anchor='nw')
 
         self.canvas = Canvas(
             self,
-            bg = "#B0CEA1",
-            bd = 0,
-            highlightthickness = 0,
-            relief = "ridge"
+            bg="#B0CEA1",
+            bd=0,
+            highlightthickness=0,
+            relief="ridge"
         )
 
-        self.canvas.place(x = 0, y = 0)
+        self.canvas.place(x=0, y=0)
         
         entry_1 = Text(
             self,
@@ -56,3 +56,6 @@ class Setting(Frame):
 
         print(type)
         print(data)
+
+    def update(self, value):
+        print(value)

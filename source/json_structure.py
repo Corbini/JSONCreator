@@ -1,7 +1,8 @@
 import json
 
-class JSONStructure():
-    def __init__(self, name="", filename =""):
+
+class JSONStructure:
+    def __init__(self, name="", filename=""):
 
         self.generate_object = lambda parents, name, data: print(parents, name, "\n", data, "\n")
 
@@ -12,24 +13,22 @@ class JSONStructure():
         else:
             self.json = {"name": name}
 
-
-    def remove_comments(self, data):
+    @staticmethod
+    def remove_comments(data):
         sequence = "//"
 
         clean_data = ''
-        list = data.partition(sequence)
-        clean_data += list[0]
-        while (list[2] != ""):
-            data_with_comment: str = list[2]
-
-            data_without_comment = data_with_comment.partition("\n")[2]
-
-            list = data_without_comment.partition(sequence)
-            clean_data +=list[0]
+        data_buffer = data.partition(sequence)
+        clean_data += data_buffer[0]
+        while data_buffer[2] != "":
+            data_with_comment: str = data_buffer[2]
+            data_buffer = data_with_comment.partition("\n")[2]
+            data_buffer = data_buffer.partition(sequence)
+            clean_data += data_buffer[0]
         
         return clean_data
 
-    def show(self, parents:list, object_name, content=''):
+    def show(self, parents, object_name, content=''):
         data = self.json
         for parent in parents:
             data = data[parent]
@@ -65,21 +64,17 @@ class JSONStructure():
 
         self.json = json.loads(clean_data)
 
-        self.generate_tree(self.json['content']['open'], ['open'])
+        self.generate_tree(self.json['content']['properties'])
 
-        self.generate_tree(self.json['content']['properties'], ['properties'])
-
-    def generate_tree(self, position, parents = list()):
-        
-        for node in position.keys():
+    def generate_tree(self, position, parents=list()):
+        for node in position:
             if type(position[node]) is dict:
+                self.generate_object(list(parents), node, None)
                 parents.append(node)
-                self.generate_object(parents, node, None)
                 self.generate_tree(position[node], parents)
+                parents.pop()
             else:
-                self.generate_object(parents, node, position[node])
-
-        parents.pop()
+                self.generate_object(list(parents), node, position[node])
 
 
     def change_param(self, rel_path, data):

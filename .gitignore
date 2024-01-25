@@ -50,5 +50,6 @@ coverage.xml
 docs/_build/
 
 .venv
+venv
 .vscode
 *.code-workspace

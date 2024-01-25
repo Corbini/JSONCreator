@@ -7,17 +7,12 @@ from source.json_structure import JSONStructure
 
 app = MainWindow()
 
-parameter = Parameter(app, "licznik")
+parameter = Parameter(None, app, "properties")
 parameter.pack(side='top', anchor='nw')
 
-def test(parents, name, value):
-    parameter.add_setting(name, value)
 
 model = JSONStructure()
-model.generate_object = lambda parents, name, value: test(parents, name, value)
+model.generate_object = lambda parents, name, value: parameter.update(parents, name, value)
 model.file_load("test.json")
-
-
-
 
 app.mainloop()

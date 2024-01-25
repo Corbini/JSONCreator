@@ -1,14 +1,17 @@
 from tkinter import Frame, Button, Canvas, PhotoImage, Text
 from source.frame.setting import Setting
 
+
 class Parameter(Frame):
-    def __init__(self, parent, name):
+    def __init__(self, parent, frame, name):
         super().__init__(
-            master=parent,
+            master=frame,
             width=120,
-            height=40,
+            height=40
         )
         self.pack(side='top', anchor='nw')
+
+        self.par_parent = parent
 
         self.canvas = Canvas(
             self,
@@ -26,7 +29,6 @@ class Parameter(Frame):
             30.0,
             fill="#B0CEA1",
             outline="")
-
 
         self.canvas.create_rectangle(
             0.0,
@@ -139,7 +141,7 @@ class Parameter(Frame):
         self.widen = False
         self.entry_2 = Button(
             self,
-            text = name,
+            text=name,
             borderwidth=0,
             highlightthickness=0,
             command=lambda: self.change_size(),
@@ -156,15 +158,10 @@ class Parameter(Frame):
         )
 
         self.settings_view = Frame(
-            self,
-            height=200,
-            width=200
         )
-        self.settings_view.place(
-            x= 220,
-            y= 30
-        )
-        self.settings_list = list()
+        self.settings_view.propagate(True)
+
+        self.settings_list = dict()
         self.type = "int"
 
     def configure_name(self):
@@ -182,35 +179,62 @@ class Parameter(Frame):
 
     def change_size(self):
         if self.widen is False:
-            height = 190
-            if len(self.settings_list) != 0:
-                    new_h = self.settings_list[-1].winfo_rooty()
-                    new_w = self.settings_list[-1].winfo_rootx(),
-                    if new_h > height:
-                        height = new_h
+            self.settings_view.place(
+                in_=self,
+                x=220,
+                y=30
+            )
+
+            self.settings_view.update()
+            height = self.settings_view.winfo_height() + 30
+            if height < 190:
+                height = 190
 
             self.configure(
-                height = height,
-                width=1000
+                height=height,
+                width=220
             )
+
             self.widen = True
+
         else:
+            self.settings_view.place_forget()
+
             self.configure(
-                width=120,
-                height=40
-               )
+                height=40,
+                width=120
+            )
+
             self.widen = False
 
     def set_type(self):
         self.type = "new_name"
-        self.settings_list = list()
+        self.settings_list = dict()
 
-    def add_setting(self, setting_name, value = ""):
-
-        if value == None:
-            new_setting = Parameter(self.settings_view, setting_name)
+    def update_setting(self, name, value):
+        if name not in self.settings_list:
+            print("Create setting")
+            self.settings_list[name] = Setting(self, self.settings_view, name, value)
         else:
-            new_setting = Setting(self.settings_view, setting_name, value)
+            self.settings_list[name].update(value)
 
+    def add_child(self, name):
+        if name in self.settings_list:
+            return
 
-        self.settings_list.append(new_setting)
+        print("Create parameter", name)
+        self.settings_list[name] = Parameter(self, self.settings_view, name)
+
+    def update(self, parents, name, value=None):
+        parent = self
+        print(parents, name, value)
+        while parents:
+            parent_name = parents.pop(0)
+            print("Opening: ", parent_name)
+            parent = parent.settings_list[parent_name]
+
+        if value is None:
+            pass
+            parent.add_child(name)
+        else:
+            parent.update_setting(name, value)
