@@ -16,8 +16,10 @@ class Controller:
 
         self.view.bind("<<save_as>>", self.save)
 
-        # self.model.file_load("test.json")
-        # self.model.show(['content', 'properties','id'], 'userName', 'obis')
+        self.model.create_tree = lambda name: self.view.tree_create(name)
+        self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
+
+        self.view.bind("<<tree_new>>", lambda w: self.model.new_structure("new_tree"))
 
     def save(self, w):
         self.model.file_save(

@@ -1,4 +1,4 @@
-from tkinter import Frame, Button, Canvas, PhotoImage, Text
+from tkinter import Frame, Button, Canvas, PhotoImage, Text, Entry
 from source.frame.setting import Setting
 
 
@@ -45,14 +45,15 @@ class Parameter(Frame):
             170.0,
             image=self.entry_image_1
         )
-        self.entry_1 = Text(
+        self.entry_1_t = Entry(
             self,
             bd=0,
             bg="#FFFFFF",
             fg="#000716",
-            highlightthickness=0
+            highlightthickness=0,
+
         )
-        self.entry_1.place(
+        self.entry_1_t.place(
             x=10.0,
             y=160.0,
             width=200.0,
@@ -75,14 +76,14 @@ class Parameter(Frame):
             110.0,
             image=self.entry_image_2
         )
-        self.entry_2 = Text(
+        self.entry_2_t = Entry(
             self,
             bd=0,
             bg="#FFFFFF",
             fg="#000716",
             highlightthickness=0
         )
-        self.entry_2.place(
+        self.entry_2_t.place(
             x=10.0,
             y=100.0,
             width=200.0,
@@ -187,6 +188,7 @@ class Parameter(Frame):
 
             self.settings_view.update()
             height = self.settings_view.winfo_height() + 30
+
             if height < 190:
                 height = 190
 
@@ -212,6 +214,18 @@ class Parameter(Frame):
         self.settings_list = dict()
 
     def update_setting(self, name, value):
+
+        if name == "langPl":
+            self.entry_2_t.insert(0, value)
+            return
+
+        if name == "langEn":
+            self.entry_1_t.insert(0, value)
+            return
+
+        if name == "valueType":
+            return
+
         if name not in self.settings_list:
             print("Create setting")
             self.settings_list[name] = Setting(self, self.settings_view, name, value)
@@ -224,17 +238,3 @@ class Parameter(Frame):
 
         print("Create parameter", name)
         self.settings_list[name] = Parameter(self, self.settings_view, name)
-
-    def update(self, parents, name, value=None):
-        parent = self
-        print(parents, name, value)
-        while parents:
-            parent_name = parents.pop(0)
-            print("Opening: ", parent_name)
-            parent = parent.settings_list[parent_name]
-
-        if value is None:
-            pass
-            parent.add_child(name)
-        else:
-            parent.update_setting(name, value)

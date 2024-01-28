@@ -5,6 +5,7 @@ class JSONStructure:
     def __init__(self, name="", filename=""):
 
         self.generate_object = lambda parents, name, data: print(parents, name, "\n", data, "\n")
+        self.create_tree = lambda name: print(name)
 
         self.filename = filename
         self.json = None
@@ -64,6 +65,8 @@ class JSONStructure:
 
         self.json = json.loads(clean_data)
 
+        self.create_tree(self.json['content']['device']['nameRik'])
+
         self.generate_tree(self.json['content']['properties'])
 
     def generate_tree(self, position, parents=list()):
@@ -76,6 +79,12 @@ class JSONStructure:
             else:
                 self.generate_object(list(parents), node, position[node])
 
+    def new_structure(self, name):
+        device = {'nameRik': name}
+        content = {'device': device}
+
+        self.json = {'content': content}
+        self.create_tree(name)
 
     def change_param(self, rel_path, data):
         pass
