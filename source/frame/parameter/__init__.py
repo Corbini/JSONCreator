@@ -3,13 +3,18 @@ from source.frame.setting import Setting
 
 
 class Parameter(Frame):
+
+    from ._frame_name import create_frame_name
+
     def __init__(self, parent, frame, name):
         super().__init__(
             master=frame,
             width=120,
-            height=40
+            height=40,
+            relief='sunken'
         )
         self.pack(side='top', anchor='nw')
+        self.pack_propagate(True)
 
         self.par_parent = parent
 
@@ -123,47 +128,21 @@ class Parameter(Frame):
             20.0,
             image=self.entry_image_3
         )
-        self.entry_3 = Text(
-            self,
-            bd=0,
-            bg="#FFFFFF",
-            fg="#000716",
-            highlightthickness=0
-        )
-        self.entry_3.bind("<Leave>", lambda w: self.change_name())
-        self.entry_3.bind("<Return>", lambda w: self.change_name())
-        self.entry_3.place(
-            x=10.0,
-            y=10.0,
-            width=100.0,
-            height=18.0
-        )
 
-        self.widen = False
-        self.entry_2 = Button(
-            self,
-            text=name,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda: self.change_size(),
-            relief="flat",
-        )
+        self.create_frame_name(name)
 
-        self.entry_2.bind("<Double-Button-1>", lambda w: self.configure_name())
+        self.settings_view = Frame(self)
 
-        self.entry_2.place(
-            x=10.0,
-            y=10.0,
-            width=100.0,
-            height=20.0
-        )
-
-        self.settings_view = Frame(
-        )
         self.settings_view.propagate(True)
-
         self.settings_list = dict()
         self.type = "int"
+
+        # self.settings_view.place(
+        #     in_=self,
+        #     x=220,
+        #     y=30
+        # )
+        self.settings_view.grid(row=1, column=1)
 
     def configure_name(self):
         self.entry_2.place_forget()
@@ -180,27 +159,24 @@ class Parameter(Frame):
 
     def change_size(self):
         if self.widen is False:
-            self.settings_view.place(
-                in_=self,
-                x=220,
-                y=30
-            )
+
 
             self.settings_view.update()
             height = self.settings_view.winfo_height() + 30
+            width = self.settings_view.winfo_width() + 220
 
             if height < 190:
                 height = 190
 
             self.configure(
                 height=height,
-                width=220
+                width=1000
             )
 
             self.widen = True
 
         else:
-            self.settings_view.place_forget()
+            # self.settings_view.place_forget()
 
             self.configure(
                 height=40,
