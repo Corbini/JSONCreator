@@ -1,0 +1,2340 @@
+{
+  "application": "golink",
+  "content": {
+    "device": {
+      "nameRik": "/drv/g35Pge308k/name"
+    },
+    "generators": {},
+    "internal": {
+      "connection": {
+        "test2": "vv",
+        "test3": "vv"
+      },
+      "session": {
+        "activateObis": "0.0.96.50.90.255",
+        "activateValue": 2,
+        "idLength": 8,
+        "initializeObis": "0.0.96.50.90.255",
+        "initializeValue": 1,
+        "parametrizationIdStartByte": 160,
+        "parametrizationIdentificationObis": "0.0.96.57.82.255"
+      }
+    },
+    "open": {
+      "advanced": {
+        "connectionType": {
+          "valueAccess": "A",
+          "valueDefault": "LNConnection",
+          "valueInitial": "LNConnection",
+          "valueMaximum": 16,
+          "valueType": "String"
+        },
+        "echo": {
+          "valueAccess": "A",
+          "valueDefault": false,
+          "valueInitial": false,
+          "valueType": "Boolean"
+        },
+        "maxPduSize": {
+          "valueAccess": "A",
+          "valueDefault": 65535,
+          "valueInitial": 65535,
+          "valueLenght": 2,
+          "valueMax": 65535,
+          "valueMin": 16,
+          "valueStep": 1,
+          "valueType": "UInt16",
+          "valueUnit": "bytes"
+        }
+      },
+      "authType": {
+        "hlsGmac": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": false,
+            "valueInitial": false,
+            "valueType": "Boolean"
+          },
+          "keyAuthentication": {
+            "valueAccess": "A",
+            "valueDefault": "31313131313131313131313131313131",
+            "valueInitial": "31313131313131313131313131313131",
+            "valueMaximum": 32,
+            "valueType": "String"
+          },
+          "keyEncryption": {
+            "valueAccess": "A",
+            "valueDefault": "31313131313131313131313131313131",
+            "valueInitial": "31313131313131313131313131313131",
+            "valueMaximum": 32,
+            "valueType": "String"
+          },
+          "password": {
+            "valueAccess": "A",
+            "valueDefault": "22222222",
+            "valueInitial": "22222222",
+            "valueMaximum": 20,
+            "valueType": "String"
+          }
+        },
+        "valueSelection": {
+          "valueAccess": "A",
+          "valueDefault": "withPwd",
+          "valueInitial": "withPwd",
+          "valueMaximum": 20,
+          "valueType": "String"
+        },
+        "valueType": "GroupBranch",
+        "withPwd": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": true,
+            "valueInitial": true,
+            "valueType": "Boolean"
+          },
+          "password": {
+            "valueAccess": "A",
+            "valueDefault": "22222222",
+            "valueInitial": "22222222",
+            "valueMaximum": 20,
+            "valueType": "String"
+          }
+        },
+        "withoutPwd": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": false,
+            "valueInitial": false,
+            "valueType": "Boolean"
+          }
+        }
+      },
+      "base": {
+        "accessUser": {
+          "valueDefault": "Management",
+          "valueInitial": "Management",
+          "valueMaximum": 20,
+          "valueType": "String"
+        },
+        "meterSn": {
+          "valueAccess": "A",
+          "valueDefault": "22052406",
+          "valueInitial": "22052406",
+          "valueMaximum": 20,
+          "valueType": "String"
+        }
+      },
+      "transportType": {
+        "overNet": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": true,
+            "valueInitial": false,
+            "valueType": "Boolean"
+          },
+          "ipAddressAndPort": {
+            "valueAccess": "A",
+            "valueDefault": "178.183.179.20:2002",
+            "valueInitial": "178.183.179.20:2002",
+            "valueMaximum": 20,
+            "valueType": "String"
+          },
+          "serialOverModem": {
+            "valueAccess": "A",
+            "valueDefault": false,
+            "valueInitial": false,
+            "valueType": "Boolean"
+          }
+        },
+        "overOptical": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": false,
+            "valueInitial": true,
+            "valueType": "Boolean"
+          },
+          "advanced": {
+            "dlmsConnectionMode": {
+              "valueAccess": "A",
+              "valueInitial": "IecModeE",
+              "valueMaximum": 20,
+              "valueType": "String"
+            },
+            "targetPortBaudRate": {
+              "valueAccess": "A",
+              "valueInitial": "Auto",
+              "valueMaximum": 20,
+              "valueType": "String"
+            }
+          },
+          "comPortName": {
+            "valueAccess": "A",
+            "valueInitial": "COM3",
+            "valueMaximum": 20,
+            "valueType": "String"
+          },
+          "initialPortBaudRate": {
+            "valueAccess": "A",
+            "valueInitial": 300,
+            "valueMaximum": 10,
+            "valueType": "String"
+          }
+        },
+        "overSerial": {
+          "active": {
+            "valueAccess": "A",
+            "valueDefault": false,
+            "valueInitial": false,
+            "valueType": "Boolean"
+          },
+          "comPortName": {
+            "valueAccess": "A",
+            "valueInitial": "COM3",
+            "valueMaximum": 20,
+            "valueType": "String"
+          },
+          "portBaudRate": {
+            "valueAccess": "A",
+            "valueInitial": "9600",
+            "valueMaximum": 20,
+            "valueType": "String"
+          }
+        },
+        "valueSelection": {
+          "valueAccess": "A",
+          "valueDefault": "overOptical",
+          "valueInitial": "overOptical",
+          "valueMaximum": 20,
+          "valueType": "String"
+        },
+        "valueType": "GroupBranch"
+      }
+    },
+    "properties": {
+      "data": {
+        "averageValue": {
+          "currentAverage": {
+            "reg15x4x0": {
+              "reg15x4x0CT": {
+                "obis": "5:1.0.15.4.0.255;6",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg15x4x0CV": {
+                "obis": "5:1.0.15.4.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              },
+              "reg15x4x0LV": {
+                "obis": "5:1.0.15.4.0.255;3",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            },
+            "reg1x4x0": {
+              "reg1x4x0CT": {
+                "obis": "5:1.0.1.4.0.255;6",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg1x4x0CV": {
+                "obis": "5:1.0.1.4.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              },
+              "reg1x4x0LV": {
+                "obis": "5:1.0.1.4.0.255;3",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg2x4x0": {
+              "reg2x4x0CT": {
+                "obis": "5:1.0.2.4.0.255;6",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg2x4x0CV": {
+                "obis": "5:1.0.2.4.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              },
+              "reg2x4x0LV": {
+                "obis": "5:1.0.2.4.0.255;3",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg3x4x0": {
+              "reg3x4x0CT": {
+                "obis": "5:1.0.3.4.0.255;6",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg3x4x0CV": {
+                "obis": "5:1.0.3.4.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              },
+              "reg3x4x0LV": {
+                "obis": "5:1.0.3.4.0.255;3",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            },
+            "reg4x4x0": {
+              "reg4x4x0CT": {
+                "obis": "5:1.0.4.4.0.255;6",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg4x4x0CV": {
+                "obis": "5:1.0.4.4.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              },
+              "reg4x4x0LV": {
+                "obis": "5:1.0.4.4.0.255;3",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            }
+          },
+          "lastAverage": {
+            "reg1x5x0": {
+              "obis": "3:1.0.1.5.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kW"
+            },
+            "reg2x5x0": {
+              "obis": "3:1.0.2.5.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kW"
+            },
+            "reg3x5x0": {
+              "obis": "3:1.0.3.5.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg4x5x0": {
+              "obis": "3:1.0.4.5.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            }
+          },
+          "tthd": {
+            "reg32x24x124": {
+              "obis": "3:1.0.32.24.124.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16"
+            },
+            "reg52x24x124": {
+              "obis": "3:1.0.52.24.124.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16"
+            },
+            "reg72x24x124": {
+              "obis": "3:1.0.72.24.124.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16"
+            }
+          },
+          "voltage": {
+            "l1": {
+              "reg31x25x0": {
+                "obis": "3:1.0.31.25.0.255;2",
+                "valueType": "UInt16",
+                "valueUnit": "A"
+              },
+              "reg32x25x0": {
+                "obis": "3:1.0.32.25.0.255;2",
+                "valueType": "UInt16",
+                "valueUnit": "V"
+              }
+            },
+            "l2": {
+              "reg51x25x0": {
+                "obis": "3:1.0.51.25.0.255;2",
+                "valueType": "UInt16",
+                "valueUnit": "A"
+              },
+              "reg52x25x0": {
+                "obis": "3:1.0.52.25.0.255;2",
+                "valueType": "UInt16",
+                "valueUnit": "V"
+              }
+            },
+            "l3": {
+              "reg71x25x0": {
+                "obis": "3:1.0.71.25.0.255;2",
+                "valueType": "UInt16",
+                "valueUnit": "A"
+              },
+              "reg72x25x0": {
+                "obis": "3:1.0.72.25.0.255;2",
+                "valueType": "UInt16",
+                "valueUnit": "V"
+              }
+            }
+          }
+        },
+        "counter": {
+          "parametrizationCounter": {
+            "obis": "1:0.0.96.2.0.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt16"
+          },
+          "powerQualityEventCounter": {
+            "obis": "1:0.0.96.11.11.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt16"
+          },
+          "powerQualityEventDuration": {
+            "obis": "1:0.0.96.11.12.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt32"
+          },
+          "tthdOverLimitCounter": {
+            "obis": "1:1.0.12.36.124.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt32"
+          },
+          "w2DistortionCounter": {
+            "obis": "1:0.0.96.15.143.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt32"
+          }
+        },
+        "energy": {
+          "aEnergy": {
+            "reg15x8x0": {
+              "obis": "3:1.0.15.8.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg15x8x1": {
+              "obis": "3:1.0.15.8.1.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg15x8x2": {
+              "obis": "3:1.0.15.8.2.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg15x8x3": {
+              "obis": "3:1.0.15.8.3.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg15x8x4": {
+              "obis": "3:1.0.15.8.4.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            }
+          },
+          "aMinusEnergy": {
+            "reg2x8x0": {
+              "obis": "3:1.0.2.8.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg2x8x1": {
+              "obis": "3:1.0.2.8.1.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg2x8x2": {
+              "obis": "3:1.0.2.8.2.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg2x8x3": {
+              "obis": "3:1.0.2.8.3.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg2x8x4": {
+              "obis": "3:1.0.2.8.4.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            }
+          },
+          "aPlusEnergy": {
+            "reg1x8x0": {
+              "obis": "3:1.0.1.8.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg1x8x1": {
+              "obis": "3:1.0.1.8.1.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg1x8x2": {
+              "obis": "3:1.0.1.8.2.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg1x8x3": {
+              "obis": "3:1.0.1.8.3.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg1x8x4": {
+              "obis": "3:1.0.1.8.4.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            }
+          },
+          "eMinusEnergy": {
+            "reg10x8x0": {
+              "obis": "3:1.0.10.8.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg10x8x1": {
+              "obis": "3:1.0.10.8.1.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg10x8x2": {
+              "obis": "3:1.0.10.8.1.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg10x8x3": {
+              "obis": "3:1.0.10.8.2.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg10x8x4": {
+              "obis": "3:1.0.10.8.3.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            }
+          },
+          "ePlusEnergy": {
+            "reg9x8x0": {
+              "obis": "3:1.0.9.8.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg9x8x1": {
+              "obis": "3:1.0.9.8.1.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg9x8x2": {
+              "obis": "3:1.0.9.8.2.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            },
+            "reg9x8x3": {
+              "obis": "3:1.0.9.8.3.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kWh"
+            }
+          },
+          "r1Energy": {
+            "reg5x8x0": {
+              "obis": "3:1.0.5.8.0.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg5x8x1": {
+              "obis": "3:1.0.5.8.1.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg5x8x2": {
+              "obis": "3:1.0.5.8.2.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg5x8x3": {
+              "obis": "3:1.0.5.8.3.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg5x8x4": {
+              "obis": "3:1.0.5.8.4.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            }
+          },
+          "r2Energy": {
+            "reg6x8x0": {
+              "obis": "3:1.0.6.8.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg6x8x1": {
+              "obis": "3:1.0.6.8.1.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg6x8x2": {
+              "obis": "3:1.0.6.8.2.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg6x8x3": {
+              "obis": "3:1.0.6.8.3.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg6x8x4": {
+              "obis": "3:1.0.6.8.4.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            }
+          },
+          "r3Energy": {
+            "reg7x8x0": {
+              "obis": "3:1.0.7.8.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg7x8x1": {
+              "obis": "3:1.0.7.8.1.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg7x8x2": {
+              "obis": "3:1.0.7.8.2.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg7x8x3": {
+              "obis": "3:1.0.7.8.3.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg7x8x4": {
+              "obis": "3:1.0.7.8.4.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            }
+          },
+          "r4Energy": {
+            "reg8x8x0": {
+              "obis": "3:1.0.8.8.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg8x8x1": {
+              "obis": "3:1.0.8.8.1.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg8x8x2": {
+              "obis": "3:1.0.8.8.2.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg8x8x3": {
+              "obis": "3:1.0.8.8.3.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg8x8x4": {
+              "obis": "3:1.0.8.8.4.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            }
+          },
+          "rMinusEnergy": {
+            "reg4x8x0": {
+              "obis": "3:1.0.4.8.0.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg4x8x1": {
+              "obis": "3:1.0.4.8.1.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg4x8x2": {
+              "obis": "3:1.0.4.8.2.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg4x8x3": {
+              "obis": "3:1.0.4.8.3.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg4x8x4": {
+              "obis": "3:1.0.4.8.4.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            }
+          },
+          "rPlusEnergy": {
+            "reg3x8x0": {
+              "obis": "3:1.0.3.8.0.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg3x8x1": {
+              "obis": "3:1.0.3.8.1.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg3x8x2": {
+              "obis": "3:1.0.3.8.2.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg3x8x3": {
+              "obis": "3:1.0.3.8.3.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            },
+            "reg3x8x4": {
+              "obis": "3:1.0.3.8.4.255;0",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvarh"
+            }
+          }
+        },
+        "general": {
+          "activeMeterConstant": {
+            "obis": "1:1.0.0.3.0.255;2",
+            "valueType": "UInt16"
+          },
+          "ambientTemperature": {
+            "obis": "3:0.0.96.9.0.255;2",
+            "valueAccess": "R",
+            "valueType": "Int16",
+            "valueUnit": "C"
+          },
+          "batteryVoltage": {
+            "obis": "3:0.0.96.6.3.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt16",
+            "valueUnit": "V"
+          },
+          "date": {
+            "obis": "1:1.0.0.9.1.255;2",
+            "valueAccess": "R",
+            "valueMaximum": 100,
+            "valueType": "String"
+          },
+          "dayOfWeek": {
+            "obis": "1:1.0.0.9.5.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt8"
+          },
+          "licenceCode": {
+            "obis": "1:0.0.96.57.82.255;2",
+            "valueMaximum": 41,
+            "valueType": "String"
+          },
+          "reactiveMeterConstant": {
+            "obis": "1:1.0.0.3.1.255;2",
+            "valueType": "UInt16"
+          },
+          "time": {
+            "obis": "1:1.0.0.9.2.255;2",
+            "valueAccess": "R",
+            "valueMaximum": 100,
+            "valueType": "String"
+          }
+        },
+        "identification": {
+          "functionallFw": {
+            "obis": "1:1.1.0.2.0.255;2",
+            "valueAccess": "R",
+            "valueMaximum": 41,
+            "valueType": "String"
+          },
+          "functionallFwChecksum": {
+            "obis": "1:1.1.0.2.8.255;2",
+            "valueAccess": "R",
+            "valueMaximum": 41,
+            "valueType": "String"
+          },
+          "logicalDeviceName": {
+            "obis": "1:0.0.42.0.0.255;2",
+            "valueAccess": "R",
+            "valueMaximum": 41,
+            "valueType": "String"
+          },
+          "meterModification": {
+            "obis": "1:0.0.96.1.0.255;2",
+            "valueAccess": "R",
+            "valueMaximum": 41,
+            "valueType": "String"
+          },
+          "meterSerialNumer": {
+            "obis": "1:0.0.96.1.0.255;2",
+            "valueAccess": "R",
+            "valueMaximum": 41,
+            "valueType": "String"
+          },
+          "meterType": {
+            "obis": "1:0.0.96.1.1.255;2",
+            "valueAccess": "R",
+            "valueMaximum": 41,
+            "valueType": "String"
+          }
+        },
+        "instantValue": {
+          "angle": {
+            "reg81x7x0": {
+              "obis": "3:1.0.81.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "Int16"
+            },
+            "reg81x7x1": {
+              "obis": "3:1.0.81.7.1.255;2",
+              "valueAccess": "R",
+              "valueType": "Int16"
+            },
+            "reg81x7x15": {
+              "obis": "3:1.0.81.7.15.255;2",
+              "valueAccess": "R",
+              "valueType": "Int16"
+            },
+            "reg81x7x2": {
+              "obis": "3:1.0.81.7.2.255;2",
+              "valueAccess": "R",
+              "valueType": "Int16"
+            },
+            "reg81x7x26": {
+              "obis": "3:1.0.81.7.26.255;2",
+              "valueAccess": "R",
+              "valueType": "Int16"
+            },
+            "reg81x7x4": {
+              "obis": "3:1.0.81.7.4.255;2",
+              "valueAccess": "R",
+              "valueType": "Int16"
+            }
+          },
+          "phaseL1": {
+            "reg21x7x0": {
+              "obis": "3:1.0.21.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kW"
+            },
+            "reg22x7x0": {
+              "obis": "3:1.0.22.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kW"
+            },
+            "reg23x7x0": {
+              "obis": "3:1.0.23.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg24x7x0": {
+              "obis": "3:1.0.24.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg31x7x0": {
+              "obis": "3:1.0.31.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16",
+              "valueUnit": "A"
+            },
+            "reg32x7x0": {
+              "obis": "3:1.0.32.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16",
+              "valueUnit": "V"
+            },
+            "reg32x7x124": {
+              "obis": "3:1.0.32.7.124.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16",
+              "valueUnit": "%"
+            },
+            "reg33x7x0": {
+              "obis": "3:1.0.33.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32"
+            }
+          },
+          "phaseL2": {
+            "reg41x7x0": {
+              "obis": "3:1.0.41.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kW"
+            },
+            "reg42x7x0": {
+              "obis": "3:1.0.42.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kW"
+            },
+            "reg43x7x0": {
+              "obis": "3:1.0.43.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg44x7x0": {
+              "obis": "3:1.0.44.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg51x7x0": {
+              "obis": "3:1.0.51.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16",
+              "valueUnit": "A"
+            },
+            "reg52x7x0": {
+              "obis": "3:1.0.52.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16",
+              "valueUnit": "V"
+            },
+            "reg52x7x124": {
+              "obis": "3:1.0.52.7.124.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16"
+            },
+            "reg53x7x0": {
+              "obis": "3:1.0.53.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32"
+            }
+          },
+          "phaseL3": {
+            "reg61x7x0": {
+              "obis": "3:1.0.61.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kW"
+            },
+            "reg62x7x0": {
+              "obis": "3:1.0.62.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kW"
+            },
+            "reg63x7x0": {
+              "obis": "3:1.0.63.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg64x7x0": {
+              "obis": "3:1.0.64.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg71x7x0": {
+              "obis": "3:1.0.71.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16",
+              "valueUnit": "A"
+            },
+            "reg72x7x0": {
+              "obis": "3:1.0.72.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16",
+              "valueUnit": "V"
+            },
+            "reg72x7x124": {
+              "obis": "3:1.0.72.7.124.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16"
+            },
+            "reg73x7x0": {
+              "obis": "3:1.0.73.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32"
+            }
+          },
+          "power": {
+            "reg10x7x0": {
+              "obis": "3:1.0.10.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kVA"
+            },
+            "reg15x7x0": {
+              "obis": "3:1.0.15.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kW"
+            },
+            "reg1x7x0": {
+              "obis": "3:1.0.1.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kW"
+            },
+            "reg2x7x0": {
+              "obis": "3:1.0.2.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kW"
+            },
+            "reg3x7x0": {
+              "obis": "3:1.0.3.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg4x7x0": {
+              "obis": "3:1.0.4.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg5x7x0": {
+              "obis": "3:1.0.5.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg6x7x0": {
+              "obis": "3:1.0.6.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg7x7x0": {
+              "obis": "3:1.0.7.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg8x7x0": {
+              "obis": "3:1.0.8.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kvar"
+            },
+            "reg9x7x0": {
+              "obis": "3:1.0.9.7.0.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32",
+              "valueUnit": "kVA"
+            }
+          },
+          "reg12x7x124": {
+            "obis": "3:1.0.12.7.124.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt16",
+            "valueUnit": "%"
+          },
+          "reg13x7x0": {
+            "obis": "3:1.0.13.7.0.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt16"
+          },
+          "reg14x7x0": {
+            "obis": "3:1.0.14.7.0.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt16",
+            "valueUnit": "Hz"
+          },
+          "reg90x7x0": {
+            "obis": "3:1.0.90.7.0.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt16",
+            "valueUnit": "A"
+          },
+          "reg91x7x0": {
+            "obis": "3:1.0.91.7.0.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt16",
+            "valueUnit": "A"
+          }
+        },
+        "maxDemand": {
+          "reg10x6xx": {
+            "reg10x6x0": {
+              "reg10x6x0CT": {
+                "obis": "4:1.0.10.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg10x6x0V": {
+                "obis": "4:1.0.10.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kVA"
+              }
+            },
+            "reg10x6x1": {
+              "reg10x6x1CT": {
+                "obis": "4:1.0.10.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg10x6x1V": {
+                "obis": "4:1.0.10.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kVA"
+              }
+            },
+            "reg10x6x2": {
+              "reg10x6x2CT": {
+                "obis": "4:1.0.10.6.2.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg10x6x2V": {
+                "obis": "4:1.0.10.6.2.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kVA"
+              }
+            },
+            "reg10x6x3": {
+              "reg10x6x3CT": {
+                "obis": "4:1.0.10.6.3.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg10x6x3V": {
+                "obis": "4:1.0.10.6.3.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kVA"
+              }
+            },
+            "reg10x6x4": {
+              "reg10x6x4CT": {
+                "obis": "4:1.0.10.6.4.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg10x6x4V": {
+                "obis": "4:1.0.10.6.4.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kVA"
+              }
+            }
+          },
+          "reg15x6xx": {
+            "reg15x6x0": {
+              "reg15x6x0CT": {
+                "obis": "4:1.0.15.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg15x6x0V": {
+                "obis": "4:1.0.15.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg15x6x1": {
+              "reg15x6x1CT": {
+                "obis": "4:1.0.15.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg15x6x1V": {
+                "obis": "4:1.0.15.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg15x6x2": {
+              "reg15x6x2CT": {
+                "obis": "4:1.0.15.6.2.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg15x6x2V": {
+                "obis": "4:1.0.15.6.2.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg15x6x3": {
+              "reg15x6x3CT": {
+                "obis": "4:1.0.15.6.3.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg15x6x3V": {
+                "obis": "4:1.0.15.6.3.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg15x6x4": {
+              "reg15x6x4CT": {
+                "obis": "4:1.0.15.6.4.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg15x6x4V": {
+                "obis": "4:1.0.15.6.4.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            }
+          },
+          "reg1x6xx": {
+            "reg1x6x0": {
+              "reg1x6x0CT": {
+                "obis": "4:1.0.1.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg1x6x0V": {
+                "obis": "4:1.0.1.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg1x6x1": {
+              "reg1x6x1CT": {
+                "obis": "4:1.0.1.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg1x6x1V": {
+                "obis": "4:1.0.1.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg1x6x2": {
+              "reg1x6x2CT": {
+                "obis": "4:1.0.1.6.2.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg1x6x2V": {
+                "obis": "4:1.0.1.6.2.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg1x6x3": {
+              "reg1x6x3CT": {
+                "obis": "4:1.0.1.6.3.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg1x6x3V": {
+                "obis": "4:1.0.1.6.3.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg1x6x4": {
+              "reg1x6x4CT": {
+                "obis": "4:1.0.1.6.4.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg1x6x4V": {
+                "obis": "4:1.0.1.6.4.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            }
+          },
+          "reg2x6xx": {
+            "reg2x6x0": {
+              "reg2x6x0CT": {
+                "obis": "4:1.0.2.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg2x6x0V": {
+                "obis": "4:1.0.2.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg2x6x1": {
+              "reg2x6x1CT": {
+                "obis": "4:1.0.2.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg2x6x1V": {
+                "obis": "4:1.0.2.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg2x6x2": {
+              "reg2x6x2CT": {
+                "obis": "4:1.0.2.6.2.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg2x6x2V": {
+                "obis": "4:1.0.2.6.2.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg2x6x3": {
+              "reg2x6x3CT": {
+                "obis": "4:1.0.2.6.3.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg2x6x3V": {
+                "obis": "4:1.0.2.6.3.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg2x6x4": {
+              "reg2x6x4CT": {
+                "obis": "4:1.0.2.6.4.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg2x6x4V": {
+                "obis": "4:1.0.2.6.4.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            }
+          },
+          "reg3x6xx": {
+            "reg3x6x0": {
+              "reg3x6x0CT": {
+                "obis": "4:1.0.3.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg3x6x0V": {
+                "obis": "4:1.0.3.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            },
+            "reg3x6x1": {
+              "reg3x6x1CT": {
+                "obis": "4:1.0.3.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg3x6x1V": {
+                "obis": "4:1.0.3.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            },
+            "reg3x6x2": {
+              "reg3x6x2CT": {
+                "obis": "4:1.0.3.6.2.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg3x6x2V": {
+                "obis": "4:1.0.3.6.2.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            },
+            "reg3x6x3": {
+              "reg3x6x3CT": {
+                "obis": "4:1.0.3.6.3.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg3x6x3V": {
+                "obis": "4:1.0.3.6.3.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            },
+            "reg3x6x4": {
+              "reg3x6x4CT": {
+                "obis": "4:1.0.3.6.4.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg3x6x4V": {
+                "obis": "4:1.0.3.6.4.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            }
+          },
+          "reg4x6xx": {
+            "reg4x6x0": {
+              "reg4x6x0CT": {
+                "obis": "4:1.0.4.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg4x6x0V": {
+                "obis": "4:1.0.4.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            },
+            "reg4x6x1": {
+              "reg4x6x1CT": {
+                "obis": "4:1.0.4.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg4x6x1V": {
+                "obis": "4:1.0.4.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            },
+            "reg4x6x2": {
+              "reg4x6x2CT": {
+                "obis": "4:1.0.4.6.2.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg4x6x2V": {
+                "obis": "4:1.0.4.6.2.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            },
+            "reg4x6x3": {
+              "reg4x6x3CT": {
+                "obis": "4:1.0.4.6.3.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg4x6x3V": {
+                "obis": "4:1.0.4.6.3.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            },
+            "reg4x6x4": {
+              "reg4x6x4CT": {
+                "obis": "4:1.0.4.6.4.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg4x6x4V": {
+                "obis": "4:1.0.4.6.4.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kvar"
+              }
+            }
+          },
+          "reg9x6xx": {
+            "reg9x6x0": {
+              "reg9x6x0CT": {
+                "obis": "4:1.0.9.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg9x6x0V": {
+                "obis": "4:1.0.9.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kVA"
+              }
+            },
+            "reg9x6x1": {
+              "reg9x6x1CT": {
+                "obis": "4:1.0.9.6.0.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg9x6x1V": {
+                "obis": "4:1.0.9.6.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kVA"
+              }
+            },
+            "reg9x6x2": {
+              "reg9x6x2CT": {
+                "obis": "4:1.0.9.6.2.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg9x6x2V": {
+                "obis": "4:1.0.9.6.2.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kVA"
+              }
+            },
+            "reg9x6x3": {
+              "reg9x6x3CT": {
+                "obis": "4:1.0.9.6.3.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg9x6x3V": {
+                "obis": "4:1.0.9.6.3.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kVA"
+              }
+            },
+            "reg9x6x4": {
+              "reg9x6x4CT": {
+                "obis": "4:1.0.9.6.4.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg9x6x4V": {
+                "obis": "4:1.0.9.6.4.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kVA"
+              }
+            }
+          }
+        },
+        "meterStatus": {
+          "lastParamDate": {
+            "obis": "1:0.0.96.2.1.255;2",
+            "valueAccess": "R",
+            "valueMaximum": 100,
+            "valueType": "String"
+          },
+          "meterCriticalError": {
+            "obis": "1:0.0.97.97.0.255;2",
+            "valueType": "UInt32"
+          }
+        },
+        "modem": {
+          "rssi": {
+            "obis": "1:0.0.96.99.6.255;2",
+            "valueAccess": "R",
+            "valueType": "Int64"
+          },
+          "rssnr": {
+            "obis": "1:0.0.96.99.5.255;2",
+            "valueAccess": "R",
+            "valueType": "UInt16"
+          }
+        },
+        "quality": {
+          "qualityIndicators": {
+            "w1OverLimitVoltageCounter": {
+              "obis": "1:0.0.96.15.99.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt32"
+            }
+          },
+          "qualityPower": {
+            "reg15x24x0": {
+              "reg15x24x0CT": {
+                "obis": "5:1.0.15.24.0.255;6",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg15x24x0CV": {
+                "obis": "5:1.0.15.24.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              },
+              "reg15x24x0LV": {
+                "obis": "5:1.0.15.24.0.255;3",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg16x24x0": {
+              "reg16x24x0CT": {
+                "obis": "5:1.0.16.24.0.255;6",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg16x24x0CV": {
+                "obis": "5:1.0.16.24.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              },
+              "reg16x24x0LV": {
+                "obis": "5:1.0.16.24.0.255;3",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            },
+            "reg1x24x0": {
+              "reg1x24x0CT": {
+                "obis": "5:1.0.1.24.0.255;6",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg1x24x0CV": {
+                "obis": "5:1.0.1.24.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              },
+              "reg1x24x0LV": {
+                "obis": "5:1.0.1.24.0.255;3",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "kW"
+              }
+            }
+          },
+          "qualityTTHD": {
+            "tthdL1": {
+              "obis": "3:1.0.32.25.124.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16",
+              "valueUnit": "%"
+            },
+            "tthdL2": {
+              "obis": "3:1.0.52.25.124.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16",
+              "valueUnit": "%"
+            },
+            "tthdL3": {
+              "obis": "3:1.0.72.25.124.255;2",
+              "valueAccess": "R",
+              "valueType": "UInt16",
+              "valueUnit": "%"
+            },
+            "tthdMax": {
+              "reg12x26x124CT": {
+                "obis": "4:1.0.12.26.124.255;5",
+                "valueAccess": "R",
+                "valueMaximum": 100,
+                "valueType": "String"
+              },
+              "reg12x26x124CV": {
+                "obis": "4:1.0.12.26.124.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt16",
+                "valueUnit": "%"
+              }
+            }
+          },
+          "qualityVoltage": {
+            "qualityPhaseL1": {
+              "ovL1Counter": {
+                "obis": "1:1.0.32.36.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt16"
+              },
+              "ovL1Duration": {
+                "obis": "3:1.0.32.37.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "s"
+              },
+              "ovL1Value": {
+                "obis": "3:1.0.32.38.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "V"
+              },
+              "uvL1Counter": {
+                "obis": "1:1.0.32.32.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt16"
+              },
+              "uvL1Duration": {
+                "obis": "3:1.0.32.33.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "s"
+              },
+              "uvL1Value": "no"
+            },
+            "qualityPhaseL2": {
+              "ovL2Counter": {
+                "obis": "1:1.0.52.36.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt16"
+              },
+              "ovL2Duration": {
+                "obis": "3:1.0.52.37.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "s"
+              },
+              "ovL2Value": {
+                "obis": "3:1.0.52.38.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "V"
+              },
+              "uvL2Counter": {
+                "obis": "1:1.0.52.32.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt16"
+              },
+              "uvL2Duration": {
+                "obis": "3:1.0.52.33.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "s"
+              },
+              "uvL2Value": {
+                "obis": "3:1.0.52.34.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "V"
+              }
+            },
+            "qualityPhaseL3": {
+              "ovL3Counter": {
+                "obis": "1:1.0.72.36.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt16"
+              },
+              "ovL3Duration": {
+                "obis": "3:1.0.72.37.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "s"
+              },
+              "ovL3Value": {
+                "obis": "3:1.0.72.38.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "V"
+              },
+              "uvL3Counter": {
+                "obis": "1:1.0.72.32.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt16"
+              },
+              "uvL3Value": {
+                "obis": "3:1.0.72.34.0.255;2",
+                "valueAccess": "R",
+                "valueType": "UInt32",
+                "valueUnit": "V"
+              }
+            }
+          }
+        }
+      },
+      "dateTime": {
+        "daylightsSavingsBegin": {
+          "obis": "8:0.0.1.0.0.255;5",
+          "valueAccess": "R",
+          "valueDefault": "2000.01.01T00:00:00.000",
+          "valueInitial": "2023.10.17T11:33:05.020",
+          "valueMaximum": 25,
+          "valueType": "String"
+        },
+        "daylightsSavingsDeviation": {
+          "obis": "8:0.0.1.0.0.255;7",
+          "valueAccess": "A",
+          "valueDefault": 60,
+          "valueInitial": 99,
+          "valueLenght": 2,
+          "valueMax": 120,
+          "valueMin": -120,
+          "valueStep": 1,
+          "valueType": "Int16",
+          "valueUnit": "min"
+        },
+        "daylightsSavingsEnd": {
+          "obis": "8:0.0.1.0.0.255;6",
+          "valueAccess": "R",
+          "valueInitial": "2023.10.17T11:33:05.020",
+          "valueMaximum": 25,
+          "valueType": "String"
+        },
+        "meterDateTime": {
+          "obis": "8:0.0.1.0.0.255;2",
+          "readOnOpen": true,
+          "valueAccess": "R",
+          "valueMaximum": 25,
+          "valueType": "String"
+        }
+      },
+      "energyQuality": {
+        "maxTthdW2": {
+          "maxValue": 10,
+          "minValue": 1,
+          "obis": "3:1.0.12.35.124.255;2",
+          "valueType": "UInt16"
+        },
+        "measurePeriodStart": {
+          "defaultValue": 1,
+          "obis": "1:0.0.96.57.121.255;2",
+          "valueType": "UInt8"
+        },
+        "overLimitVotlage": {
+          "maxValue": 150,
+          "minValue": 100,
+          "obis": "3:1.0.90.32.0.255;2",
+          "valueType": "UInt16"
+        },
+        "percentileW1": {
+          "maxValue": 100,
+          "minValue": 0,
+          "obis": "3:1.0.94.48.155.255;2",
+          "valueType": "UInt16"
+        },
+        "percentileW2": {
+          "maxValue": 100,
+          "minValue": 50,
+          "obis": "3:1.0.94.48.143.255;2",
+          "valueType": "UInt16"
+        },
+        "referenceVoltageW1": {
+          "maxValue": 400,
+          "minValue": 100,
+          "obis": "3:1.0.94.48.150.255;2",
+          "valueType": "UInt16",
+          "valueUnit": "V"
+        },
+        "underLimitVotlage": {
+          "maxValue": 100,
+          "minValue": 50,
+          "obis": "3:1.0.90.33.0.255;2",
+          "valueType": "UInt16"
+        }
+      },
+      "id": {
+        "userCode": {
+          "obis": "1:0.0.96.1.4.255;2",
+          "valueMaximum": 41,
+          "valueType": "String"
+        },
+        "userName": {
+          "obis": "1:0.0.96.1.3.255;2",
+          "valueMaximum": 41,
+          "valueType": "String"
+        }
+      },
+      "identification": {
+        "functionallFw": {
+          "langEn": "Metrological FW",
+          "langPl": "Wersja firmware metrologicznego",
+          "obis": "1:1.1.0.2.0.255;2",
+          "valueAccess": "R",
+          "valueMaximum": 255,
+          "valueType": "String"
+        },
+        "functionallFwChecksum": {
+          "langEn": "Metrological FW checksum",
+          "langPl": "Suma kontrolna firmware metrologicznego",
+          "obis": "1:1.1.0.2.8.255;2",
+          "type": "HexString",
+          "valueAccess": "R",
+          "valueMaximum": 255,
+          "valueType": "String"
+        },
+        "logicalDeviceName": {
+          "obis": "1:0.0.42.0.0.255;2",
+          "valueAccess": "R",
+          "valueMaximum": 255,
+          "valueType": "String"
+        },
+        "meterModification": {
+          "langEn": "Meter serial number",
+          "langPl": "Numer seryjny licznika",
+          "obis": "1:0.0.96.1.0.255;2",
+          "valueAccess": "R",
+          "valueMaximum": 255,
+          "valueType": "String"
+        },
+        "meterSerialNumer": {
+          "langEn": "Meter serial number",
+          "langPl": "Numer seryjny licznika",
+          "obis": "1:0.0.96.1.0.255;2",
+          "valueAccess": "R",
+          "valueMaximum": 255,
+          "valueType": "String"
+        },
+        "meterType": {
+          "langEn": "Meter type",
+          "langPl": "Typ licznika",
+          "obis": "1:0.0.96.1.1.255;2",
+          "valueAccess": "R",
+          "valueMaximum": 255,
+          "valueType": "String"
+        },
+        "metrologicalFw": {
+          "iProp": "FirmwareVersion",
+          "langEn": "None",
+          "langPl": "None",
+          "obis": "1:1.0.0.2.0.255;2",
+          "valueAccess": "R",
+          "valueMaximum": 255,
+          "valueType": "String"
+        },
+        "metrologicalFwChecksum": {
+          "langEn": "None",
+          "langPl": "None",
+          "obis": "1:1.0.0.2.8.255;2",
+          "type": "HexString",
+          "valueAccess": "R",
+          "valueMaximum": 255,
+          "valueType": "String"
+        },
+        "readOnOpen": true
+      },
+      "internal": {
+        "contractId": {
+          "valueAccess": "N",
+          "valueInitial": "pge308k",
+          "valueMaximum": 20,
+          "valueType": "String"
+        },
+        "drvLibId": {
+          "valueAccess": "N",
+          "valueInitial": "G35",
+          "valueMaximum": 20,
+          "valueType": "String"
+        },
+        "drvLibPrm": {
+          "valueAccess": "N",
+          "valueInitial": ";test;debug;kuku;",
+          "valueMaximum": 20,
+          "valueType": "String"
+        }
+      },
+      "limiter": {
+        "limiterActivationEnd": {
+          "obis": "22:0.0.94.98.30.255;4",
+          "valueMaximum": 100,
+          "valueType": "String"
+        },
+        "limiterActivationStart": {
+          "obis": "22:0.0.94.98.29.255;4",
+          "valueMaximum": 100,
+          "valueType": "String"
+        },
+        "limiterEnableDisable": {
+          "obis": "1:0.0.94.98.129.255;2",
+          "valueType": "Boolean"
+        },
+        "thresholdNormal": {
+          "obis": "71:0.0.17.0.0.255;4",
+          "valueType": "UInt32",
+          "valueUnit": "W"
+        },
+        "thresholdOverDuration": {
+          "maxValue": 3600,
+          "minValue": 0,
+          "obis": "71:0.0.17.0.0.255;6",
+          "valueType": "UInt32",
+          "valueUnit": "s"
+        },
+        "thresholdUnderDuration": {
+          "maxValue": 3600,
+          "minValue": 0,
+          "obis": "71:0.0.17.0.0.255;7",
+          "valueType": "UInt32",
+          "valueUnit": "s"
+        }
+      },
+      "lwm2m": {
+        "securityMode": {
+          "obis": "10000:0.0.96.57.70.255;4",
+          "valueType": "UInt32"
+        },
+        "serverBootstrap": {
+          "obis": "10000:0.0.96.57.70.255;3",
+          "valueType": "Boolean"
+        },
+        "serverUri": {}
+      },
+      "modem": {
+        "ntpSyncFreq": {
+          "obis": "1:0.63.25.10.0.255;2",
+          "valueType": "UInt8"
+        },
+        "pinSetup": {
+          "obis": "45:0.0.25.4.0.255;3",
+          "valueAccess": "W",
+          "valueType": "UInt32"
+        },
+        "restartPeriod": {
+          "obis": "1:0.0.96.50.24.255;2",
+          "valueMaximum": 100,
+          "valueType": "String"
+        },
+        "tcpUdpPort": {
+          "obis": "41:0.0.25.0.0.255;2",
+          "valueType": "UInt16"
+        },
+        "whiteList": {}
+      },
+      "overview": {
+        "reg1x7x0": {
+          "obis": "3:1.0.1.7.0.255;2",
+          "valueMaximum": 666666,
+          "valueMinimum": 0,
+          "valueType": "Real64",
+          "valueUnit": "Wh"
+        },
+        "reg1x8x0": {
+          "obis": "3:1.0.1.8.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "kWh"
+        },
+        "reg2x8x0": {
+          "obis": "3:1.0.2.8.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "kWh"
+        },
+        "reg31x7x0": {
+          "obis": "3:1.0.31.7.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "V"
+        },
+        "reg32x7x0": {
+          "obis": "3:1.0.32.7.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "V"
+        },
+        "reg33x7x0": {
+          "obis": "3:1.0.33.7.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "V"
+        },
+        "reg3x8x0": {
+          "obis": "3:1.0.3.8.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "kvarh"
+        },
+        "reg51x7x0": {
+          "obis": "3:1.0.51.7.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "A"
+        },
+        "reg52x7x0": {
+          "obis": "3:1.0.52.7.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "A"
+        },
+        "reg53x7x0": {
+          "obis": "3:1.0.53.7.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "A"
+        },
+        "reg71x7x0": {
+          "obis": "3:1.0.71.7.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "A"
+        },
+        "reg72x7x0": {
+          "obis": "3:1.0.72.7.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "A"
+        },
+        "reg81x7x0": {
+          "obis": "3:1.0.81.7.0.255;2",
+          "valueType": "Real64",
+          "valueUnit": "A"
+        },
+        "reg81x7x1": {
+          "obis": "3:1.0.81.7.1.255;2",
+          "valueType": "Real64",
+          "valueUnit": "degree"
+        },
+        "reg81x7x15": {
+          "obis": "3:1.0.81.7.15.255;2",
+          "valueType": "Real64",
+          "valueUnit": "degree"
+        },
+        "reg81x7x2": {
+          "obis": "3:1.0.81.7.2.255;2",
+          "valueType": "Real64",
+          "valueUnit": "degree"
+        },
+        "reg81x7x26": {
+          "obis": "3:1.0.81.7.26.255;2",
+          "valueType": "Real64",
+          "valueUnit": "degree"
+        },
+        "reg81x7x4": {
+          "obis": "3:1.0.81.7.4.255;2",
+          "valueType": "Real64",
+          "valueUnit": "degree"
+        }
+      },
+      "profiles": {
+        "dataRow1": {
+          "valueAccess": "R",
+          "valueMaximum": 250,
+          "valueType": "String"
+        },
+        "dataRow2": {
+          "valueAccess": "R",
+          "valueMaximum": 250,
+          "valueType": "String"
+        },
+        "dataRow3": {
+          "valueAccess": "R",
+          "valueMaximum": 250,
+          "valueType": "String"
+        },
+        "dataRow4": {
+          "valueAccess": "R",
+          "valueMaximum": 250,
+          "valueType": "String"
+        },
+        "dataRow5": {
+          "valueAccess": "R",
+          "valueMaximum": 250,
+          "valueType": "String"
+        },
+        "profileObis": {
+          "valueAccess": "W",
+          "valueDefault": "1.0.99.1.0.255 (Power 15min), 1.0.99.2.0.255 (Power 1h/24h), 1.0.99.13.0.255 (7days), 1.0.99.11.1.255 (Quality 10min), 1.0.99.3.0.255 (Quality 10min), 0.0.98.1.0.255 (Billing)",
+          "valueInitial": "1.0.99.1.0.255",
+          "valueMaximum": 255,
+          "valueType": "String"
+        },
+        "readFrom": {
+          "valueAccess": "W",
+          "valueInitial": "2023.11.1T00:00:00.000",
+          "valueMaximum": 25,
+          "valueType": "String"
+        },
+        "readTo": {
+          "valueAccess": "W",
+          "valueInitial": "2023.11.08T00:00:00.000",
+          "valueMaximum": 25,
+          "valueType": "String"
+        },
+        "separator": {
+          "valueAccess": "N",
+          "valueInitial": "--------",
+          "valueMaximum": 25,
+          "valueType": "String"
+        },
+        "sessionId": "profile1",
+        "sessionNo": "true",
+        "valueType": "ProfileBranch"
+      },
+      "properties": {
+        "demandImportNumerOfPeriods": {
+          "obis": "5:1.0.1.4.0.255;9",
+          "valueType": "UInt16"
+        },
+        "demandImportPeriod": {
+          "obis": "5:1.0.1.4.0.255;8",
+          "valueType": "UInt32",
+          "valueUnit": "s"
+        },
+        "measurementConfig": {
+          "obis": "1:0.0.96.53.7.255;2",
+          "valueType": "UInt8"
+        }
+      },
+      "voltageMonitoring": {
+        "durationMissingVoltage": {
+          "maxValue": 30,
+          "minValue": 1,
+          "obis": "3:1.0.12.45.0.255;2",
+          "stepValue": "1",
+          "valueType": "UInt16",
+          "valueUnit": "s"
+        },
+        "durationOverVoltage": {
+          "maxValue": 1440,
+          "minValue": 1,
+          "obis": "3:1.0.12.44.0.255;2",
+          "stepValue": "1",
+          "valueType": "UInt16",
+          "valueUnit": "s"
+        },
+        "durationUnderVoltage": {
+          "maxValue": 1440,
+          "minValue": 1,
+          "obis": "3:1.0.12.43.0.255;2",
+          "stepValue": "1",
+          "valueType": "UInt16",
+          "valueUnit": "s"
+        },
+        "threshol2dUnderVoltage": {
+          "maxValue": 195,
+          "minValue": 162,
+          "obis": "3:1.0.12.31.1.255;2",
+          "stepValue": "1",
+          "valueType": "UInt16",
+          "valueUnit": "V"
+        },
+        "thresholdMissingVoltage": {
+          "maxValue": 161,
+          "minValue": 1,
+          "obis": "3:1.0.12.39.0.255;2",
+          "stepValue": "1",
+          "valueType": "UInt16",
+          "valueUnit": "V"
+        },
+        "thresholdOverVoltage": {
+          "maxValue": 400,
+          "minValue": 241,
+          "obis": "3:1.0.12.35.0.255;2",
+          "valueType": "UInt16",
+          "valueUnit": "V"
+        },
+        "thresholdUnderVoltage": {
+          "maxValue": 219,
+          "minValue": 196,
+          "obis": "3:1.0.12.31.0.255;2",
+          "stepValue": "1",
+          "valueType": "UInt16",
+          "valueUnit": "V"
+        }
+      }
+    },
+    "requests": []
+  },
+  "type": "deviceDescriptor"
+}
