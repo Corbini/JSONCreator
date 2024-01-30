@@ -3,6 +3,7 @@ from source.frame.setting import Setting
 
 
 class Parameter(Frame):
+
     def __init__(self, parent, frame, name):
         super().__init__(
             master=frame,
@@ -176,6 +177,19 @@ class Parameter(Frame):
             height=20.0
         )
 
+    def get_size(self):
+        height = self.settings_view.winfo_height() + 30
+        width = self.settings_view.winfo_width() + 220
+
+        for element in self.settings_list:
+            if isinstance(self.settings_list[element], Parameter):
+                result = self.settings_list[element].get_size()
+                width += result[0]
+                height += result[1]
+
+        return [width, height]
+        
+
     def change_size(self):
         if self.widen is False:
             self.settings_view.place(
@@ -186,14 +200,14 @@ class Parameter(Frame):
 
 
             self.settings_view.update()
-            height = self.settings_view.winfo_height() + 30
-            width = self.settings_view.winfo_width() + 220
+            dimension = self.get_size()
 
-            if height < 190:
-                height = 190
+
+            if dimension[1] < 190:
+                dimension[1] = 190
 
             self.configure(
-                height=height,
+                height=dimension[1],
                 width=1000
             )
 
@@ -201,7 +215,6 @@ class Parameter(Frame):
 
         else:
             self.settings_view.place_forget()
-            # self.settings_view.place_forget()
 
             self.configure(
                 height=40,
