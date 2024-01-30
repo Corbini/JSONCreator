@@ -4,132 +4,23 @@ from source.frame.setting import Setting
 
 class Parameter(Frame):
 
-    from ._frame_name import create_frame_name
+    from ._frame_name import create_frame_name, change_name, configure_name
+    from ._frame_generals import create_generals
 
     def __init__(self, parent, frame, name):
         super().__init__(
             master=frame,
             width=120,
             height=40,
-            relief='sunken'
+            relief='sunken',
         )
         self.pack(side='top', anchor='nw')
         self.pack_propagate(True)
 
         self.par_parent = parent
 
-        self.canvas = Canvas(
-            self,
-            bd = 0,
-            highlightthickness = 0,
-            relief = "ridge"
-        )
-
-        self.canvas.place(x = 0, y = 0)
-
-        self.canvas.create_rectangle(
-            0.0,
-            0.0,
-            120.0,
-            30.0,
-            fill="#B0CEA1",
-            outline="")
-
-        self.canvas.create_rectangle(
-            0.0,
-            30.0,
-            220.0,
-            190.0,
-            fill="#B0CEA1",
-            outline="")
-
-        self.entry_image_1 = PhotoImage(
-            file="assets/parameter/entry_1.png")
-        self.entry_bg_1 = self.canvas.create_image(
-            110.0,
-            170.0,
-            image=self.entry_image_1
-        )
-        self.entry_1_t = Entry(
-            self,
-            bd=0,
-            bg="#FFFFFF",
-            fg="#000716",
-            highlightthickness=0,
-
-        )
-        self.entry_1_t.place(
-            x=10.0,
-            y=160.0,
-            width=200.0,
-            height=18.0
-        )
-
-        self.canvas.create_text(
-            10.0,
-            130.0,
-            anchor="nw",
-            text="Angielska nazwa",
-            fill="#000000",
-            font=("Judson Regular", 20 * -1)
-        )
-
-        self.entry_image_2 = PhotoImage(
-            file="assets/parameter/entry_2.png")
-        self.entry_bg_2 = self.canvas.create_image(
-            110.0,
-            110.0,
-            image=self.entry_image_2
-        )
-        self.entry_2_t = Entry(
-            self,
-            bd=0,
-            bg="#FFFFFF",
-            fg="#000716",
-            highlightthickness=0
-        )
-        self.entry_2_t.place(
-            x=10.0,
-            y=100.0,
-            width=200.0,
-            height=18.0
-        )
-
-        self.canvas.create_text(
-            10.0,
-            70.0,
-            anchor="nw",
-            text="Polska nazwa",
-            fill="#000000",
-            font=("Judson Regular", 20 * -1)
-        )
-
-        self.button_image_1 = PhotoImage(
-            file="assets/parameter/button_1.png")
-        self.entry_1 = Button(
-            self,
-            image=self.button_image_1,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda: print("button_1 clicked"),
-            relief="flat"
-        )
-        self.entry_1.place(
-            x=10.0,
-            y=40.0,
-            width=100.0,
-            height=20.0
-        )
-
-        self.entry_image_3 = PhotoImage(
-            file="assets/parameter/entry_3.png")
-        self.entry_bg_3 = self.canvas.create_image(
-            60.0,
-            20.0,
-            image=self.entry_image_3
-        )
-
         self.create_frame_name(name)
+        self.create_generals()
 
         self.settings_view = Frame(self)
 
@@ -137,29 +28,11 @@ class Parameter(Frame):
         self.settings_list = dict()
         self.type = "int"
 
-        # self.settings_view.place(
-        #     in_=self,
-        #     x=220,
-        #     y=30
-        # )
-        self.settings_view.grid(row=1, column=1)
-
-    def configure_name(self):
-        self.entry_2.place_forget()
-        self.entry_3.focus_set()
-
-    def change_name(self):
-        self.entry_3.delete("1.0", "end")
-        self.entry_2.place(
-            x=10.0,
-            y=10.0,
-            width=100.0,
-            height=20.0
-        )
+        self.settings_view.grid(row=1, column=1, sticky='nw')
+        self.widen = False
 
     def change_size(self):
         if self.widen is False:
-
 
             self.settings_view.update()
             height = self.settings_view.winfo_height() + 30
