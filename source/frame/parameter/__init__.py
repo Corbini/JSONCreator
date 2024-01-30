@@ -4,22 +4,19 @@ from source.frame.setting import Setting
 
 class Parameter(Frame):
 
-    from ._frame_name import create_frame_name, change_name, configure_name
-    from ._frame_generals import create_generals
+    from ._name import create_name, change_name, configure_name, update_name
+    from ._generals import create_generals
 
     def __init__(self, parent, frame, name):
         super().__init__(
-            master=frame,
-            width=120,
-            height=40,
-            relief='sunken',
+            master=frame
         )
         self.pack(side='top', anchor='nw')
         self.pack_propagate(True)
 
         self.par_parent = parent
 
-        self.create_frame_name(name)
+        self.create_name(name)
         self.create_generals()
 
         self.settings_view = Frame(self)
@@ -51,10 +48,7 @@ class Parameter(Frame):
         else:
             # self.settings_view.place_forget()
 
-            self.configure(
-                height=40,
-                width=120
-            )
+            self.general
 
             self.widen = False
 
@@ -63,6 +57,10 @@ class Parameter(Frame):
         self.settings_list = dict()
 
     def update_setting(self, name, value):
+        
+        if name == "name":
+            self.update_name(name)
+            return
 
         if name == "langPl":
             self.entry_2_t.insert(0, value)
