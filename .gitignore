@@ -53,3 +53,9 @@ docs/_build/
 venv
 .vscode
 *.code-workspace
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/modules.xml
+.idea/.gitignore
+.idea/JSONCreator.iml
+.idea/misc.xml
+.idea/vcs.xml
