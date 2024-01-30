@@ -3,18 +3,13 @@ from source.frame.setting import Setting
 
 
 class Parameter(Frame):
-
-    from ._frame_name import create_frame_name
-
     def __init__(self, parent, frame, name):
         super().__init__(
             master=frame,
             width=120,
-            height=40,
-            relief='sunken'
+            height=40
         )
         self.pack(side='top', anchor='nw')
-        self.pack_propagate(True)
 
         self.par_parent = parent
 
@@ -34,7 +29,7 @@ class Parameter(Frame):
             30.0,
             fill="#B0CEA1",
             outline="")
-
+        
         self.canvas.create_rectangle(
             0.0,
             30.0,
@@ -42,7 +37,7 @@ class Parameter(Frame):
             190.0,
             fill="#B0CEA1",
             outline="")
-
+        
         self.entry_image_1 = PhotoImage(
             file="assets/parameter/entry_1.png")
         self.entry_bg_1 = self.canvas.create_image(
@@ -55,9 +50,9 @@ class Parameter(Frame):
             bd=0,
             bg="#FFFFFF",
             fg="#000716",
-            highlightthickness=0,
-
+            highlightthickness=0
         )
+
         self.entry_1_t.place(
             x=10.0,
             y=160.0,
@@ -128,21 +123,45 @@ class Parameter(Frame):
             20.0,
             image=self.entry_image_3
         )
+        self.entry_3 = Text(
+            self,
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0
+        )
+        self.entry_3.bind("<Leave>", lambda w: self.change_name())
+        self.entry_3.bind("<Return>", lambda w: self.change_name())
+        self.entry_3.place(
+            x=10.0,
+            y=10.0,
+            width=100.0,
+            height=18.0
+        )
 
-        self.create_frame_name(name)
+        self.widen = False
+        self.entry_2 = Button(
+            self,
+            text=name,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.change_size(),
+            relief="flat",
+        )
 
+        self.entry_2.bind("<Double-Button-1>", lambda w: self.configure_name())
+
+        self.entry_2.place(
+            x=10.0,
+            y=10.0,
+            width=100.0,
+            height=20.0
+        )
         self.settings_view = Frame(self)
 
         self.settings_view.propagate(True)
         self.settings_list = dict()
         self.type = "int"
-
-        # self.settings_view.place(
-        #     in_=self,
-        #     x=220,
-        #     y=30
-        # )
-        self.settings_view.grid(row=1, column=1)
 
     def configure_name(self):
         self.entry_2.place_forget()
@@ -159,6 +178,11 @@ class Parameter(Frame):
 
     def change_size(self):
         if self.widen is False:
+            self.settings_view.place(
+                in_=self,
+                x=220,
+                y=30
+            )
 
 
             self.settings_view.update()
@@ -176,6 +200,7 @@ class Parameter(Frame):
             self.widen = True
 
         else:
+            self.settings_view.place_forget()
             # self.settings_view.place_forget()
 
             self.configure(
@@ -194,14 +219,14 @@ class Parameter(Frame):
         if name == "langPl":
             self.entry_2_t.insert(0, value)
             return
-
+        
         if name == "langEn":
             self.entry_1_t.insert(0, value)
             return
-
+        
         if name == "valueType":
             return
-
+        
         if name not in self.settings_list:
             print("Create setting")
             self.settings_list[name] = Setting(self, self.settings_view, name, value)
@@ -211,6 +236,6 @@ class Parameter(Frame):
     def add_child(self, name):
         if name in self.settings_list:
             return
-
+        
         print("Create parameter", name)
         self.settings_list[name] = Parameter(self, self.settings_view, name)
