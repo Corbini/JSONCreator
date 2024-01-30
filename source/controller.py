@@ -2,7 +2,8 @@ from source.frame.main import Main
 from source.json_structure import JSONStructure
 from source.window.file import load, save_as
 
-class Controller():
+
+class Controller:
     def __init__(self, view: Main, model: JSONStructure):
         self.view = view
         self.model = model
@@ -14,10 +15,11 @@ class Controller():
         self.view.bind("<<load>>", self.load)
 
         self.view.bind("<<save_as>>", self.save)
-        print(self.view.event_info("<<save_as>>"))
 
-        # self.model.file_load("test.json")
-        # self.model.show(['content', 'properties','id','userName'], 'obis')
+        self.model.create_tree = lambda name: self.view.tree_create(name)
+        self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
+
+        self.view.bind("<<tree_new>>", lambda w: self.model.new_structure("new_tree"))
 
     def save(self, w):
         self.model.file_save(

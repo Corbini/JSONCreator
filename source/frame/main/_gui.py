@@ -1,24 +1,10 @@
-import tkinter as tk
-from tkinter import Canvas, PhotoImage, Text
+from tkinter import Canvas, PhotoImage, Text, Frame
 from source.button import Button
-from source.frame.parameter_list import ParameterList
+
+from source.frame.parameter import Parameter
 
 
-class Main(tk.Frame):
-    def __init__(self, window):
-        super().__init__(master=window, width=1000, height=800)
-        self._create_menu()
-        self.grid()
-
-        self.parameter_list = ParameterList(self)
-        self.parameter_list.place(
-            x=50,
-            y=75
-        )
-
-        self.event_add("<<save_as>>", "<Control-S>")
-        
-    def _create_menu(self):
+def create_menu(self):
         self.canvas = Canvas(
             self,
             bg = "#363131",
@@ -35,7 +21,7 @@ class Main(tk.Frame):
             master=self,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_1 clicked"),
+            command=lambda: self.event_generate('<<tree_new>>'),
             relief="flat"
         )
         self.button_1.load_image("assets/frame_main/button_1.png")
@@ -123,3 +109,20 @@ class Main(tk.Frame):
             height=48.0
         )
 
+        self.tree_canvas = Canvas(
+            width=744-10,
+            height=800-10,
+            relief="sunken",
+            bd=2
+        )
+
+        self.tree_canvas.place(
+            x=10,
+            y=10,
+        )
+
+        self.tree_frame = Frame(
+            self.tree_canvas
+        )
+
+        self.tree_canvas.create_window((0, 0), window=self.tree_frame, anchor='nw')
