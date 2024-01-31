@@ -5,7 +5,7 @@ def tree_create(self, name):
     if self.parameter_tree is not None:
         self.parameter_tree.destroy()
 
-    self.parameter_tree = Parameter(self.tree_frame, self.tree_frame, name)
+    self.parameter_tree = Parameter(None, self.tree_frame, name)
 
 
 def tree_update(self, parents, name, value=None):

@@ -23,6 +23,12 @@ class Parameter(Frame):
 
         self.widen = False
 
+    def get_parent(self, parents: list):
+        if self.par_parent is not None:
+            self.par_parent.get_parent(parents)
+        
+        parents.append(self.name_button.cget('text'))
+
     def change_size(self):
         if self.widen is False:
 

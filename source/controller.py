@@ -15,6 +15,7 @@ class Controller:
         self.view.bind("<<load>>", self.load)
 
         self.view.bind("<<save_as>>", self.save)
+        self.view.bind_all('<<input>>', lambda w, data:self.input(w = data))
 
         self.model.create_tree = lambda name: self.view.tree_create(name)
         self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
@@ -30,3 +31,8 @@ class Controller:
         self.model.file_load(
             load()
         )
+
+    def input(self, w, data):
+        print(data.new_value)
+        print(data.parents)
+        print(data.name)
