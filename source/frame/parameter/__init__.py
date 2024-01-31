@@ -23,8 +23,6 @@ class Parameter(Frame):
 
         self.widen = False
 
-        print('Created parameter: ', name)
-
     def change_size(self):
         if self.widen is False:
 
@@ -42,10 +40,6 @@ class Parameter(Frame):
     def set_type(self, value):
         self.general_types.delete(0, END)
         self.general_types.insert(0, value)
-        print(value)
-        print(self.general_types)
-        print(self.general_types.get())
-        # self.settings_list = dict()
 
     def update_setting(self, name, value):
         
