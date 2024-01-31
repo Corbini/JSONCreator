@@ -1,4 +1,4 @@
-from tkinter import Canvas, PhotoImage, Text, Frame
+from tkinter import Canvas, PhotoImage, Text, Frame, Scrollbar
 from source.button import Button
 
 from source.frame.parameter import Parameter
@@ -95,34 +95,61 @@ def create_menu(self):
             35.0,
             image=self.entry_image_1
         )
-        self.entry_1 = Text(
-            self,
-            bd=0,
-            bg="#AFCEA1",
-            fg="#000716",
-            highlightthickness=0
-        )
-        self.entry_1.place(
-            x=10.0,
-            y=10.0,
-            width=250.0,
-            height=48.0
-        )
 
-        self.tree_canvas = Canvas(
-            width=744-10,
-            height=800-10,
-            relief="sunken",
-            bd=2
-        )
+
+        self.tree_canvas = Canvas(self)
 
         self.tree_canvas.place(
             x=10,
             y=10,
+            width=744-25,
+            height=800-25
         )
+        self.tree_frame = Frame(self.tree_canvas)
 
-        self.tree_frame = Frame(
-            self.tree_canvas
-        )
+        self.scroll = Scrollbar(self, orient='vertical', command=self.tree_canvas.yview)
+        self.tree_canvas.configure(yscrollcommand=self.scroll.set)
 
         self.tree_canvas.create_window((0, 0), window=self.tree_frame, anchor='nw')
+        self.tree_frame.bind("<Configure>", lambda event: self.scroll_show(event))
+
+def on_scrollwheel(self, event):
+     self.tree_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+def scroll_show(self, event):
+    if event.height>800-25:
+        self.scroll.place(
+            x=744-25,
+            y=10,
+            height=800-25,
+            anchor='nw'
+        )
+        self.tree_canvas.place_forget()
+        self.tree_canvas.place(
+            x=10,
+            y=10,
+            width=744-45,
+            height=800-25
+        )
+            
+        self.tree_canvas.configure(scrollregion = self.tree_canvas.bbox('all'))
+        self.bind_all("<MouseWheel>", self.on_scrollwheel)
+        self.tree_frame.bind("<Configure>", lambda event: self.scroll_hide(event))
+        
+def scroll_hide(self, event):
+    if event.height<=800-25:
+        self.scroll.place_forget()
+        
+        self.tree_canvas.place_forget()
+        self.tree_canvas.place(
+            x=10,
+            y=10,
+            width=744-25,
+            height=800-25
+        )
+
+        self.tree_canvas.unbind_all("<MouseWheel>")
+        self.tree_canvas.yview_scroll(-100, "units")
+        self.tree_frame.bind("<Configure>", lambda event: self.scroll_show(event))
+    else:
+        self.tree_canvas.configure(scrollregion = self.tree_canvas.bbox('all'))
