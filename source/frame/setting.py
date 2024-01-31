@@ -20,8 +20,6 @@ class Setting(Frame):
         
         self.pack(side='top', anchor='nw')
 
-        print("Created setting: ", name, ", data: ", data)
-
     def update(self, value):
         self.data.insert(0, value)
         
