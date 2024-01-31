@@ -1,60 +1,51 @@
-from tkinter import Frame, Button, Canvas, PhotoImage, Text, Entry
+from tkinter import Frame, Button, Canvas, PhotoImage, Text, Entry, END
 from source.frame.setting import Setting
 
 
 class Parameter(Frame):
 
     from ._name import create_name, change_name, configure_name, update_name
-    from ._generals import create_generals
+    from ._generals import create_generals, show_generals, hide_generals
 
-    def __init__(self, parent, frame, name):
+    def __init__(self, parent, frame, name, type='untype'):
         super().__init__(
             master=frame
         )
         self.pack(side='top', anchor='nw')
-        self.pack_propagate(True)
 
         self.par_parent = parent
 
         self.create_name(name)
-        self.create_generals()
+        self.create_generals(type)
 
         self.settings_view = Frame(self)
-
-        self.settings_view.propagate(True)
         self.settings_list = dict()
-        self.type = "int"
 
-        self.settings_view.grid(row=1, column=1, sticky='nw')
         self.widen = False
+
+        print('Created parameter: ', name)
 
     def change_size(self):
         if self.widen is False:
 
-            self.settings_view.update()
-            height = self.settings_view.winfo_height() + 30
-            width = self.settings_view.winfo_width() + 220
-
-            if height < 190:
-                height = 190
-
-            self.configure(
-                height=height,
-                width=1000
-            )
+            self.settings_view.grid(row=1, column=1, sticky='nw')
+            self.show_generals()
 
             self.widen = True
 
         else:
-            # self.settings_view.place_forget()
-
-            self.general
+            self.settings_view.grid_forget()
+            self.hide_generals()
 
             self.widen = False
 
-    def set_type(self):
-        self.type = "new_name"
-        self.settings_list = dict()
+    def set_type(self, value):
+        self.general_types.delete(0, END)
+        self.general_types.insert(0, value)
+        print(value)
+        print(self.general_types)
+        print(self.general_types.get())
+        # self.settings_list = dict()
 
     def update_setting(self, name, value):
         
@@ -63,18 +54,18 @@ class Parameter(Frame):
             return
 
         if name == "langPl":
-            self.entry_2_t.insert(0, value)
+            self.general_pl.insert(0, value)
             return
 
         if name == "langEn":
-            self.entry_1_t.insert(0, value)
+            self.general_en.insert(0, value)
             return
 
         if name == "valueType":
+            self.set_type(value)
             return
 
         if name not in self.settings_list:
-            print("Create setting")
             self.settings_list[name] = Setting(self, self.settings_view, name, value)
         else:
             self.settings_list[name].update(value)
@@ -83,5 +74,4 @@ class Parameter(Frame):
         if name in self.settings_list:
             return
 
-        print("Create parameter", name)
         self.settings_list[name] = Parameter(self, self.settings_view, name)
