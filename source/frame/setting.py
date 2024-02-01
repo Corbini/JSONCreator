@@ -25,23 +25,21 @@ class Setting(Frame):
         self.old_data = data
 
     def update(self, value):
+        self.data.delete(0, END)
         self.data.insert(0, value)
+        self.old_data = value
 
     def input(self, event):
         if self.par_parent is None:
             return
         
-        self.parents = list()
-        self.par_parent.get_parent(self.parents)
+        parents = list()
+        self.par_parent.get_parent(parents)
 
-        self.new_value =  self.data.get()
-        self.old_data = self.new_value
-        self.name = self.name_label.cget("text")
+        value =  self.data.get()
+        name = self.name_label.cget("text")
 
-        print(event)
-
-        print(self.parents, self.name, self.new_value)
-        # self.event_generate('<<input>>', data = self)
+        self.par_parent.call(parents, name, value)
 
         
     def reset(self, event):

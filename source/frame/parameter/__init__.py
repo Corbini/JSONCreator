@@ -7,6 +7,8 @@ class Parameter(Frame):
     from ._name import create_name, change_name, configure_name, update_name
     from ._generals import create_generals, show_generals, hide_generals
 
+    call = lambda self, parents, name, value: print(parents, name, value)
+
     def __init__(self, parent, frame, name, type='untype'):
         super().__init__(
             master=frame
@@ -26,8 +28,7 @@ class Parameter(Frame):
     def get_parent(self, parents: list):
         if self.par_parent is not None:
             self.par_parent.get_parent(parents)
-        
-        parents.append(self.name_button.cget('text'))
+            parents.append(self.name_button.cget('text'))
 
     def change_size(self):
         if self.widen is False:

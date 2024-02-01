@@ -21,6 +21,7 @@ class Controller:
         self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
 
         self.view.bind("<<tree_new>>", lambda w: self.model.new_structure("new_tree"))
+        self.view.tree_input_set(lambda object, parents, name, value: self.input(parents, name, value))
 
     def save(self, w):
         self.model.file_save(
@@ -32,7 +33,5 @@ class Controller:
             load()
         )
 
-    def input(self, w, data):
-        print(data.new_value)
-        print(data.parents)
-        print(data.name)
+    def input(self, parents, name, value):
+        status = self.model.change_param(parents, name, value)

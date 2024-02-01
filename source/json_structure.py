@@ -86,5 +86,20 @@ class JSONStructure:
         self.json = {'content': content}
         self.create_tree(name)
 
-    def change_param(self, rel_path, data):
-        pass
+    def change_param(self, rel_path, name, data) -> bool:
+        if self.value_checker(name, data) is False:
+            return
+
+        path = self.json['content']['properties']
+
+        for object in rel_path:
+            path = path[object]
+
+        path[object] = data
+        
+        self.generate_object(rel_path, name, data)
+
+
+    def value_checker(self, name, value) -> bool:
+        return True
+    

@@ -18,3 +18,6 @@ def tree_update(self, parents, name, value=None):
         parent.add_child(name)
     else:
         parent.update_setting(name, value)
+
+def tree_input_set(self, function):
+    Parameter.call = function
