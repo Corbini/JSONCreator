@@ -39,7 +39,7 @@ class Setting(Frame):
         value =  self.data.get()
         name = self.name_label.cget("text")
 
-        self.par_parent.call(parents, name, value)
+        self.par_parent.call(parents, name, value, 'change')
 
         
     def reset(self, event):
