@@ -11,7 +11,7 @@ class Main(tk.Frame):
     from ._tree import tree_update, tree_create, tree_input_set
 
     def __init__(self, window):
-        super().__init__(master=window)
+        super().__init__(master=window, bg='#363131')
         self.create_menu()
         self.pack(fill='both', expand=True)
 

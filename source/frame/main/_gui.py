@@ -79,7 +79,7 @@ def create_menu(self):
             height=50.0
         )
 
-        self.tree_canvas = Canvas(self)
+        self.tree_canvas = Canvas(self, relief='flat', borderwidth=0)
 
         self.tree_canvas.pack(expand='True', fill='both', padx=10, pady=10)
         
