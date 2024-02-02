@@ -27,12 +27,12 @@ class Controller:
 
     def save(self, w):
         path = save_as()
-        if load != '':
+        if path != '':
             self.model.file_save(path)
 
     def load(self, w):
         path = load()
-        if load != '':
+        if path != '':
             self.model.file_load(path)
 
     def input(self, parents, name, value, operation):
