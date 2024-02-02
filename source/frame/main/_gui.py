@@ -3,25 +3,6 @@ from source.button import Button
 
 from source.frame.parameter import Parameter
 
-class AutoScrollbar(Scrollbar):
-    """Create a scrollbar that hides iteself if it's not needed. Only
-    works if you use the pack geometry manager from tkinter.
-    """
-    def set(self, lo, hi):
-        if float(lo) <= 0.0 and float(hi) >= 1.0:
-            self.unbind_all("<MouseWheel>")
-            self.pack_forget()
-        else:
-            if self.cget("orient") == 'horizontal':
-                self.pack(fill='x', side='bottom')
-                self.bind_all("<MouseWheel>", self.on_scrollwheel)
-            else:
-                self.pack(fill='y', side='right')
-        Scrollbar.set(self, lo, hi)
-
-    def set_scroll(self, event):
-        self.on_scrollwheel = event
-    
 
 def create_menu(self):
         self.options = Frame(
@@ -104,8 +85,7 @@ def create_menu(self):
         
         self.tree_frame = Frame(self.tree_canvas, padx=2, pady=2, borderwidth=0, relief='flat')
 
-        self.scroll = AutoScrollbar(self, orient='vertical', command=self.tree_canvas.yview)
-        self.scroll.set_scroll(lambda event: self.tree_canvas.yview_scroll(int(-1*(event.delta/120)), "units"))
+        self.scroll = Scrollbar(self, orient='vertical', command=self.tree_canvas.yview)
         self.tree_canvas.configure(yscrollcommand=self.scroll.set)
 
         self.tree_canvas.create_window((0, 0), window=self.tree_frame, anchor='nw')
@@ -113,28 +93,48 @@ def create_menu(self):
         self.tree_frame.bind("<Configure>", lambda event: self.scroll_show(event))
 
 
-def scroll_show(self, event):
-    pass
-    # self.tree_canvas.update()
-    # height = self.tree_canvas.winfo_height()
+def on_scrollwheel(self, event):
+     self.tree_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
 
-    # if event.height>height - 25:
-    #     self.scroll.pack(side='right', fill='y')
+
+def scroll_show(self, event):
+    if event.widget is self.tree_canvas:
+        canvas_height = event.height
+    else:
+        self.tree_canvas.update()
+        canvas_height = self.tree_canvas.winfo_height()
+    
+    if event.widget is self.tree_frame:
+        frame_height = event.height
+    else:
+        self.tree_frame.update()
+        frame_height = self.tree_frame.winfo_height()
+
+    if frame_height>canvas_height - 25:
+        self.scroll.pack(side='right', fill='y')
             
-    #     self.tree_canvas.configure(scrollregion = self.tree_canvas.bbox('all'))
-    #     self.bind_all("<MouseWheel>", self.on_scrollwheel)
-    #     self.tree_frame.bind("<Configure>", lambda event: self.scroll_hide(event))
+        self.tree_canvas.configure(scrollregion = self.tree_canvas.bbox('all'))
+        self.bind_all("<MouseWheel>", self.on_scrollwheel)
+        self.tree_frame.bind("<Configure>", lambda event: self.scroll_hide(event))
         
 def scroll_hide(self, event):
-    pass
-    # self.tree_canvas.update()
-    # height = self.tree_canvas.winfo_height()
+    if event.widget is self.tree_canvas:
+        canvas_height = event.height
+    else:
+        self.tree_canvas.update()
+        canvas_height = self.tree_canvas.winfo_height()
+    
+    if event.widget is self.tree_frame:
+        frame_height = event.height
+    else:
+        self.tree_frame.update()
+        frame_height = self.tree_frame.winfo_height()
 
-    # if event.height<=height - 25:
-    #     # self.scroll.pack_forget()
+    if frame_height<=canvas_height - 25:
+        self.scroll.pack_forget()
 
-    #     self.tree_canvas.unbind_all("<MouseWheel>")
-    #     self.tree_canvas.yview_scroll(-100, "units")
-    #     self.tree_frame.bind("<Configure>", lambda event: self.scroll_show(event))
-    # else:
-    #     self.tree_canvas.configure(scrollregion = self.tree_canvas.bbox('all'))
+        self.tree_canvas.unbind_all("<MouseWheel>")
+        self.tree_canvas.yview_scroll(-100, "units")
+        self.tree_frame.bind("<Configure>", lambda event: self.scroll_show(event))
+    else:
+        self.tree_canvas.configure(scrollregion = self.tree_canvas.bbox('all'))

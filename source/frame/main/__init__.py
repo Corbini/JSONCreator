@@ -5,7 +5,7 @@ from source.button import Button
 
 class Main(tk.Frame):
 
-    from ._gui import create_menu, scroll_show, scroll_hide
+    from ._gui import create_menu, scroll_show, scroll_hide, on_scrollwheel
 
     parameter_tree = None
     from ._tree import tree_update, tree_create, tree_input_set
