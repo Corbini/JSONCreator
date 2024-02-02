@@ -1,5 +1,6 @@
 import json
-
+from collections import OrderedDict
+from copy import deepcopy
 
 class JSONStructure:
     def __init__(self, name="", filename=""):
@@ -12,7 +13,9 @@ class JSONStructure:
         if filename != "":
             self.file_load(filename)
         else:
-            self.json = {"name": name}
+            self.json = None
+
+        self.saves = list()
 
     @staticmethod
     def remove_comments(data):
@@ -44,8 +47,8 @@ class JSONStructure:
 
         text = json.dumps(
             obj=self.json,
-            sort_keys=True,
-            indent=2
+            indent=2,
+            ensure_ascii=False
         )
         
         file.write(text)
@@ -63,7 +66,7 @@ class JSONStructure:
 
         clean_data = self.remove_comments(data)
 
-        self.json = json.loads(clean_data)
+        self.json = json.loads(clean_data, object_pairs_hook=OrderedDict)
 
         self.create_tree(self.json['content']['device']['nameRik'])
 
@@ -71,7 +74,7 @@ class JSONStructure:
 
     def generate_tree(self, position, parents=list()):
         for node in position:
-            if type(position[node]) is dict:
+            if type(position[node]) is OrderedDict:
                 self.generate_object(list(parents), node, None)
                 parents.append(node)
                 self.generate_tree(position[node], parents)
@@ -80,26 +83,62 @@ class JSONStructure:
                 self.generate_object(list(parents), node, position[node])
 
     def new_structure(self, name):
-        device = {'nameRik': name}
-        content = {'device': device}
+        self.json = OrderedDict([
+            ("application", "golink"),
+            ("type", "deviceDescriptor"),
+            ("content", OrderedDict([
+                ("device", OrderedDict([
+                    ("nameRik", 'drv/g35Pge308k/' + name + '/name')
+                ])),
+                ("properties", OrderedDict([
+                ]))
+            ]))
+        ])
 
-        self.json = {'content': content}
-        self.create_tree(name)
+        self.create_tree(self.json['content']['properties'])
 
-    def change_param(self, rel_path, name, data) -> bool:
-        if self.value_checker(name, data) is False:
-            return
-
+    def change_param(self, rel_path, name, data, operation) -> bool:
+        self.last_operations()
         path = self.json['content']['properties']
 
         for object in rel_path:
             path = path[object]
 
-        path[object] = data
+        match operation:
+            case 'remove':
+                path.pop(name)
+            case 'read':
+                if name in path:    
+                    data = path[name]
+                else:
+                    data = ''
+            case _:
+                if self.value_checker(name, data):
+                    path[name] = data
+                else:
+                    data = path[name]
         
         self.generate_object(rel_path, name, data)
 
 
     def value_checker(self, name, value) -> bool:
-        return True
+        match name:
+            case 'valueType':
+                return value in ['Branch', 'UInt64', "String","DateTime","UInt8","UInt16","UInt32","UInt64","Int8","Int16","Int32","Int64","Real32","Real64","Boolean","UserName","Password","SerialPort","IP","IPv4","IPv6"]
+            case _:
+                return True
     
+    def last_operations(self):
+        if len(self.saves) >=8:
+            self.saves.pop()
+
+        self.saves.insert(0, deepcopy(self.json))
+
+    def load_last(self):
+        if len(self.saves) < 1:
+            return
+        
+        save = self.saves.pop(0)
+        self.json = save
+        self.create_tree(self.json['content']['device']['nameRik'])
+        self.generate_tree(self.json['content']['properties'])

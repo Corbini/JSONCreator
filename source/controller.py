@@ -21,17 +21,19 @@ class Controller:
         self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
 
         self.view.bind("<<tree_new>>", lambda w: self.model.new_structure("new_tree"))
-        self.view.tree_input_set(lambda object, parents, name, value: self.input(parents, name, value))
+        self.view.tree_input_set(lambda object, parents, name, value, operation: self.input(parents, name, value, operation))
+        self.view.bind_all("<Control-z>", lambda event: self.model.load_last())
+
 
     def save(self, w):
-        self.model.file_save(
-            save_as()
-        )
+        path = save_as()
+        if load != '':
+            self.model.file_save(path)
 
     def load(self, w):
-        self.model.file_load(
-            load()
-        )
+        path = load()
+        if load != '':
+            self.model.file_load(path)
 
-    def input(self, parents, name, value):
-        status = self.model.change_param(parents, name, value)
+    def input(self, parents, name, value, operation):
+        status = self.model.change_param(parents, name, value, operation)

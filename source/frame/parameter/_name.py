@@ -12,7 +12,7 @@ def create_name(self, name):
         command=lambda: self.change_size()
     )
     self.name_button.propagate(False)
-    self.name_button.bind("<Double-Button-1>", lambda w: self.configure_name())
+    # self.name_button.bind("<Double-Button-1>", lambda w: self.configure_name())
 
     self.name_text = Text(self.name)
     self.name_text.propagate(False)

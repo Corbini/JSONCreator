@@ -5,30 +5,30 @@ from source.frame.setting import Setting
 class Parameter(Frame):
 
     from ._name import create_name, change_name, configure_name, update_name
-    from ._generals import create_generals, show_generals, hide_generals
+    from ._generals import create_generals, show_generals, hide_generals, set_type, entry_input, reset_value
 
-    call = lambda self, parents, name, value: print(parents, name, value)
+    call = lambda self, parents, name, value: print(parents, name, value, operation = 'add')
 
-    def __init__(self, parent, frame, name, type='untype'):
+    def __init__(self, parent, frame, name, type=''):
         super().__init__(
             master=frame
         )
+        self.widen = False
         self.pack(side='top', anchor='nw')
 
         self.par_parent = parent
 
         self.create_name(name)
-        self.create_generals(type)
+        self.create_generals(type, name)
 
         self.settings_view = Frame(self)
         self.settings_list = dict()
-
-        self.widen = False
 
     def get_parent(self, parents: list):
         if self.par_parent is not None:
             self.par_parent.get_parent(parents)
             parents.append(self.name_button.cget('text'))
+        return parents
 
     def change_size(self):
         if self.widen is False:
@@ -43,10 +43,6 @@ class Parameter(Frame):
             self.hide_generals()
 
             self.widen = False
-
-    def set_type(self, value):
-        self.general_types.delete(0, END)
-        self.general_types.insert(0, value)
 
     def update_setting(self, name, value):
         
@@ -73,6 +69,8 @@ class Parameter(Frame):
 
     def add_child(self, name):
         if name in self.settings_list:
+            self.settings_list[name].destroy()
+            self.settings_list.pop(name)
             return
 
         self.settings_list[name] = Parameter(self, self.settings_view, name)
