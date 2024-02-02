@@ -98,25 +98,35 @@ class JSONStructure:
         self.create_tree(self.json['content']['properties'])
 
     def change_param(self, rel_path, name, data, operation) -> bool:
-        if self.value_checker(name, data) is False:
-            return
-        
         self.last_operations()
         path = self.json['content']['properties']
 
         for object in rel_path:
             path = path[object]
 
-        if operation == 'remove':
-            path.pop(name)
-        else:
-            path[name] = data
+        match operation:
+            case 'remove':
+                path.pop(name)
+            case 'read':
+                if name in path:    
+                    data = path[name]
+                else:
+                    data = ''
+            case _:
+                if self.value_checker(name, data):
+                    path[name] = data
+                else:
+                    data = path[name]
         
         self.generate_object(rel_path, name, data)
 
 
     def value_checker(self, name, value) -> bool:
-        return True
+        match name:
+            case 'valueType':
+                return value in ['Branch', 'UInt64', "String","DateTime","UInt8","UInt16","UInt32","UInt64","Int8","Int16","Int32","Int64","Real32","Real64","Boolean","UserName","Password","SerialPort","IP","IPv4","IPv6"]
+            case _:
+                return True
     
     def last_operations(self):
         if len(self.saves) >=8:

@@ -26,14 +26,14 @@ class Controller:
 
 
     def save(self, w):
-        self.model.file_save(
-            save_as()
-        )
+        path = save_as()
+        if load != '':
+            self.model.file_save(path)
 
     def load(self, w):
-        self.model.file_load(
-            load()
-        )
+        path = load()
+        if load != '':
+            self.model.file_load(path)
 
     def input(self, parents, name, value, operation):
         status = self.model.change_param(parents, name, value, operation)

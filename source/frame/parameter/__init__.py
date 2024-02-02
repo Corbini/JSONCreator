@@ -5,11 +5,11 @@ from source.frame.setting import Setting
 class Parameter(Frame):
 
     from ._name import create_name, change_name, configure_name, update_name
-    from ._generals import create_generals, show_generals, hide_generals
+    from ._generals import create_generals, show_generals, hide_generals, set_type, entry_input, reset_value
 
     call = lambda self, parents, name, value: print(parents, name, value, operation = 'add')
 
-    def __init__(self, parent, frame, name, type='untype'):
+    def __init__(self, parent, frame, name, type=''):
         super().__init__(
             master=frame
         )
@@ -43,10 +43,6 @@ class Parameter(Frame):
             self.hide_generals()
 
             self.widen = False
-
-    def set_type(self, value):
-        self.general_types.delete(0, END)
-        self.general_types.insert(0, value)
 
     def update_setting(self, name, value):
         
