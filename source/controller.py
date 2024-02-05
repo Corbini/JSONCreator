@@ -19,6 +19,7 @@ class Controller:
 
         self.model.create_tree = lambda name: self.view.tree_create(name)
         self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
+        self.model.remove_object = lambda parents, name: self.view.tree_remove(parents, name)
 
         self.view.bind("<<tree_new>>", lambda w: self.model.new_structure("new_tree"))
         self.view.tree_input_set(lambda object, parents, name, value, operation: self.input(parents, name, value, operation))
@@ -27,12 +28,12 @@ class Controller:
 
     def save(self, w):
         path = save_as()
-        if load != '':
+        if path != '':
             self.model.file_save(path)
 
     def load(self, w):
         path = load()
-        if load != '':
+        if path != '':
             self.model.file_load(path)
 
     def input(self, parents, name, value, operation):

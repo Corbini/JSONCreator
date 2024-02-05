@@ -79,11 +79,11 @@ def create_menu(self):
             height=50.0
         )
 
-        self.tree_canvas = Canvas(self)
+        self.tree_canvas = Canvas(self, relief='flat', borderwidth=0)
 
         self.tree_canvas.pack(expand='True', fill='both', padx=10, pady=10)
-        
-        self.tree_frame = Frame(self.tree_canvas, padx=2, pady=2, borderwidth=0, relief='flat')
+
+        self.tree_frame = Frame(self.tree_canvas, padx=15, pady=15, borderwidth=0, relief='flat')
 
         self.scroll_horizontal = Scrollbar(self.tree_canvas, orient='horizontal', command=self.tree_canvas.xview)
         self.tree_canvas.configure(xscrollcommand=self.scroll_horizontal.set)
