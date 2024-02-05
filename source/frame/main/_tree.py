@@ -10,14 +10,21 @@ def tree_create(self, name):
 
 def tree_update(self, parents, name, value=None):
     parent = self.parameter_tree
-    while parents:
-        parent_name = parents.pop(0)
-        parent = parent.settings_list[parent_name]
+    for _parent in parents:
+        parent = parent.settings_list[_parent]
 
     if value is None:
         parent.add_child(name)
     else:
         parent.update_setting(name, value)
+
+def tree_remove(self, parents, name):
+    parent = self.parameter_tree
+    for _parent in parents:
+        parent = parent.settings_list[_parent]
+
+    parent.remove_child(name)
+
 
 def tree_input_set(self, function):
     Parameter.call = function

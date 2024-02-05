@@ -4,10 +4,10 @@ from source.frame.setting import Setting
 
 class Parameter(Frame):
 
-    from ._name import create_name, change_name, configure_name, update_name
+    from ._name import create_name, change_name, configure_name, update_name, show_name_button
     from ._generals import create_generals, show_generals, hide_generals, set_type, entry_input, reset_value
 
-    call = lambda self, parents, name, value: print(parents, name, value, operation = 'add')
+    call = lambda self, parents, name, value, operation: print(parents, name, value, operation)
 
     def __init__(self, parent, frame, name, type=''):
         super().__init__(
@@ -20,11 +20,16 @@ class Parameter(Frame):
 
         self.create_name(name)
         self.create_generals(type, name)
-
+        
         self.settings_view = Frame(self)
         self.settings_list = dict()
 
-    def get_parent(self, parents: list):
+        self.add_button = Button(self.settings_view, text='add', command=self.add_button_event)
+
+    def add_button_event(self):
+        self.call(self.get_parent(), 'NewParameter', None, 'add')
+
+    def get_parent(self, parents = list()):
         if self.par_parent is not None:
             self.par_parent.get_parent(parents)
             parents.append(self.name_button.cget('text'))
@@ -45,22 +50,24 @@ class Parameter(Frame):
             self.widen = False
 
     def update_setting(self, name, value):
-        
-        if name == "name":
-            self.update_name(name)
-            return
+        match name:
+            case "name":
+                self.par_parent.settings_list.pop(self.name_button.cget('text'))
+                self.update_name(value)
+                self.par_parent.settings_list[value] = self
+                return
 
-        if name == "langPl":
-            self.general_pl.insert(0, value)
-            return
+            case "langPl":
+                self.general_pl.insert(0, value)
+                return
 
-        if name == "langEn":
-            self.general_en.insert(0, value)
-            return
+            case "langEn":
+                self.general_en.insert(0, value)
+                return
 
-        if name == "valueType":
-            self.set_type(value)
-            return
+            case "valueType":
+                self.set_type(value)
+                return
 
         if name not in self.settings_list:
             self.settings_list[name] = Setting(self, self.settings_view, name, value)
@@ -69,8 +76,12 @@ class Parameter(Frame):
 
     def add_child(self, name):
         if name in self.settings_list:
-            self.settings_list[name].destroy()
-            self.settings_list.pop(name)
             return
 
         self.settings_list[name] = Parameter(self, self.settings_view, name)
+
+    def remove_child(self, child):
+        if child in self.settings_list:
+            self.settings_list[child].pack_forget()
+            self.settings_list[child].destroy()
+            self.settings_list.pop(child)

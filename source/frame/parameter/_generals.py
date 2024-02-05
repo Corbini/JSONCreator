@@ -48,6 +48,11 @@ def entry_input(self, event):
 
 
 def set_type(self, value):
+    if value == "Branch":
+        self.add_button.pack(side='bottom', anchor='nw')
+    else:
+        self.add_button.pack_forget()
+
     self.general_types.delete(0, END)
     self.general_types.insert(0, value)
 
