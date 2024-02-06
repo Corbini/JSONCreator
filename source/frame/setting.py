@@ -12,16 +12,19 @@ class Setting(Frame):
         match name:
             case 'valueAccess':
                 self.variable = StringVar(self)
-                self.variable.set("")  # default value
+                self.variable.set(data)  # default value
 
-                self.data = OptionMenu(self, self.variable, "RW", "R", "W", "A", "N", command=lambda event: self.update(event))
+                self.data = OptionMenu(self, self.variable, "RW", "R", "W", "A", "N", command=lambda event: self.input(event))
                 self.data.config(width=15, padx=0, pady=0)
 
             case 'readOnOpen':
                 self.variable = StringVar(self)
-                self.variable.set("")  # default value
+                if data:
+                    self.variable.set("True")  # default value
+                else:
+                    self.variable.set("False")  # default value
 
-                self.data = OptionMenu(self, self.variable, "True", "False", command=lambda event: self.update(event))
+                self.data = OptionMenu(self, self.variable, "True", "False", command=lambda event: self.input(event))
                 self.data.config(width=15, padx=0, pady=0)
 
             case _:
@@ -41,13 +44,18 @@ class Setting(Frame):
         self.old_data = data
 
     def update(self, value):
-        match self.data.__module__:
-            case OptionMenu.__module__:
+        
+        if isinstance(self.data, OptionMenu):
+            if isinstance(value, bool):
+                if value:
+                    self.variable.set('True')
+                else:
+                    self.variable.set('False')
+            else:
                 self.variable.set(value)
-
-            case _:
-                self.data.delete(0, END)
-                self.data.insert(0, value)
+        else:
+            self.data.delete(0, END)
+            self.data.insert(0, value)
 
         print(value)
         self.old_data = value
@@ -59,11 +67,15 @@ class Setting(Frame):
         parents = list()
         self.par_parent.get_parent(parents)
 
-        match self.data.__module__:
-            case OptionMenu.__module__:
+        if isinstance(self.data, OptionMenu):
                 value = self.variable.get()
-            case _:
-                value = self.data.get()
+
+                if value == 'True':
+                    value = True
+                if value == 'False':
+                    value = False
+        else:
+            value = self.data.get()
 
         name = self.name_label.cget("text")
 
