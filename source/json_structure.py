@@ -44,10 +44,14 @@ class JSONStructure:
             print(data.keys())
 
     def remove_empty_settings(self, parent):
-        for child in parent:
+        childs = list(parent.keys())
+
+        for child in childs:
             if isinstance(parent[child], OrderedDict):
                 self.remove_empty_settings(parent[child])
             elif parent[child] == '':
+                parent.pop(child)
+            elif parent[child] == 'RW':
                 parent.pop(child)
 
     def file_save(self, filename: str):
@@ -118,18 +122,23 @@ class JSONStructure:
         match operation:
             case 'remove':
                 path.pop(name)
+                self.remove_object(rel_path, name)
 
             case 'read':
                 if name in path:    
                     data = path[name]
                 else:
                     data = ''
+                    
+                self.generate_object(rel_path, name, data)
 
             case 'add':
                 if name in path:
                     return
                 
                 self.add_child(rel_path, name, data, path)
+
+                self.generate_object(rel_path, name, data)
 
             case _:
                 if self.value_checker(name, data):
@@ -159,10 +168,14 @@ class JSONStructure:
                     if name == 'valueType':
                         self.change_type(rel_path, path, data)
                 else:
-                    data = path[name]
+                    if name in path:
+                        data = path[name]
+                    else:
+                        data = ''
+            
+                self.generate_object(rel_path, name, data)
         
 
-        self.generate_object(rel_path, name, data)
 
     def add_child(self, path, name, data='', parent=None):
         if parent is None:
@@ -239,8 +252,9 @@ class JSONStructure:
 
         for setting in acceptable_settings:
             if setting not in object:
-                object[setting] = ''
-                self.generate_object(rel_path, setting, '')
+                self.add_child(rel_path, setting, '', object)
+                # object[setting] = ''
+                # self.generate_object(rel_path, setting, '')
 
         pass
 

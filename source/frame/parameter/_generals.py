@@ -1,4 +1,4 @@
-from tkinter import Frame, Entry, Label, Text, Button, END
+from tkinter import Frame, Entry, Label, Text, Button, END, OptionMenu, StringVar
 
 
 def create_generals(self, type, name):
@@ -7,12 +7,17 @@ def create_generals(self, type, name):
         width=150
     )
 
-
-    self.general_types = Entry(self.general, name='valueType')
-    self.general_types.insert(0, type)
-    self.general_types.pack(side='top',fill='x', expand=True)
-    self.general_types.bind('<Return>', self.entry_input)
-    self.general_types.bind("<FocusOut>", self.reset_value)
+    self.variable = StringVar(self.general)
+    self.variable.set("Branch")  # default value
+    
+    self.data = OptionMenu(self.general, self.variable, 
+                           'Branch','String','Boolean','DataTime','SerialPort',
+                           'IP','IPv4','IPv6','UserName','password',
+                           'UInt8','UInt16','UInt32','UInt64','Int8','Int16','Int32','Int64',
+                           'Real32','Real64',
+                           command=lambda event: self.menu_input(event))
+    self.data.config(width=15, padx=0, pady=0)
+    self.data.pack(side='top',fill='x', expand=True)
 
     self.general_en_text = Label(self.general, text="angielska nazwa")
     self.general_en_text.pack(side='top',fill='x', expand=True)
@@ -38,13 +43,16 @@ def reset_value(self, event):
 
     self.call(parents, name, None, 'read')
 
-def entry_input(self, event):
-    text = event.widget.get()
-    parents = self.get_parent(list())
-    name = str(event.widget).split('.')
-    name = name[-1]
+def menu_input(self, event):
 
-    self.call(parents, name, text, 'change')
+    parents = list()
+    self.get_parent(parents)
+    value = self.variable.get()
+    self.call(parents, 'valueType', value, 'change')
+
+
+def entry_input(self, event):
+    pass
 
 
 def set_type(self, value):
@@ -52,9 +60,8 @@ def set_type(self, value):
         self.add_button.pack(side='bottom', anchor='nw')
     else:
         self.add_button.pack_forget()
-
-    self.general_types.delete(0, END)
-    self.general_types.insert(0, value)
+    
+    self.variable.set(value)
 
 def show_generals(self):
     self.general.grid(row=1, column=0, sticky='nw')
