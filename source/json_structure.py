@@ -118,18 +118,23 @@ class JSONStructure:
         match operation:
             case 'remove':
                 path.pop(name)
+                self.remove_object(rel_path, name)
 
             case 'read':
                 if name in path:    
                     data = path[name]
                 else:
                     data = ''
+                    
+                self.generate_object(rel_path, name, data)
 
             case 'add':
                 if name in path:
                     return
                 
                 self.add_child(rel_path, name, data, path)
+
+                self.generate_object(rel_path, name, data)
 
             case _:
                 if self.value_checker(name, data):
@@ -159,10 +164,14 @@ class JSONStructure:
                     if name == 'valueType':
                         self.change_type(rel_path, path, data)
                 else:
-                    data = path[name]
+                    if name in path:
+                        data = path[name]
+                    else:
+                        data = ''
+            
+                self.generate_object(rel_path, name, data)
         
 
-        self.generate_object(rel_path, name, data)
 
     def add_child(self, path, name, data='', parent=None):
         if parent is None:

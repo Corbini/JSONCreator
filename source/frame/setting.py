@@ -12,9 +12,16 @@ class Setting(Frame):
         match name:
             case 'valueAccess':
                 self.variable = StringVar(self)
-                self.variable.set("RW")  # default value
+                self.variable.set("")  # default value
 
                 self.data = OptionMenu(self, self.variable, "RW", "R", "W", "A", "N", command=lambda event: self.update(event))
+                self.data.config(width=15, padx=0, pady=0)
+
+            case 'readOnOpen':
+                self.variable = StringVar(self)
+                self.variable.set("")  # default value
+
+                self.data = OptionMenu(self, self.variable, "True", "False", command=lambda event: self.update(event))
                 self.data.config(width=15, padx=0, pady=0)
 
             case _:
@@ -54,7 +61,7 @@ class Setting(Frame):
 
         match self.data.__module__:
             case OptionMenu.__module__:
-                value = self.variable
+                value = self.variable.get()
             case _:
                 value = self.data.get()
 
