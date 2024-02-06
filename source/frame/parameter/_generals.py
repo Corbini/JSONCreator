@@ -1,4 +1,4 @@
-from tkinter import Frame, Entry, Label, Text, Button, END
+from tkinter import Frame, Entry, Label, Text, Button, END, OptionMenu, StringVar
 
 
 def create_generals(self, type, name):
@@ -7,6 +7,11 @@ def create_generals(self, type, name):
         width=150
     )
 
+    # self.variable = StringVar(self)
+    # self.variable.set("Branch")  # default value
+    #
+    # self.data = OptionMenu(self, self.variable, "RW", "R", "W", "A", "N")
+    # self.data.config(width=15, padx=0, pady=0)
 
     self.general_types = Entry(self.general, name='valueType')
     self.general_types.insert(0, type)
