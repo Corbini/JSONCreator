@@ -120,8 +120,8 @@ def scroll_update(self, event):
 
     if self.scroll_horizontal_state:
         if frame_width<=canvas_width - 25:
+            self.tree_canvas.xview_moveto('0.0')
             self.scroll_horizontal.pack_forget()
-            self.tree_canvas.xview_scroll(0, "units")
             self.scroll_horizontal_state = False
         else:
             self.tree_canvas.configure(scrollregion = self.tree_canvas.bbox('all'))
@@ -134,9 +134,8 @@ def scroll_update(self, event):
     if self.scroll_vertical_state:
         if frame_height<=canvas_height - 25:
             self.scroll_vertical.pack_forget()
-
+            self.tree_canvas.yview_moveto('0.0')
             self.tree_canvas.unbind_all("<MouseWheel>")
-            self.tree_canvas.yview_scroll(0, "units")
             self.scroll_vertical_state = False
         else:
             self.tree_canvas.configure(scrollregion = self.tree_canvas.bbox('all'))
