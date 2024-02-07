@@ -43,19 +43,24 @@ class JSONStructure:
         else:
             print(data.keys())
 
-    def remove_empty_settings(self, parent):
+    def clean_json(self, parent):
         childs = list(parent.keys())
+
+        rename_childs = {'maxValue': 'valueMaximum', 'minValue': 'valueMinimum', 'valueDefault': 'defaultValue', 'access': 'valueAccess'}
+
 
         for child in childs:
             if isinstance(parent[child], OrderedDict):
-                self.remove_empty_settings(parent[child])
+                self.clean_json(parent[child])
             elif parent[child] == '':
                 parent.pop(child)
             elif parent[child] == 'RW':
                 parent.pop(child)
+            elif child in rename_childs.keys():
+                parent[rename_childs[child]] = parent.pop(child)
 
     def file_save(self, filename: str):
-        self.remove_empty_settings(self.json)
+        self.clean_json(self.json)
 
         file = open(filename, "w")
 
@@ -80,7 +85,10 @@ class JSONStructure:
 
         clean_data = self.remove_comments(data)
 
+
         self.json = json.loads(clean_data, object_pairs_hook=OrderedDict)
+
+        self.clean_json(self.json)
 
         self.create_tree(self.json['content']['device']['nameRik'])
 

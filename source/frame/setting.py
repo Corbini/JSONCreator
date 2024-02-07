@@ -14,7 +14,7 @@ class Setting(Frame):
                 self.variable = StringVar(self)
                 self.variable.set(data)  # default value
 
-                self.data = OptionMenu(self, self.variable, "RW", "R", "W", "A", "N", command=lambda event: self.input(event))
+                self.data = OptionMenu(self, self.variable, "R", "W", "A", "N", command=lambda event: self.input(event))
                 self.data.config(width=15, padx=0, pady=0)
 
             case 'readOnOpen':
