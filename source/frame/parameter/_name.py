@@ -38,8 +38,11 @@ def change_name(self):
         return
     
     new_list = list()
+    self.par_parent.get_parent(new_list)
 
-    self.call(self.par_parent.get_parent(new_list), self.name_button.cget('text'), name, 'change')
+    text = self.name_button.cget('text')
+
+    self.call(new_list, text, name, 'change')
     
 
 def update_name(self, name):

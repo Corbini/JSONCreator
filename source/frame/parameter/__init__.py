@@ -5,7 +5,7 @@ from source.frame.setting import Setting
 class Parameter(Frame):
 
     from ._name import create_name, change_name, configure_name, update_name, show_name_button
-    from ._generals import create_generals, show_generals, hide_generals, set_type, entry_input, reset_value, menu_input
+    from ._generals import create_generals, show_generals, hide_generals, set_type, entry_input, reset_value, menu_input, remove_parameter
 
     call = lambda self, parents, name, value, operation: print(parents, name, value, operation)
 
@@ -27,7 +27,9 @@ class Parameter(Frame):
         self.add_button = Button(self.settings_view, text='add', command=self.add_button_event)
 
     def add_button_event(self):
-        self.call(self.get_parent(), 'NewParameter', None, 'add')
+        parents = list()
+        self.get_parent(parents)
+        self.call(parents, 'NewParameter', None, 'add')
 
     def get_parent(self, parents = list()):
         if self.par_parent is not None:

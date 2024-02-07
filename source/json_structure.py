@@ -46,8 +46,8 @@ class JSONStructure:
     def clean_json(self, parent):
         childs = list(parent.keys())
 
-        rename_childs = {'maxValue': 'valueMaximum', 'minValue': 'valueMinimum', 'valueDefault': 'defaultValue', 'access': 'valueAccess'}
-
+        rename_childs = {'maxValue': 'valueMaximum', 'minValue': 'valueMinimum', 'defaultValue': 'valueDefault', 'access': 'valueAccess'}
+        incorrect_names = ['langEn', 'langPl']
 
         for child in childs:
             if isinstance(parent[child], OrderedDict):
@@ -58,6 +58,8 @@ class JSONStructure:
                 parent.pop(child)
             elif child in rename_childs.keys():
                 parent[rename_childs[child]] = parent.pop(child)
+            elif child in incorrect_names:
+                parent.pop(child)
 
     def file_save(self, filename: str):
         self.clean_json(self.json)

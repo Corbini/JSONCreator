@@ -34,10 +34,19 @@ def create_generals(self, type, name):
         self.remove_button = Button(self.general, text= 'remove')
         self.remove_button.pack(side='top',fill='x', anchor='nw')
     
-        self.remove_button.configure(command=lambda: self.call(self.par_parent.get_parent(list()), name, None, 'remove'))
+        self.remove_button.configure(command=self.remove_parameter)
+
+def remove_parameter(self):
+    
+    parents = []
+    self.par_parent.get_parent(parents)
+
+    name = self.name_button.cget('text')
+
+    self.call(parents, name, None, 'remove')
 
 def reset_value(self, event):
-    parents = self.get_parent(list())
+    parents = self.get_parent([])
     name = str(event.widget).split('.')
     name = name[-1]
 
@@ -45,7 +54,7 @@ def reset_value(self, event):
 
 def menu_input(self, event):
 
-    parents = list()
+    parents = []
     self.get_parent(parents)
     value = self.variable.get()
     self.call(parents, 'valueType', value, 'change')
