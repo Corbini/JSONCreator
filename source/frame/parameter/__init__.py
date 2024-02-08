@@ -8,6 +8,7 @@ class Parameter(Frame):
     from ._generals import create_generals, show_generals, hide_generals, set_type, entry_input, reset_value, menu_input, remove_parameter
 
     call = lambda self, parents, name, value, operation: print(parents, name, value, operation)
+    languages = lambda self: list()
 
     def __init__(self, parent, frame, name, type=''):
         super().__init__(
@@ -19,6 +20,7 @@ class Parameter(Frame):
         self.par_parent = parent
 
         self.create_name(name)
+        self.languages_gui = dict()
         self.create_generals(type, name)
         
         self.settings_view = Frame(self)
@@ -52,26 +54,18 @@ class Parameter(Frame):
             self.widen = False
 
     def update_setting(self, name, value):
-        match name:
-            case "name":
-                self.par_parent.settings_list.pop(self.name_button.cget('text'))
-                self.update_name(value)
-                self.par_parent.settings_list[value] = self
-                return
+        if name == 'name':
+            self.par_parent.settings_list.pop(self.name_button.cget('text'))
+            self.update_name(value)
+            self.par_parent.settings_list[value] = self
 
-            case "langPl":
-                self.general_pl.insert(0, value)
-                return
+        elif name in self.languages_gui.keys():
+            self.languages_gui[name][1].insert(0, value)
 
-            case "langEn":
-                self.general_en.insert(0, value)
-                return
-
-            case "valueType":
+        elif name == 'valueType':
                 self.set_type(value)
-                return
 
-        if name not in self.settings_list:
+        elif name not in self.settings_list:
             self.settings_list[name] = Setting(self, self.settings_view, name, value)
         else:
             self.settings_list[name].update(value)
@@ -81,6 +75,8 @@ class Parameter(Frame):
             return
 
         self.settings_list[name] = Parameter(self, self.settings_view, name)
+        for language in self.languages():
+            self.call(self.settings_list[name].get_parent(list()),language, None, 'get')
 
     def remove_child(self, child):
         if child in self.settings_list:

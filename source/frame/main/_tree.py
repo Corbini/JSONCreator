@@ -28,3 +28,7 @@ def tree_remove(self, parents, name):
 
 def tree_input_set(self, function):
     Parameter.call = function
+
+
+def tree_languages_set(self, function):
+    Parameter.languages = function
