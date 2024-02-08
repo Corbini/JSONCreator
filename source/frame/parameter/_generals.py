@@ -19,16 +19,14 @@ def create_generals(self, type, name):
     self.data.config(width=15, padx=0, pady=0)
     self.data.pack(side='top',fill='x', expand=True)
 
-    self.general_en_text = Label(self.general, text="angielska nazwa")
-    self.general_en_text.pack(side='top',fill='x', expand=True)
-    self.general_en = Entry(self.general)
-    self.general_en.pack(side='top',fill='x', expand=True)
-
-    self.general_pl_text = Label(self.general, text="polska nazwa")
-    self.general_pl_text.pack(side='top',fill='x', expand=True)
-
-    self.general_pl = Entry(self.general)
-    self.general_pl.pack(side='top',fill='x', expand=True)
+    languagelist = self.languages()
+    for language_name in languagelist:
+        label = Label(self.general, text='język '+language_name)
+        label.pack(side='top',fill='x', expand=True)
+        entry = Entry(self.general)
+        entry.pack(side='top',fill='x', expand=True)
+        entry.language_name = language_name
+        self.languages_gui[language_name] = [label, entry]
     
     if self.par_parent is not None:
         self.remove_button = Button(self.general, text= 'remove')
