@@ -2,7 +2,7 @@ import json
 from collections import OrderedDict
 from copy import deepcopy
 
-class JSONStructure:
+class Descriptor:
     def __init__(self, name="", filename=""):
 
         self.generate_object = lambda parents, name, data: print(parents, name, "\n", data, "\n")
@@ -17,21 +17,6 @@ class JSONStructure:
             self.json = None
 
         self.saves = list()
-
-    @staticmethod
-    def remove_comments(data):
-        sequence = "//"
-
-        clean_data = ''
-        data_buffer = data.partition(sequence)
-        clean_data += data_buffer[0]
-        while data_buffer[2] != "":
-            data_with_comment: str = data_buffer[2]
-            data_buffer = data_with_comment.partition("\n")[2]
-            data_buffer = data_buffer.partition(sequence)
-            clean_data += data_buffer[0]
-        
-        return clean_data
 
     def show(self, parents, object_name, content=''):
         data = self.json
@@ -61,34 +46,15 @@ class JSONStructure:
             elif child in incorrect_names:
                 parent.pop(child)
 
-    def file_save(self, filename: str):
+    def data_get(self) -> json:
         self.clean_json(self.json)
 
-        file = open(filename, "w")
+        return self.json
 
-        text = json.dumps(
-            obj=self.json,
-            indent=2,
-            ensure_ascii=False
-        )
-        
-        file.write(text)
-        file.close()
-
-    def file_load(self, filename: str):
-        f = open(filename, "r")
-
-        if f.closed:
-            print("File not opened")
-            return
-
-        data = f.read()
-        f.close()
-
-        clean_data = self.remove_comments(data)
+    def data_load(self, json_data: json):
 
 
-        self.json = json.loads(clean_data, object_pairs_hook=OrderedDict)
+        self.json = json_data
 
         self.clean_json(self.json)
 

@@ -1,11 +1,11 @@
 from source.frame.main import Main
-from source.json_structure import JSONStructure
 from source.window.file import load, save_as
-from source.translation import Translations
-
+from source.model.translation import Translation
+from source.model.descriptor import Descriptor
+from source.json_loader import data_load, data_save, data_type
 
 class Controller:
-    def __init__(self, view: Main, model: JSONStructure):
+    def __init__(self, view: Main, model: Descriptor):
         self.view = view
         self.model = model
         self.languages_storage = dict()
@@ -30,13 +30,21 @@ class Controller:
 
     def save(self, w):
         path = save_as()
-        if path != '':
-            self.model.file_save(path)
+
+        data = self.model.data_get()
+
+        data_save(path, data)
 
     def load(self, w):
         path = load()
-        if path != '':
-            self.model.file_load(path)
+
+        data = data_load(path)
+
+        match data_type(data):
+            case 'deviceDescriptor':
+                self.model.data_load(data)
+            case 'languageDefinition':
+                self.load_language(data)
 
     def input(self, parents, name, value, operation):
         if name in self.languages():
@@ -44,13 +52,12 @@ class Controller:
         else:
             self.model.change_param(parents, name, value, operation)
 
-    def load_language(self, event):
-        path = load()
+    def load_language(self, data):
 
-        translation = Translations()
+        translation = Translation()
         translation.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
 
-        if translation.load(path):
+        if translation.data_load(data):
             self.languages_storage[translation.name] = translation
             print("Language: ", translation.name, ", Loaded")
 

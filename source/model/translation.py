@@ -1,6 +1,6 @@
 import json
 
-class Translations:
+class Translation:
     
     generate_object = lambda self, parents, name, data: print(parents, name, data)
 
@@ -20,62 +20,17 @@ class Translations:
 
         print('Program wants to create ', name, ' language in file: ', filename)
 
-    @staticmethod
-    def remove_comments(data):
-        sequence = "//"
-
-        clean_data = ''
-        data_buffer = data.partition(sequence)
-        clean_data += data_buffer[0]
-        while data_buffer[2] != "":
-            data_with_comment: str = data_buffer[2]
-            data_buffer = data_with_comment.partition("\n")[2]
-            data_buffer = data_buffer.partition(sequence)
-            clean_data += data_buffer[0]
-        
-        return clean_data
-
-    def load(self, filename) -> bool:
-        file = open(filename, "r", encoding="utf8")
-
-        if file.closed:
-            print("File not opened")
-            return
-
-        data = file.read()
-        file.close()
-
-        data = self.remove_comments(data)
-
-        json_data = json.loads(data)
-
-        if json_data['type'] !='languageDefinition':
-            return False
+    def data_load(self, json_data) -> bool:
 
         self._name = json_data['content']['name']
         encoded = json_data['content']['translations']
         self._translations = self._decode(encoded)
         return True
 
-    def save(self, filename):
+    def data_get(self, filename) -> json:
         encoded = self._encode()
 
-        json_data = json({'application': 'golink', 'type': 'languageDefinition', 'content': {'name': self._name, 'translations': encoded}})
-
-        
-        file = open(filename, "w")
-
-        if file.closed:
-            return
-
-        text = json_data.dumps(
-            obj=self.json,
-            indent=2,
-            ensure_ascii=False
-        )
-        
-        file.write(text)
-        file.close()
+        return json({'application': 'golink', 'type': 'languageDefinition', 'content': {'name': self._name, 'translations': encoded}})
 
     def _encode(self) -> list:
         encoded = list()
