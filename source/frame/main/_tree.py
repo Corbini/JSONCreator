@@ -6,6 +6,7 @@ def tree_create(self, name):
         self.parameter_tree.destroy()
 
     self.parameter_tree = Parameter(None, self.tree_frame, name)
+    self.parameter_tree.update_languages()
 
 
 def tree_update(self, parents, name, value=None):

@@ -37,7 +37,7 @@ class Descriptor:
     def clean_json(self, parent):
         childs = list(parent.keys())
 
-        rename_childs = {'maxValue': 'valueMaximum', 'minValue': 'valueMinimum', 'defaultValue': 'valueDefault', 'access': 'valueAccess'}
+        rename_childs = {'maxValue': 'valueMaximum', 'minValue': 'valueMinimum', 'defaultValue': 'valueDefault', 'access': 'valueAccess', 'type': 'valueType', 'unit': 'valueUnit', 'lenght': 'valueMaximum'}
         incorrect_names = ['langEn', 'langPl']
 
         for child in childs:

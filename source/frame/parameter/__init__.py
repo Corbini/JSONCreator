@@ -60,6 +60,7 @@ class Parameter(Frame):
             self.par_parent.settings_list[value] = self
 
         elif name in self.languages_gui.keys():
+            self.languages_gui[name][1].delete(0, END)
             self.languages_gui[name][1].insert(0, value)
 
         elif name == 'valueType':
@@ -75,11 +76,16 @@ class Parameter(Frame):
             return
 
         self.settings_list[name] = Parameter(self, self.settings_view, name)
-        for language in self.languages():
-            self.call(self.settings_list[name].get_parent(list()),language, None, 'get')
+        self.settings_list[name].update_languages()
 
     def remove_child(self, child):
         if child in self.settings_list:
             self.settings_list[child].pack_forget()
             self.settings_list[child].destroy()
             self.settings_list.pop(child)
+
+    def update_languages(self):
+        parents = []
+        self.get_parent(parents)
+        for language in self.languages():
+            self.call(parents,language, self.name_button.cget('text'), 'get')

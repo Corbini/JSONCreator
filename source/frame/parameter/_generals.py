@@ -21,18 +21,25 @@ def create_generals(self, type, name):
 
     languagelist = self.languages()
     for language_name in languagelist:
-        label = Label(self.general, text='język '+language_name)
-        label.pack(side='top',fill='x', expand=True)
-        entry = Entry(self.general)
-        entry.pack(side='top',fill='x', expand=True)
-        entry.language_name = language_name
-        self.languages_gui[language_name] = [label, entry]
+        _add_language(self.languages_gui, language_name, self.general, self.entry_input, self.reset_value)
     
     if self.par_parent is not None:
         self.remove_button = Button(self.general, text= 'remove')
         self.remove_button.pack(side='top',fill='x', anchor='nw')
     
         self.remove_button.configure(command=self.remove_parameter)
+
+
+def _add_language(langauges: dict, name, parent, func_input, func_reset):
+    label = Label(parent, text='język '+name)
+    label.pack(side='top',fill='x', expand=True)
+    entry = Entry(parent)
+    entry.bind('<Return>', lambda event: func_input(name, event))
+    entry.bind('<FocusOut>', lambda event: func_reset(name, event))
+    entry.pack(side='top',fill='x', expand=True)
+    entry.language_name = name
+    langauges[name] = [label, entry]
+    
 
 def remove_parameter(self):
     
@@ -43,12 +50,11 @@ def remove_parameter(self):
 
     self.call(parents, name, None, 'remove')
 
-def reset_value(self, event):
-    parents = self.get_parent([])
-    name = str(event.widget).split('.')
-    name = name[-1]
+def reset_value(self, language, event):
+    parents = []
+    self.get_parent(parents)
 
-    self.call(parents, name, None, 'read')
+    self.call(parents, language, None, 'read')
 
 def menu_input(self, event):
 
@@ -58,8 +64,13 @@ def menu_input(self, event):
     self.call(parents, 'valueType', value, 'change')
 
 
-def entry_input(self, event):
-    pass
+def entry_input(self, language, event):
+    parents = []
+    self.get_parent(parents)
+
+    text = event.widget.get()
+
+    self.call(parents, language, text, 'set')
 
 
 def set_type(self, value):
