@@ -1,8 +1,8 @@
 from source.frame.main import Main
-from source.window.file import load, save_as
+from source.window.file import load, save_as, dir_path
 from source.model.translation import Translation
 from source.model.descriptor import Descriptor
-from source.json_loader import data_load, data_save, data_type
+from source.json_loader import data_load, data_save, data_type, dir_load
 
 class Controller:
     def __init__(self, view: Main, model: Descriptor):
@@ -17,6 +17,8 @@ class Controller:
         self.view.bind("<<load>>", self.load)
 
         self.view.bind("<<save_as>>", self.save)
+        self.view.bind("<<load_languages>>", self.load_languages)
+        self.view.bind("<<save_languages>>", self.save_languages)
         self.view.bind_all('<<input>>', lambda w, data:self.input(w = data))
 
         self.model.create_tree = lambda name: self.view.tree_create(name)
@@ -42,9 +44,9 @@ class Controller:
 
         match data_type(data):
             case 'deviceDescriptor':
-                self.model.data_load(data)
+                self.model.data_load(path, data)
             case 'languageDefinition':
-                self.load_language(data)
+                self.load_language(path, data)
 
     def input(self, parents, name, value, operation):
         if name in self.languages():
@@ -52,15 +54,31 @@ class Controller:
         else:
             self.model.change_param(parents, name, value, operation)
 
-    def load_language(self, data):
+    def load_language(self, path, data):
 
         translation = Translation()
         translation.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
 
-        if translation.data_load(data):
+        if translation.data_load(path, data):
             self.languages_storage[translation.name] = translation
             print("Language: ", translation.name, ", Loaded")
 
     def languages(self):
         return self.languages_storage.keys()
     
+    def load_languages(self, e):
+        path = dir_path()
+        loaded_path = list()
+        language_list = dir_load(path)
+
+        for data in language_list:
+            if data_type(data[1]) == 'languageDefinition':
+                self.load_language(data[0], data[1])
+
+
+    def save_languages(self, e):
+        for language_name in self.languages_storage:
+            filepath = self.languages_storage[language_name].filepath
+            data = self.languages_storage[language_name].data_get()
+
+            data_save(filepath, data)

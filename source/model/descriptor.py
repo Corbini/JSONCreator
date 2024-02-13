@@ -18,6 +18,12 @@ class Descriptor:
 
         self.saves = list()
 
+        self._path = ''
+
+    @property
+    def path(self):
+        return self._path
+
     def show(self, parents, object_name, content=''):
         data = self.json
         for parent in parents:
@@ -51,8 +57,9 @@ class Descriptor:
 
         return self.json
 
-    def data_load(self, json_data: json):
+    def data_load(self, path, json_data: json):
 
+        self._path = path
 
         self.json = json_data
 
