@@ -31,7 +31,7 @@ def remove_parameter(self):
     parents = []
     self.par_parent.get_parent(parents)
 
-    name = self.name_button.cget('text')
+    name = self.name.get()
 
     self.call(parents, name, None, 'remove')
 

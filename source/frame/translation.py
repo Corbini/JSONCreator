@@ -5,7 +5,7 @@ class Translation:
     names = []
     call = lambda self, parents, name, value, operation: print(parents, ", ", name, ': ', value, " - ", operation)
 
-    def __init__(self, frame = None, parents = lambda: list()):
+    def __init__(self, frame = None, parents = lambda empty_list: list()):
         self._languages = dict()
         self._frame = frame
         self.parents = parents
