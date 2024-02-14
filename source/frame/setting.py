@@ -1,4 +1,5 @@
-from tkinter import Frame, Text, Canvas, Entry, Label, END, OptionMenu, StringVar
+from tkinter import Frame, END, StringVar
+from customtkinter import CTkEntry, CTkLabel, CTkOptionMenu
 
 
 class Setting(Frame):
@@ -14,8 +15,7 @@ class Setting(Frame):
                 self.variable = StringVar(self)
                 self.variable.set(data)  # default value
 
-                self.data = OptionMenu(self, self.variable, "R", "W", "A", "N", command=lambda event: self.input(event))
-                self.data.config(width=15, padx=0, pady=0)
+                self.data = CTkOptionMenu(master= self, variable= self.variable, values=["R", "W", "A", "N"], command=lambda event: self.input(event))
 
             case 'readOnOpen':
                 self.variable = StringVar(self)
@@ -24,18 +24,17 @@ class Setting(Frame):
                 else:
                     self.variable.set("False")  # default value
 
-                self.data = OptionMenu(self, self.variable, "True", "False", command=lambda event: self.input(event))
-                self.data.config(width=15, padx=0, pady=0)
+                self.data = CTkOptionMenu(master=self, variable=self.variable, values=["True", "False"], command=lambda event: self.input(event))
 
             case _:
-                self.data = Entry(self)
+                self.data = CTkEntry(self)
                 self.data.insert(0, data)
                 self.data.bind('<Return>', self.input)
                 self.data.bind('<FocusOut>', self.reset)
 
         self.data.pack(side='left', fill='y', expand=True)
 
-        self.name_label = Label(self, text=name)
+        self.name_label = CTkLabel(self, text=name)
         self.name_label.pack(side='left', fill='y', expand=True)
 
         self.par_parent = parent
@@ -45,7 +44,7 @@ class Setting(Frame):
 
     def update(self, value):
         
-        if isinstance(self.data, OptionMenu):
+        if isinstance(self.data, CTkOptionMenu):
             if isinstance(value, bool):
                 if value:
                     self.variable.set('True')
@@ -67,7 +66,7 @@ class Setting(Frame):
         parents = list()
         self.par_parent.get_parent(parents)
 
-        if isinstance(self.data, OptionMenu):
+        if isinstance(self.data, CTkOptionMenu):
                 value = self.variable.get()
 
                 if value == 'True':

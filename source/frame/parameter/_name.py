@@ -1,4 +1,5 @@
-from tkinter import Frame, Button, Text, Entry
+from tkinter import Frame
+from customtkinter import CTkButton, CTkEntry
 
 class Name(Frame):
 
@@ -8,9 +9,10 @@ class Name(Frame):
         super().__init__(frame, width=150, height=30)
 
         self.pack_propagate(False)
-        self.button = Button(
+        self.button = CTkButton(
             self,
-            text=name
+            text=name,
+            
         )
 
         self._parents = parents
@@ -19,15 +21,15 @@ class Name(Frame):
         self.button.bind("<Button-1>", lambda w: func())
         self.button.bind("<Double-Button-1>", lambda w: self._show_entry())
         
-        self.entry = Entry(self)
+        self.entry = CTkEntry(self)
         self.entry.propagate(False)
 
-        self.button.pack(fill='both', expand=True)
+        self.button.pack(fill='both', expand=True, padx=2, pady=2)
         
         self.grid(in_=frame, row=0, column=0, sticky='nw')
 
     def _show_entry(self):
-        self.entry.pack(fill='both', expand=True)
+        self.entry.pack(fill='both', expand=True, padx=2, pady=2)
         self.entry.bind("<Leave>", self._hide_entry)
         self.entry.bind("<FocusOut>", self._hide_entry)
         self.entry.bind("<Return>", self.call_input)
@@ -39,7 +41,7 @@ class Name(Frame):
         self.entry.unbind('<Leave>')
         self.entry.unbind('<FocusOut>')
         self.entry.unbind('<Return>')
-        self.button.pack(fill='both', expand=True)
+        self.button.pack(fill='both', expand=True, padx=2, pady=2)
 
     def call_set(self, value):
         self.button.configure(text=value)

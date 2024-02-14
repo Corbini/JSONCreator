@@ -1,4 +1,5 @@
 from tkinter import Frame, Button, Canvas, PhotoImage, Text, Entry, END
+from customtkinter import CTkButton
 from source.frame.setting import Setting
 from source.frame.translation import Translation
 from source.frame.parameter._name import Name
@@ -14,7 +15,7 @@ class Parameter(Frame):
             master=frame
         )
         self.widen = False
-        self.pack(side='top', anchor='nw')
+        self.pack(side='top', anchor='nw', padx=2, pady=2)
 
         self.par_parent = parent
 
@@ -26,7 +27,7 @@ class Parameter(Frame):
         self.settings_view = Frame(self)
         self.settings_list = dict()
 
-        self.add_button = Button(self.settings_view, text='add', command=self.add_button_event)
+        self.add_button = CTkButton(self.settings_view, text='add', command=self.add_button_event)
 
     def add_button_event(self):
         parents = list()

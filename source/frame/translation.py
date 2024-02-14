@@ -1,5 +1,5 @@
-from tkinter import Frame, Entry, Label, Text, Button, END, OptionMenu, StringVar
-
+from tkinter import END
+from customtkinter import CTkEntry, CTkLabel
 
 class Translation:
     names = []
@@ -21,12 +21,12 @@ class Translation:
             self.call_get(name)
 
     def _add_language(self, name):
-        label = Label(self._frame, text='język '+name)
-        label.pack(side='top',fill='x', expand=True)
-        entry = Entry(self._frame)
+        label = CTkLabel(self._frame, text='język '+name)
+        label.pack(side='top',fill='x', expand=True, padx=2, pady=2)
+        entry = CTkEntry(self._frame)
         entry.bind('<Return>', lambda event: self.call_input(name, event))
         entry.bind('<FocusOut>', lambda event: self.call_get(name))
-        entry.pack(side='top',fill='x', expand=True)
+        entry.pack(side='top',fill='x', expand=True, padx=2, pady=2)
         entry.language_name = name
         self._languages[name] = [label, entry]
         
