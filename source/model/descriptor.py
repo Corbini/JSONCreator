@@ -18,6 +18,12 @@ class Descriptor:
 
         self.saves = list()
 
+        self._path = ''
+
+    @property
+    def path(self):
+        return self._path
+
     def show(self, parents, object_name, content=''):
         data = self.json
         for parent in parents:
@@ -31,7 +37,8 @@ class Descriptor:
     def clean_json(self, parent):
         childs = list(parent.keys())
 
-        rename_childs = {'maxValue': 'valueMaximum', 'minValue': 'valueMinimum', 'defaultValue': 'valueDefault', 'access': 'valueAccess'}
+        rename_childs = {'maxValue': 'valueMaximum', 'minValue': 'valueMinimum', 'defaultValue': 'valueDefault', 'access': 'valueAccess', 'type': 'valueType', 'unit': 'valueUnit', 'lenght': 'valueMaximum'}
+                         # 'branch': 'Branch', 'string': 'String', 'dateTime': 'DataTime', 'boolean': 'Boolean', 'int16': "Int16"}
         incorrect_names = ['langEn', 'langPl']
 
         for child in childs:
@@ -51,8 +58,9 @@ class Descriptor:
 
         return self.json
 
-    def data_load(self, json_data: json):
+    def data_load(self, path, json_data: json):
 
+        self._path = path
 
         self.json = json_data
 
@@ -78,7 +86,7 @@ class Descriptor:
             ("type", "deviceDescriptor"),
             ("content", OrderedDict([
                 ("device", OrderedDict([
-                    ("nameRik", 'drv/g35Pge308k/' + name + '/name')
+                    ("nameRik", 'drv/' + name + '/name')
                 ])),
                 ("properties", OrderedDict([
                 ]))

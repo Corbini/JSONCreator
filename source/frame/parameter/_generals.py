@@ -19,20 +19,12 @@ def create_generals(self, type, name):
     self.data.config(width=15, padx=0, pady=0)
     self.data.pack(side='top',fill='x', expand=True)
 
-    languagelist = self.languages()
-    for language_name in languagelist:
-        label = Label(self.general, text='język '+language_name)
-        label.pack(side='top',fill='x', expand=True)
-        entry = Entry(self.general)
-        entry.pack(side='top',fill='x', expand=True)
-        entry.language_name = language_name
-        self.languages_gui[language_name] = [label, entry]
-    
     if self.par_parent is not None:
         self.remove_button = Button(self.general, text= 'remove')
         self.remove_button.pack(side='top',fill='x', anchor='nw')
     
         self.remove_button.configure(command=self.remove_parameter)
+
 
 def remove_parameter(self):
     
@@ -43,24 +35,12 @@ def remove_parameter(self):
 
     self.call(parents, name, None, 'remove')
 
-def reset_value(self, event):
-    parents = self.get_parent([])
-    name = str(event.widget).split('.')
-    name = name[-1]
-
-    self.call(parents, name, None, 'read')
-
 def menu_input(self, event):
 
     parents = []
     self.get_parent(parents)
     value = self.variable.get()
     self.call(parents, 'valueType', value, 'change')
-
-
-def entry_input(self, event):
-    pass
-
 
 def set_type(self, value):
     if value == "Branch":

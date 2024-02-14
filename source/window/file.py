@@ -33,3 +33,6 @@ def save_as() -> str:
         filename
     )
     return filename
+
+def dir_path() -> str:
+    return fd.askdirectory()

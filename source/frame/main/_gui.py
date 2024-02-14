@@ -79,6 +79,36 @@ def create_menu(self):
             height=50.0
         )
 
+        self.button_5 = Button(
+            master=self.options,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.event_generate("<<load_languages>>"),
+            relief="flat"
+        )
+        self.button_5.load_image("assets/frame_main/button_5.png")
+        self.button_5.place(
+            x=35,
+            y=375.0,
+            width=187.0,
+            height=50.0
+        )
+
+        self.button_6 = Button(
+            master=self.options,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.event_generate("<<save_languages>>"),
+            relief="flat"
+        )
+        self.button_6.load_image("assets/frame_main/button_6.png")
+        self.button_6.place(
+            x=35,
+            y=592.0,
+            width=187.0,
+            height=50.0
+        )
+
         self.tree_canvas = Canvas(self, relief='flat', borderwidth=0)
 
         self.tree_canvas.pack(expand='True', fill='both', padx=10, pady=10)
