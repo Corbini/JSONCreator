@@ -133,6 +133,9 @@ class Descriptor:
                         if name == data:
                             return 
                         
+                        if data in path:
+                            return
+                        
                         keys = list(path.keys())
                         keys[keys.index(name)] = data
                         path[data] = path.pop(name)
@@ -179,11 +182,26 @@ class Descriptor:
             parent[name] = data
             self.generate_object(path, name, data)
 
+    def is_unsigned_int(self, value) -> bool:
+        if not value.isdigit():
+            return False
+                
+        if int(value) < 0 or int(value) > 10000:
+            return False
+        
+        return True
+
 
     def value_checker(self, name, value) -> bool:
         match name:
             case 'valueType':
                 return value in ['Branch', 'UInt64', "String","DateTime","UInt8","UInt16","UInt32","UInt64","Int8","Int16","Int32","Int64","Real32","Real64","Boolean","UserName","Password","SerialPort","IP","IPv4","IPv6"]
+            case 'valueMaximum':
+                return self.is_unsigned_int()
+            case 'valueMinimum':
+                return self.is_unsigned_int()
+            case 'valueUnit':
+                return True # value in ['ms', 's', 'min', 'hour', 'mV', 'V', 'MV',  'mA', 'A', 'MA', 'Wh', 'kWh', 'MWh', 'varh', 'kvarh', 'Mvarh', 'Degree', 'C', 'F', 'percent', 'Hz', 'VA', 'kVA', 'MVA']
             case _:
                 return True
 

@@ -18,6 +18,7 @@ class Parameter(Frame):
 
         self.par_parent = parent
 
+        Name.call = self.call
         self.name = Name(self, name, self.get_parent, self.change_size)
         self.create_generals(type, name)
         self._translations = Translation(self.general, self.get_parent)
