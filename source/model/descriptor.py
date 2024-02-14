@@ -54,7 +54,7 @@ class Descriptor:
                 parent.pop(child)
 
     def data_get(self) -> json:
-        self.clean_json(self.json)
+        self.clean_json(self.json['content'])
 
         return self.json
 
@@ -64,7 +64,7 @@ class Descriptor:
 
         self.json = json_data
 
-        self.clean_json(self.json)
+        self.clean_json(self.json['content'])
 
         self.create_tree(self.json['content']['device']['nameRik'])
 
