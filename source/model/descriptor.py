@@ -54,7 +54,7 @@ class Descriptor:
                 parent.pop(child)
 
     def data_get(self) -> json:
-        self.clean_json(self.json)
+        self.clean_json(self.json['content'])
 
         return self.json
 
@@ -64,7 +64,7 @@ class Descriptor:
 
         self.json = json_data
 
-        self.clean_json(self.json)
+        self.clean_json(self.json['content'])
 
         self.create_tree(self.json['content']['device']['nameRik'])
 
@@ -133,6 +133,9 @@ class Descriptor:
                         if name == data:
                             return 
                         
+                        if data in path:
+                            return
+                        
                         keys = list(path.keys())
                         keys[keys.index(name)] = data
                         path[data] = path.pop(name)
@@ -179,11 +182,55 @@ class Descriptor:
             parent[name] = data
             self.generate_object(path, name, data)
 
+    def is_unsigned_int(self, value, max_value = 20000) -> bool:
+        if not value.isdigit():
+            return False
+                
+        if int(value) < 0 or int(value) > max_value:
+            return False
+        
+        return True
 
-    def value_checker(self, name, value) -> bool:
+
+    def value_checker(self, name, value: str) -> bool:
         match name:
             case 'valueType':
                 return value in ['Branch', 'UInt64', "String","DateTime","UInt8","UInt16","UInt32","UInt64","Int8","Int16","Int32","Int64","Real32","Real64","Boolean","UserName","Password","SerialPort","IP","IPv4","IPv6"]
+            case 'valueMaximum':
+                return self.is_unsigned_int(value)
+            case 'valueMinimum':
+                return self.is_unsigned_int(value)
+            case 'valueUnit':
+                return True # value in ['ms', 's', 'min', 'hour', 'mV', 'V', 'MV',  'mA', 'A', 'MA', 'Wh', 'kWh', 'MWh', 'varh', 'kvarh', 'Mvarh', 'Degree', 'C', 'F', 'percent', 'Hz', 'VA', 'kVA', 'MVA']
+            case 'obis':
+                seperated_class = value.split(':')
+                if len(seperated_class) != 2:
+                    print('Incorrect amount of class')
+                    return False
+                if self.is_unsigned_int(seperated_class[0]) is False:
+                    print('Incorrect format of class')
+                    return False
+                
+                seperated_atribute = seperated_class[1].split(';')
+                if len(seperated_atribute) != 2:
+                    print('Incorrect amount of atribute')
+                    return False
+                if self.is_unsigned_int(seperated_atribute[1]) is False:
+                    print('Incorrect format of atribute')
+                    return False
+
+                obis = seperated_atribute[0].split('.')
+                
+                if len(obis) != 6:
+                    print('Incorrect amount of obis numbers')
+                    return False
+                for number in obis:
+                    if self.is_unsigned_int(number, 255) is False:
+                        print('Incorrect format of obis numbers')
+                        return False
+
+                return True
+            
             case _:
                 return True
 
