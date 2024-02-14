@@ -3,6 +3,7 @@ from source.window.file import load, save_as, dir_path
 from source.model.translation import Translation
 from source.model.descriptor import Descriptor
 from source.json_loader import data_load, data_save, data_type, dir_load
+from source.frame.translation import Translation as FrameTranslation
 
 class Controller:
     def __init__(self, view: Main, model: Descriptor):
@@ -27,8 +28,9 @@ class Controller:
 
         self.view.bind("<<tree_new>>", lambda w: self.model.new_structure("new_tree"))
         self.view.tree_input_set(lambda object, parents, name, value, operation: self.input(parents, name, value, operation))
-        self.view.tree_languages_set(lambda e: self.languages())
         self.view.bind_all("<Control-z>", lambda event: self.model.load_last())
+
+        FrameTranslation.call = self.input
 
     def save(self, w):
         path = save_as()
@@ -49,7 +51,7 @@ class Controller:
                 self.load_language(path, data)
 
     def input(self, parents, name, value, operation):
-        if name in self.languages():
+        if name in self.languages_storage:
             self.languages_storage[name].call(parents, value, operation)
         else:
             self.model.change_param(parents, name, value, operation)
@@ -63,8 +65,7 @@ class Controller:
             self.languages_storage[translation.name] = translation
             print("Language: ", translation.name, ", Loaded")
 
-    def languages(self):
-        return self.languages_storage.keys()
+        FrameTranslation.names = self.languages_storage.keys()
     
     def load_languages(self, e):
         path = dir_path()

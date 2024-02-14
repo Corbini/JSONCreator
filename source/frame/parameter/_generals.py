@@ -19,42 +19,11 @@ def create_generals(self, type, name):
     self.data.config(width=15, padx=0, pady=0)
     self.data.pack(side='top',fill='x', expand=True)
 
-    languagelist = self.languages()
-    for language_name in languagelist:
-        _add_language(self.languages_gui, language_name, self.general, self.entry_input, self.reset_value)
-    
     if self.par_parent is not None:
         self.remove_button = Button(self.general, text= 'remove')
         self.remove_button.pack(side='top',fill='x', anchor='nw')
     
-        self.remove_button.configure(command=self.remove_parameter)
-
-
-def _add_language(langauges: dict, name, parent, func_input, func_reset):
-    label = Label(parent, text='język '+name)
-    label.pack(side='top',fill='x', expand=True)
-    entry = Entry(parent)
-    entry.bind('<Return>', lambda event: func_input(name, event))
-    entry.bind('<FocusOut>', lambda event: func_reset(name, event))
-    entry.pack(side='top',fill='x', expand=True)
-    entry.language_name = name
-    langauges[name] = [label, entry]
-    
-
-def remove_parameter(self):
-    
-    parents = []
-    self.par_parent.get_parent(parents)
-
-    name = self.name_button.cget('text')
-
-    self.call(parents, name, None, 'remove')
-
-def reset_value(self, language, event):
-    parents = []
-    self.get_parent(parents)
-
-    self.call(parents, language, None, 'read')
+        self.remove_button.configure(command=self.remove_parameter)  
 
 def menu_input(self, event):
 
@@ -62,16 +31,6 @@ def menu_input(self, event):
     self.get_parent(parents)
     value = self.variable.get()
     self.call(parents, 'valueType', value, 'change')
-
-
-def entry_input(self, language, event):
-    parents = []
-    self.get_parent(parents)
-
-    text = event.widget.get()
-
-    self.call(parents, language, text, 'set')
-
 
 def set_type(self, value):
     if value == "Branch":

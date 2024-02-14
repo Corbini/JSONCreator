@@ -1,14 +1,13 @@
 from tkinter import Frame, Button, Canvas, PhotoImage, Text, Entry, END
 from source.frame.setting import Setting
-
+from source.frame.translation import Translation
 
 class Parameter(Frame):
 
     from ._name import create_name, change_name, configure_name, update_name, show_name_button
-    from ._generals import create_generals, show_generals, hide_generals, set_type, entry_input, reset_value, menu_input, remove_parameter
+    from ._generals import create_generals, show_generals, hide_generals, set_type
 
     call = lambda self, parents, name, value, operation: print(parents, name, value, operation)
-    languages = lambda self: list()
 
     def __init__(self, parent, frame, name, type=''):
         super().__init__(
@@ -20,8 +19,8 @@ class Parameter(Frame):
         self.par_parent = parent
 
         self.create_name(name)
-        self.languages_gui = dict()
         self.create_generals(type, name)
+        self._translations = Translation(self.general, self.get_parent)
         
         self.settings_view = Frame(self)
         self.settings_list = dict()
@@ -59,9 +58,8 @@ class Parameter(Frame):
             self.update_name(value)
             self.par_parent.settings_list[value] = self
 
-        elif name in self.languages_gui.keys():
-            self.languages_gui[name][1].delete(0, END)
-            self.languages_gui[name][1].insert(0, value)
+        elif name in Translation.names:
+            self._translations.call_set(name, value)
 
         elif name == 'valueType':
                 self.set_type(value)
@@ -85,7 +83,7 @@ class Parameter(Frame):
             self.settings_list.pop(child)
 
     def update_languages(self):
-        parents = []
-        self.get_parent(parents)
-        for language in self.languages():
-            self.call(parents,language, self.name_button.cget('text'), 'get')
+        self._translations.reload_language()
+
+    def reload(self, func, settings:bool = False):
+        self.func()

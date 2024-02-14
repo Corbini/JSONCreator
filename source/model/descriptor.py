@@ -38,6 +38,7 @@ class Descriptor:
         childs = list(parent.keys())
 
         rename_childs = {'maxValue': 'valueMaximum', 'minValue': 'valueMinimum', 'defaultValue': 'valueDefault', 'access': 'valueAccess', 'type': 'valueType', 'unit': 'valueUnit', 'lenght': 'valueMaximum'}
+                         # 'branch': 'Branch', 'string': 'String', 'dateTime': 'DataTime', 'boolean': 'Boolean', 'int16': "Int16"}
         incorrect_names = ['langEn', 'langPl']
 
         for child in childs:
