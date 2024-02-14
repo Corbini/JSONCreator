@@ -86,7 +86,7 @@ class Descriptor:
             ("type", "deviceDescriptor"),
             ("content", OrderedDict([
                 ("device", OrderedDict([
-                    ("nameRik", 'drv/g35Pge308k/' + name + '/name')
+                    ("nameRik", 'drv/' + name + '/name')
                 ])),
                 ("properties", OrderedDict([
                 ]))

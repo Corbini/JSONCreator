@@ -23,7 +23,17 @@ def create_generals(self, type, name):
         self.remove_button = Button(self.general, text= 'remove')
         self.remove_button.pack(side='top',fill='x', anchor='nw')
     
-        self.remove_button.configure(command=self.remove_parameter)  
+        self.remove_button.configure(command=self.remove_parameter)
+
+
+def remove_parameter(self):
+    
+    parents = []
+    self.par_parent.get_parent(parents)
+
+    name = self.name_button.cget('text')
+
+    self.call(parents, name, None, 'remove')
 
 def menu_input(self, event):
 

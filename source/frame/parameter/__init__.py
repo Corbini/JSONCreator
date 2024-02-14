@@ -5,7 +5,7 @@ from source.frame.translation import Translation
 class Parameter(Frame):
 
     from ._name import create_name, change_name, configure_name, update_name, show_name_button
-    from ._generals import create_generals, show_generals, hide_generals, set_type
+    from ._generals import create_generals, show_generals, hide_generals, set_type, remove_parameter
 
     call = lambda self, parents, name, value, operation: print(parents, name, value, operation)
 

@@ -2,6 +2,7 @@ import json
 
 class Translation:
     
+    device = ''
     generate_object = lambda self, parents, name, data: print(parents, name, data)
 
     def __init__(self):
@@ -9,6 +10,7 @@ class Translation:
 
         self._name = ''
         self._translations = dict()
+        self._device = ''
 
     @property
     def name(self):
@@ -64,7 +66,7 @@ class Translation:
             for parent in parents:
                 rik+='/' + parent
         else:
-            rik = value
+            rik = self.device
 
         if operation == 'set':
             self._translations[rik] = value
