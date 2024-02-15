@@ -5,11 +5,8 @@ from source.frame.parameter._name import Name
 from source.frame.parameter._generals import General
 from source.frame.parameter._child import Child
 
+
 class Parameter(Frame):
-
-
-    call = lambda self, parents, name, value, operation: print(parents, name, value, operation)
-
     def __init__(self, parent, frame, name, type=''):
         super().__init__(
             master=frame
@@ -19,10 +16,8 @@ class Parameter(Frame):
 
         self.par_parent = parent
 
-        Name.call = self.call
         self.name = Name(self, name, self.get_parent, self.change_size)
 
-        General.call = self.call
         self._general = General(self, self.get_parent, self.name.get)
 
         self._translations = Translation(self._general, self.get_parent)

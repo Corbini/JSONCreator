@@ -25,7 +25,3 @@ def tree_remove(self, parents, name):
         parent = parent.child.list[_parent]
 
     parent.remove_child(name)
-
-
-def tree_input_set(self, function):
-    Parameter.call = function

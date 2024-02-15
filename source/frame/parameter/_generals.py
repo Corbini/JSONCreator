@@ -1,7 +1,7 @@
 from tkinter import Frame, Entry, Label, Text, Button, END, OptionMenu, StringVar
+from source.frame.call import Call
 
 class General(Frame):
-    call = lambda self, parents, name, value, operation: print(parents, ", ", name, ': ', value, " - ", operation)
     
     type_list = ('Branch','String','Boolean','DataTime','SerialPort',
                         'IP','IPv4','IPv6','UserName','password',
@@ -33,13 +33,13 @@ class General(Frame):
         parents = self.parents(empty_list)
 
         name = parents.pop(-1)
-        self.call(parents, name, None, 'remove')
+        Call.call(parents, name, None, 'remove')
 
     def call_input(self, event):
         parents = []
         self.parents(parents)
         value = self.type.get()
-        self.call(parents, 'valueType', value, 'change')
+        Call.call(parents, 'valueType', value, 'change')
         
     def call_set(self, value):
         self.type.set(value)
