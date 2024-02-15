@@ -27,3 +27,12 @@ class Child(Frame):
 
     def hide(self):
         self.grid_forget()
+        
+    def remove(self, name):
+        if name in self.list:
+            self.list[name].pack_forget()
+            self.list[name].destroy()
+            self.list.pop(name)
+
+    def rename(self, old_name, new_name):
+        self.list[new_name] = self.list.pop(old_name)

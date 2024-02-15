@@ -19,10 +19,15 @@ class Descriptor:
         self.saves = list()
 
         self._path = ''
+        self._name = ''
 
     @property
     def path(self):
         return self._path
+    
+    @property
+    def name(self):
+        return self._name
 
     def show(self, parents, object_name, content=''):
         data = self.json
@@ -63,12 +68,14 @@ class Descriptor:
         self._path = path
 
         self.json = json_data
-
         self.clean_json(self.json['content'])
 
-        self.create_tree(self.json['content']['device']['nameRik'])
+        self._name = self.json['content']['device']['nameRik']
+        self.create_tree(self._name)
 
-        self.generate_tree(self.json['content']['properties'])
+        parents = []
+        parents.append(self._name)
+        self.generate_tree(self.json['content']['properties'], parents)
 
     def generate_tree(self, position, parents=list()):
         for node in position:
@@ -99,7 +106,9 @@ class Descriptor:
         self.last_operations()
         path = self.json['content']['properties']
 
-        for object in rel_path:
+        
+
+        for object in rel_path[1:]:
             path = path[object]
 
 

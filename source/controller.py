@@ -25,18 +25,12 @@ class Controller:
         self.view.bind("<<save_languages>>", self.save_languages)
         self.view.bind_all('<<input>>', lambda w, data:self.input(w = data))
 
-        self.model.create_tree = lambda name: self.create_tree(name)
+        self.model.create_tree = lambda name: self.view.tree_create(name)
         self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
         self.model.remove_object = lambda parents, name: self.view.tree_remove(parents, name)
 
         self.view.bind("<<tree_new>>", lambda w: self.model.new_structure("new_tree"))
         self.view.bind_all("<Control-z>", lambda event: self.model.load_last())
-
-        FrameTranslation.call = self.input
-
-    def create_tree(self, name):
-        Translation.device = name
-        self.view.tree_create(name)
 
     def save(self, w):
         path = save_as()
