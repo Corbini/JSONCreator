@@ -12,7 +12,7 @@ def tree_create(self, name):
 def tree_update(self, parents, name, value=None):
     parent = self.parameter_tree
     for _parent in parents:
-        parent = parent.settings_list[_parent]
+        parent = parent.child.list[_parent]
 
     if value is None:
         parent.add_child(name)
@@ -22,7 +22,7 @@ def tree_update(self, parents, name, value=None):
 def tree_remove(self, parents, name):
     parent = self.parameter_tree
     for _parent in parents:
-        parent = parent.settings_list[_parent]
+        parent = parent.child.list[_parent]
 
     parent.remove_child(name)
 
