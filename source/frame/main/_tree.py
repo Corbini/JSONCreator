@@ -21,7 +21,7 @@ def tree_update(self, parents, name, value=None):
 
 def tree_remove(self, parents, name):
     parent = self.parameter_tree
-    for _parent in parents:
+    for _parent in parents[1:]:
         parent = parent.child.list[_parent]
 
     parent.child.remove(name)

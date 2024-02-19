@@ -6,7 +6,7 @@ class General(Frame):
     type_list = ('Branch','String','Boolean','DataTime','SerialPort',
                         'IP','IPv4','IPv6','UserName','password',
                         'UInt8','UInt16','UInt32','UInt64','Int8','Int16','Int32','Int64',
-                        'Real32','Real64')
+                        'Real32','Real64', 'ReportBranch')
 
     def __init__(self, frame, parents = lambda empty_list: list(empty_list), name = lambda: str('name')):
         super().__init__(
