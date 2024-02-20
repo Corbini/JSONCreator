@@ -25,6 +25,8 @@ class Controller:
         self.view.bind("<<save_languages>>", self.save_languages)
         self.view.bind_all('<<input>>', lambda w, data:self.input(w = data))
 
+        object_type = data_load('assets/type_templates.json')
+        self.model.object_type = object_type['content']
         self.model.create_tree = lambda name: self.view.tree_create(name)
         self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
         self.model.remove_object = lambda parents, name: self.view.tree_remove(parents, name)
@@ -41,6 +43,9 @@ class Controller:
 
     def load(self, w):
         path = load()
+
+        if path == '':
+            return 
 
         data = data_load(path)
 
