@@ -1,8 +1,6 @@
 import json
 
 class Translation:
-    
-    device = ''
     generate_object = lambda self, parents, name, data: print(parents, name, data)
 
     def __init__(self):
@@ -10,7 +8,6 @@ class Translation:
 
         self._name = ''
         self._translations = dict()
-        self._device = ''
 
     @property
     def name(self):
@@ -61,12 +58,12 @@ class Translation:
 
     def call(self, parents, value, operation):
         
-        if len(parents) > 0:
+        if len(parents) > 1:
             rik = '/drv/content/properties'
-            for parent in parents:
+            for parent in parents[1:]:
                 rik+='/' + parent
         else:
-            rik = self.device
+            rik = parents[0]
 
         if operation == 'set':
             self._translations[rik] = value

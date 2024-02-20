@@ -1,4 +1,5 @@
 from tkinter import Frame, Text, Canvas, Entry, Label, END, OptionMenu, StringVar
+from source.frame.call import Call
 
 
 class Setting(Frame):
@@ -79,7 +80,7 @@ class Setting(Frame):
 
         name = self.name_label.cget("text")
 
-        self.par_parent.call(parents, name, value, 'change')
+        Call.call(parents, name, value, 'change')
 
     def reset(self, event):
         self.data.delete(0, END)

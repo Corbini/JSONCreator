@@ -1,57 +1,51 @@
 from tkinter import Frame, Entry, Label, Text, Button, END, OptionMenu, StringVar
+from source.frame.call import Call
 
-
-def create_generals(self, type, name):
-    self.general = Frame(
-        self,
-        width=150
-    )
-
-    self.variable = StringVar(self.general)
-    self.variable.set("Branch")  # default value
+class General(Frame):
     
-    self.data = OptionMenu(self.general, self.variable, 
-                           'Branch','String','Boolean','DataTime','SerialPort',
-                           'IP','IPv4','IPv6','UserName','password',
-                           'UInt8','UInt16','UInt32','UInt64','Int8','Int16','Int32','Int64',
-                           'Real32','Real64',
-                           command=lambda event: self.menu_input(event))
-    self.data.config(width=15, padx=0, pady=0)
-    self.data.pack(side='top',fill='x', expand=True)
+    type_list = ('Branch','String','Boolean','DataTime','SerialPort',
+                        'IP','IPv4','IPv6','UserName','password',
+                        'UInt8','UInt16','UInt32','UInt64','Int8','Int16','Int32','Int64',
+                        'Real32','Real64', 'ReportBranch')
 
-    if self.par_parent is not None:
-        self.remove_button = Button(self.general, text= 'remove')
-        self.remove_button.pack(side='top',fill='x', anchor='nw')
-    
-        self.remove_button.configure(command=self.remove_parameter)
+    def __init__(self, frame, parents = lambda empty_list: list(empty_list), name = lambda: str('name')):
+        super().__init__(
+            frame,
+            width=150
+        )
+        self.parents = parents
+        self.name = name
 
+        self.type = StringVar(self)
+        self.type.set("Branch")  # default value
 
-def remove_parameter(self):
-    
-    parents = []
-    self.par_parent.get_parent(parents)
+        self.type_menu = OptionMenu(self, self.type, *self.type_list, command=self.call_input)
+        self.type_menu.config(width=15, padx=0, pady=0)
+        self.type_menu.pack(side='top',fill='x', expand=True)
 
-    name = self.name.get()
+        empty_list = list()
+        if self.parents(empty_list) is not None:
+            self.removable = Button(self, text= 'remove', command=self.call_remove)
+            self.removable.pack(side='top',fill='x', anchor='nw')
 
-    self.call(parents, name, None, 'remove')
+    def call_remove(self):
+        empty_list = []
+        parents = self.parents(empty_list)
 
-def menu_input(self, event):
+        name = parents.pop(-1)
+        Call.call(parents, name, None, 'remove')
 
-    parents = []
-    self.get_parent(parents)
-    value = self.variable.get()
-    self.call(parents, 'valueType', value, 'change')
+    def call_input(self, event):
+        parents = []
+        self.parents(parents)
+        value = self.type.get()
+        Call.call(parents, 'valueType', value, 'change')
+        
+    def call_set(self, value):
+        self.type.set(value)
+        
+    def show(self):
+        self.grid(row=1, column=0, sticky='nw')
 
-def set_type(self, value):
-    if value == "Branch":
-        self.add_button.pack(side='bottom', anchor='nw')
-    else:
-        self.add_button.pack_forget()
-    
-    self.variable.set(value)
-
-def show_generals(self):
-    self.general.grid(row=1, column=0, sticky='nw')
-
-def hide_generals(self):
-    self.general.grid_forget()
+    def hide(self):
+        self.grid_forget()

@@ -1,0 +1,172 @@
+{
+    "application": "golink",
+    "type": "typeTemplates",
+    "content": {
+        "Branch":{
+            "valueType": "Branch", 
+            "readOnOpen": ""
+        },
+        "String": {
+            "valueType": "String", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueDefault": "", 
+            "valueMinimum": "", 
+            "valueMaximum": "50"
+        },
+        "Boolean": {
+            "valueType": "Boolean",
+            "obis": "",
+            "valueAccess": "",
+            "valueDefault": ""
+        },
+        "DataTime": {
+            "valueType": "DataTime",
+            "obis": "",
+            "valueAccess": "",
+            "valueInitial": ""
+        },
+        "SerialPort": {
+            "valueType": "SerialPort"
+        },
+        "IP": {
+            "valueType": "IP",
+            "obis": "", 
+            "valueAccess": ""
+        },
+        "IPv4": {
+            "valueType": "IPv4", 
+            "obis": "", 
+            "valueAccess": ""
+        },
+        "IPv6": {
+            "valueType": "IPv6", 
+            "obis": "", 
+            "valueAccess": ""
+        },
+        "UserName": {
+            "valueType": "UserName", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "Password": {
+            "valueType": "Password", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "UInt8":{
+            "valueType": "UInt8", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueDefault": "",
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "UInt16":{
+            "valueType": "UInt16", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueDefault": "",
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "UInt32":{
+            "valueType": "UInt32", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueDefault": "",
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "UInt64":{
+            "valueType": "UInt64", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueDefault": "",
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "Int8":{
+            "valueType": "Int8", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueDefault": "",
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "Int16":{
+            "valueType": "Int16", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueDefault": "",
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "Int32":{
+            "valueType": "Int32", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueDefault": "",
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "Int64":{
+            "valueType": "Int64", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueDefault": "",
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "Real32":{
+            "valueType": "Real32", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueDefault": "",
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "Real64":{
+            "valueType": "Real64", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueDefault": "",
+            "valueMinimum": "", 
+            "valueMaximum": ""
+        },
+        "ReportBranch":{
+            "valueType": "ReportBranch", 
+            "profileObis": {
+              "valueType": "String",
+              "valueInitial": "1.0.99.1.0.255",
+              "valueAccess": "W",
+              "valueMaximum": 30
+            },
+            "dateFrom": {
+              "valueType": "String",
+              "valueAccess": "W",
+              "valueMaximum": 30
+            },
+            "dateTo": {
+              "valueType": "String",
+              "valueAccess": "W",
+              "valueMaximum": 30
+            },
+            "columns": {
+              "valueType": "String",
+              "valueAccess": "W",
+              "valueMaximum": 300
+            },
+            "run": {
+              "valueType": "String",
+              "valueInitial": "Read me!",
+              "valueAccess": "R",
+              "valueMaximum": 65000
+            }
+        }
+    }
+}

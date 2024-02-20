@@ -3,6 +3,10 @@ from collections import OrderedDict
 from copy import deepcopy
 
 class Descriptor:
+
+    object_type= {}
+
+
     def __init__(self, name="", filename=""):
 
         self.generate_object = lambda parents, name, data: print(parents, name, "\n", data, "\n")
@@ -19,10 +23,15 @@ class Descriptor:
         self.saves = list()
 
         self._path = ''
+        self._name = ''
 
     @property
     def path(self):
         return self._path
+    
+    @property
+    def name(self):
+        return self._name
 
     def show(self, parents, object_name, content=''):
         data = self.json
@@ -63,12 +72,14 @@ class Descriptor:
         self._path = path
 
         self.json = json_data
-
         self.clean_json(self.json['content'])
 
-        self.create_tree(self.json['content']['device']['nameRik'])
+        self._name = self.json['content']['device']['nameRik']
+        self.create_tree(self._name)
 
-        self.generate_tree(self.json['content']['properties'])
+        parents = []
+        parents.append(self._name)
+        self.generate_tree(self.json['content']['properties'], parents)
 
     def generate_tree(self, position, parents=list()):
         for node in position:
@@ -79,6 +90,59 @@ class Descriptor:
                 parents.pop()
             else:
                 self.generate_object(list(parents), node, position[node])
+
+    def validate_tree(self, position, validate_position, parents=list(), keep_data=False, on_screen=True):
+
+        nodes = list(validate_position.keys())
+        for key in position:
+            if key not in nodes:
+                nodes.append(key)
+        # nodes = set(list(validate_position.keys()) + list(position.keys()))
+
+        for node in nodes:
+            if node in validate_position and node in position:
+
+                #update
+                if type(validate_position[node]) is OrderedDict:
+                    if type(position[node]) is not OrderedDict:
+                        position[node] = deepcopy(validate_position[node])
+
+                        if on_screen:
+                            self.generate_object(list(parents), node, None)
+                            parents.append(node)
+                            self.generate_tree(position[node], parents)
+                            parents.pop()
+
+                    else:
+                        parents.append(node)
+                        self.validate_tree(position[node], validate_position[node], parents, keep_data, on_screen)
+                        parents.pop()
+
+                elif position[node] != validate_position[node] and not keep_data:
+                    position[node] = validate_position[node]
+
+                    if on_screen:
+                        self.generate_object(list(parents), node, position[node])
+
+
+            elif node not in position:
+                position[node] = deepcopy(validate_position[node])
+
+                if on_screen:
+                    if type(position[node]) is OrderedDict:
+                        self.generate_object(list(parents), node, None)
+                        parents.append(node)
+                        self.generate_tree(position[node], parents)
+                        parents.pop()
+                    else:
+                        self.generate_object(list(parents), node, validate_position[node])
+
+            else:
+                # remove
+                if on_screen:
+                    self.remove_object(list(parents), node)
+
+                position.pop(node)
 
     def new_structure(self, name):
         self.json = OrderedDict([
@@ -99,7 +163,9 @@ class Descriptor:
         self.last_operations()
         path = self.json['content']['properties']
 
-        for object in rel_path:
+        
+
+        for object in rel_path[1:]:
             path = path[object]
 
 
@@ -176,7 +242,7 @@ class Descriptor:
             
             new_path = path + [name]
             self.add_child(new_path, 'valueType', 'Branch', parent[name])
-            for setting in self._acceptable_settings['Branch'][1:]:
+            for setting in self.object_type['Branch'][1:]:
                 self.add_child(new_path, setting, '', parent[name])
         else:
             parent[name] = data
@@ -195,7 +261,7 @@ class Descriptor:
     def value_checker(self, name, value: str) -> bool:
         match name:
             case 'valueType':
-                return value in ['Branch', 'UInt64', "String","DateTime","UInt8","UInt16","UInt32","UInt64","Int8","Int16","Int32","Int64","Real32","Real64","Boolean","UserName","Password","SerialPort","IP","IPv4","IPv6"]
+                return value in self.object_type
             case 'valueMaximum':
                 return self.is_unsigned_int(value)
             case 'valueMinimum':
@@ -234,36 +300,12 @@ class Descriptor:
             case _:
                 return True
 
-    _acceptable_settings = {
-        'Branch': ['valueType', 'readOnOpen'],
-        'String': ['valueType', 'obis', 'valueAccess', 'valueDefault', 'valueMinimum', 'valueMaximum'], # valueMin/valueMaximum is the min and max lenght
-        'Boolean': ['valueType', 'obis', 'valueAccess', 'valueDefault'],
-        'DataTime': ['valueType', 'obis', 'valueAccess', 'valueInitial'],
-        'SerialPort': ['valueType'],
-        'IP': ['valueType', 'obis', 'valueAccess'],
-        'IPv4': ['valueType', 'obis', 'valueAccess'],
-        'IPv6': ['valueType', 'obis', 'valueAccess'],
-        'UserName': ['valueType', 'obis', 'valueAccess', 'valueMinimum', 'valueMaximum'],
-        'password': ['valueType', 'obis', 'valueAccess', 'valueMinimum', 'valueMaximum'],
-        'UInt8':['valueType', 'obis', 'valueAccess', 'valueDefault','valueMinimum', 'valueMaximum'],
-        'UInt16':['valueType', 'obis', 'valueAccess', 'valueDefault','valueMinimum', 'valueMaximum'],
-        'UInt32':['valueType', 'obis', 'valueAccess', 'valueDefault','valueMinimum', 'valueMaximum'],
-        'UInt64':['valueType', 'obis', 'valueAccess', 'valueDefault','valueMinimum', 'valueMaximum'],
-        'Int8':['valueType', 'obis', 'valueAccess', 'valueDefault','valueMinimum', 'valueMaximum'],
-        'Int16':['valueType', 'obis', 'valueAccess', 'valueDefault','valueMinimum', 'valueMaximum'],
-        'Int32':['valueType', 'obis', 'valueAccess', 'valueDefault','valueMinimum', 'valueMaximum'],
-        'Int64':['valueType', 'obis', 'valueAccess', 'valueDefault','valueMinimum', 'valueMaximum'],
-        'Real32':['valueType', 'obis', 'valueAccess', 'valueDefault','valueMinimum', 'valueMaximum'],
-        'Real64':['valueType', 'obis', 'valueAccess', 'valueDefault','valueMinimum', 'valueMaximum'],
-
-    }
-
     def change_type(self, rel_path, object: OrderedDict, object_type):
         childs = list(object.keys())
-        if object_type in self._acceptable_settings:
-            acceptable_settings = self._acceptable_settings[object_type]
+        if object_type in self.object_type:
+            acceptable_settings = self.object_type[object_type]
         else:
-            acceptable_settings = self._acceptable_settings['Branch']
+            acceptable_settings = self.object_type['Branch']
 
         if object_type == "Branch":
             for child in childs:
@@ -274,20 +316,10 @@ class Descriptor:
                     object.pop(child)
                     self.remove_object(rel_path, child)
         else:
-            for child in childs:
-                if child in acceptable_settings:
-                    continue
-
-                object.pop(child)
-                self.remove_object(rel_path, child)
-
-        for setting in acceptable_settings:
-            if setting not in object:
-                self.add_child(rel_path, setting, '', object)
-                # object[setting] = ''
-                # self.generate_object(rel_path, setting, '')
-
-        pass
+            if object_type == object['valueType']:
+                self.validate_tree(object, self.object_type[object_type], rel_path, True)
+            else:
+                self.validate_tree(object, self.object_type[object_type], rel_path)
 
     def last_operations(self):
         if len(self.saves) >=8:
@@ -300,6 +332,7 @@ class Descriptor:
             return
         
         save = self.saves.pop(0)
-        self.json = save
-        self.create_tree(self.json['content']['device']['nameRik'])
-        self.generate_tree(self.json['content']['properties'])
+        
+        parents = []
+        parents.append(self._name)
+        self.validate_tree(self.json['content']['properties'], save['content']['properties'], parents)

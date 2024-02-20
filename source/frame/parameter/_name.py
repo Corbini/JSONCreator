@@ -1,8 +1,7 @@
 from tkinter import Frame, Button, Text, Entry
+from source.frame.call import Call
 
 class Name(Frame):
-
-    call = lambda self, parents, name, value, operation: print(parents, ", ", name, ': ', value, " - ", operation)
 
     def __init__(self, frame, name, parents = lambda empty_list: list(), func = lambda: print("button_pressed")):
         super().__init__(frame, width=150, height=30)
@@ -58,7 +57,7 @@ class Name(Frame):
 
         name = parents.pop(-1)
 
-        self.call(parents, name, value, 'change')
+        Call.call(parents, name, value, 'change')
 
     def get(self):
         return self.button.cget('text')

@@ -1,9 +1,9 @@
 from tkinter import Frame, Entry, Label, Text, Button, END, OptionMenu, StringVar
+from source.frame.call import Call
 
 
 class Translation:
     names = []
-    call = lambda self, parents, name, value, operation: print(parents, ", ", name, ': ', value, " - ", operation)
 
     def __init__(self, frame = None, parents = lambda empty_list: list()):
         self._languages = dict()
@@ -41,11 +41,11 @@ class Translation:
         parents = []
         self.parents(parents)
 
-        self.call(parents, name, None, 'get')
+        Call.call(parents, name, None, 'get')
 
     def call_input(self, name, event):
         parents = []
         self.parents(parents)
         text = event.widget.get()
 
-        self.call(parents, name, text, 'set')
+        Call.call(parents, name, text, 'set')
