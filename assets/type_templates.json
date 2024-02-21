@@ -12,7 +12,8 @@
             "valueAccess": "", 
             "valueDefault": "", 
             "valueMinimum": "", 
-            "valueMaximum": "50"
+            "valueMaximum": "50",
+            "valueConfig": "0|50||||"
         },
         "Boolean": {
             "valueType": "Boolean",
@@ -64,7 +65,8 @@
             "valueAccess": "", 
             "valueDefault": "",
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": "",
+            "valueConfig": "|||||"
         },
         "UInt16":{
             "valueType": "UInt16", 
@@ -72,7 +74,8 @@
             "valueAccess": "", 
             "valueDefault": "",
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": "",
+            "valueConfig": "|||||"
         },
         "UInt32":{
             "valueType": "UInt32", 
@@ -80,7 +83,8 @@
             "valueAccess": "", 
             "valueDefault": "",
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": "",
+            "valueConfig": "|||||"
         },
         "UInt64":{
             "valueType": "UInt64", 
@@ -88,7 +92,8 @@
             "valueAccess": "", 
             "valueDefault": "",
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": "",
+            "valueConfig": "|||||"
         },
         "Int8":{
             "valueType": "Int8", 
@@ -96,7 +101,8 @@
             "valueAccess": "", 
             "valueDefault": "",
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": "",
+            "valueConfig": "|||||"
         },
         "Int16":{
             "valueType": "Int16", 
@@ -104,7 +110,8 @@
             "valueAccess": "", 
             "valueDefault": "",
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": "",
+            "valueConfig": "|||||"
         },
         "Int32":{
             "valueType": "Int32", 
@@ -112,7 +119,8 @@
             "valueAccess": "", 
             "valueDefault": "",
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": "",
+            "valueConfig": "|||||"
         },
         "Int64":{
             "valueType": "Int64", 
@@ -120,7 +128,8 @@
             "valueAccess": "", 
             "valueDefault": "",
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": "",
+            "valueConfig": "|||||"
         },
         "Real32":{
             "valueType": "Real32", 
@@ -128,7 +137,8 @@
             "valueAccess": "", 
             "valueDefault": "",
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": "",
+            "valueConfig": "|||||"
         },
         "Real64":{
             "valueType": "Real64", 
@@ -136,7 +146,15 @@
             "valueAccess": "", 
             "valueDefault": "",
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": "",
+            "valueConfig": "|||||"
+        },
+        "Enum": {
+            "valueType": "Enum", 
+            "obis": "", 
+            "valueAccess": "", 
+            "valueInitial": "", 
+            "valueEnum": ""
         },
         "ReportBranch":{
             "valueType": "ReportBranch", 

@@ -5,6 +5,7 @@ from source.model.descriptor import Descriptor
 from source.json_loader import data_load, data_save, data_type, dir_load
 from source.frame.translation import Translation as FrameTranslation
 from source.frame.call import Call
+from source.frame.parameter._generals import General
 
 class Controller:
     def __init__(self, view: Main, model: Descriptor):
@@ -27,6 +28,7 @@ class Controller:
 
         object_type = data_load('assets/type_templates.json')
         self.model.object_type = object_type['content']
+        General.type_list = object_type['content']
         self.model.create_tree = lambda name: self.view.tree_create(name)
         self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
         self.model.remove_object = lambda parents, name: self.view.tree_remove(parents, name)

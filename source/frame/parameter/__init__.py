@@ -4,6 +4,7 @@ from source.frame.translation import Translation
 from source.frame.parameter._name import Name
 from source.frame.parameter._generals import General
 from source.frame.parameter._child import Child
+from source.frame.settings.valueConfig import valueConfig
 
 
 class Parameter(Frame):
@@ -65,7 +66,10 @@ class Parameter(Frame):
                     self.child.hide_addable()
 
         elif name not in self.child.list:
-            self.child.list[name] = Setting(self, self.child, name, value)
+            if name == 'valueConfig':
+                self.child.list[name] = valueConfig(self, self.child, name, value)
+            else:
+                self.child.list[name] = Setting(self, self.child, name, value)
         else:
             self.child.list[name].update(value)
 
