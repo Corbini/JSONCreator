@@ -1,4 +1,4 @@
-from tkinter import Frame, Button, Canvas, PhotoImage, Text, Entry, END
+from tkinter import Frame, Button, Canvas, PhotoImage, Text, Entry, END, Menu
 from source.frame.setting import Setting
 from source.frame.translation import Translation
 from source.frame.parameter._name import Name
@@ -24,7 +24,26 @@ class Parameter(Frame):
         self.translations = Translation(self._general, self.get_parent)
         
         self.child = Child(self, self.get_parent)
+                
+        #Add Menu
+        self.popup = Menu(self, tearoff=0)
 
+        #Adding Menu Items
+        self.popup.add_command(label="Duplicate", command= lambda: print('clicked new'))
+        self.popup.add_command(label="Add Object After")
+        self.popup.add_separator()
+        self.popup.add_command(label="Save")
+        
+        self.name.button.bind("<Button-3>", self.menu_popup)
+
+    def menu_popup(self, event):
+        # display the popup menu
+        try:
+            self.popup.tk_popup(event.x_root, event.y_root, 0)
+        finally:
+            #Release the grab
+            self.popup.grab_release()
+      
     def get_parent(self, parents = list()):
         parent = self.par_parent
         
