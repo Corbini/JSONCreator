@@ -1,6 +1,8 @@
 import json
 from collections import OrderedDict
 from copy import deepcopy
+from source.model.conventer import clean_json
+
 
 class Descriptor:
 
@@ -43,81 +45,16 @@ class Descriptor:
         else:
             print(data.keys())
 
-    def object_make_valueConfig(self, object: OrderedDict):
-        # [valueMinimum, valueMaximum, valueScaler, if_float, valueUnit]
-        value_list = ['','','','','']
-        
-        if 'valueConfig' in object:
-            value_list = object['valueConfig'].split('|')
-
-
-        key_list = list(object.keys())
-        for key in key_list:
-            match key:
-                case 'minValue':
-                    value_list[0] = object[key]
-                    object.pop(key)
-                case 'valueMinimum':
-                    value_list[0] = object[key]
-                    object.pop(key)
-                case 'maxValue':
-                    value_list[1] = object[key]
-                    object.pop(key)
-                case 'valueMaximum':
-                    value_list[1] = object[key]
-                    # object.pop(key)
-                case 'unit':
-                    value_list[4] = object[key]
-                    object.pop(key)
-                case 'valueUnit':
-                    value_list[4] = object[key]
-                    object.pop(key)
-
-        value_config = ""
-        value_config += str(value_list[0])
-
-        for value in value_list[1:]:
-            value_config += '|'
-            value_config += str(value)
-
-        object['valueConfig'] = value_config
-
-    def clean_json(self, parent):
-        childs = list(parent.keys())
-
-        rename_childs = {'maxValue': 'valueMaximum', 'minValue': 'valueMinimum', 'defaultValue': 'valueDefault', 'access': 'valueAccess', 'type': 'valueType', 'unit': 'valueUnit', 'lenght': 'valueMaximum'}
-                         # 'branch': 'Branch', 'string': 'String', 'dateTime': 'DataTime', 'boolean': 'Boolean', 'int16': "Int16"}
-        incorrect_names = ['langEn', 'langPl']
-
-        to_valueConfig = ['valueMinimum', 'valueMaximum', 'valueUnit']
-
-        for child in childs:
-            if isinstance(parent[child], OrderedDict):
-                self.clean_json(parent[child])
-            elif parent[child] == '':
-                parent.pop(child)
-            elif parent[child] == 'RW':
-                parent.pop(child)
-            elif child in rename_childs.keys():
-                parent[rename_childs[child]] = parent.pop(child)
-            elif child in incorrect_names:
-                parent.pop(child)
-
-        for child in childs:
-            if child in to_valueConfig:
-                self.object_make_valueConfig(parent)
-
     def data_get(self) -> json:
-        self.clean_json(self.json['content'])
+        clean_json(self.json['content'])
 
         return self.json
 
     def data_load(self, path, json_data: json):
-
         self._path = path
 
         self.json = json_data
-        self.clean_json(self.json['content'])
+        clean_json(self.json['content'])
 
         self._name = self.json['content']['device']['nameRik']
         self.create_tree(self._name)
@@ -137,40 +74,34 @@ class Descriptor:
                 self.generate_object(list(parents), node, position[node])
 
     def validate_tree(self, position, validate_position, parents=list(), keep_data=False, on_screen=True):
-
         nodes = list(validate_position.keys())
         for key in position:
             if key not in nodes:
                 nodes.append(key)
-        # nodes = set(list(validate_position.keys()) + list(position.keys()))
 
         for node in nodes:
             if node in validate_position and node in position:
-
-                #update
+                #update object
                 if type(validate_position[node]) is OrderedDict:
                     if type(position[node]) is not OrderedDict:
                         position[node] = deepcopy(validate_position[node])
 
-                        if on_screen:
-                            self.generate_object(list(parents), node, None)
-                            parents.append(node)
-                            self.generate_tree(position[node], parents)
-                            parents.pop()
+                        self.generate_object(list(parents), node, None)
+                        parents.append(node)
+                        self.generate_tree(position[node], parents)
+                        parents.pop()
 
                     else:
                         parents.append(node)
-                        self.validate_tree(position[node], validate_position[node], parents, keep_data, on_screen)
+                        self.validate_tree(position[node], validate_position[node], parents, keep_data)
                         parents.pop()
 
                 elif position[node] != validate_position[node] and not keep_data:
                     position[node] = validate_position[node]
-
-                    if on_screen:
-                        self.generate_object(list(parents), node, position[node])
-
+                    self.generate_object(list(parents), node, position[node])
 
             elif node not in position:
+                #new object
                 position[node] = deepcopy(validate_position[node])
 
                 if on_screen:
@@ -204,15 +135,12 @@ class Descriptor:
 
         self.create_tree(self.json['content']['properties'])
 
-    def change_param(self, rel_path, name, data, operation) -> bool:
+    def change_param(self, rel_path: list, name, data, operation) -> bool:
         self.last_operations()
         path = self.json['content']['properties']
 
-        
-
         for object in rel_path[1:]:
             path = path[object]
-
 
         match operation:
             case 'remove':
@@ -229,13 +157,51 @@ class Descriptor:
 
             case 'add':
                 if name in path:
+                    print("Object have: ", name)
                     return
                 
                 self.add_child(rel_path, name, data, path)
 
                 self.generate_object(rel_path, name, data)
 
+            case 'add_before':
+                if name in path:
+                    print("Object have: ", name)
+                    return
+                
+                self.add_child(rel_path, name, None, path)
+                self.move_before(path, name, data)
+
+            case 'move_up':
+                sort_list = list(path.keys())
+                before = sort_list.index(name) -1
+                if before <0:
+                    return
+
+                self.move_before(path, name, sort_list[before])
+            case 'move_down':
+                sort_list = list(path.keys())
+                before = sort_list.index(name) +1
+                if before <0:
+                    return
+
+                self.move_before(path, sort_list[before], name)
+
+            case 'duplicate_before':
+                if self.duplicate(path, name, data, rel_path) is False:
+                    print("name is used: ", data + '_duplicate')
+                    return 
+                
+                self.move_before(path, data + '_duplicate', data)
+
+            case 'duplicate_end':
+                if self.duplicate(path, name, data, rel_path) is False:
+                    print("name is used: ", data + '_duplicate')
+                    return 
+                
+
             case _:
+                #update
                 if self.value_checker(name, data):
                     if name not in path:
                        path[name] = data
@@ -273,6 +239,30 @@ class Descriptor:
             
                 self.generate_object(rel_path, name, data)
         
+    def duplicate(self, path, name, data, rel_path) -> bool:
+        new_name = data + '_duplicate'
+        if new_name in path:
+            print("Object have: ", name)
+            return False
+        
+        path[new_name] = deepcopy(path[data])
+        self.generate_object(rel_path, new_name, None)
+
+        rel_path.append(new_name)
+        self.generate_tree(path[new_name], rel_path)
+        rel_path.remove(new_name)
+
+        return True
+
+    def move_before(self, object, move_name, before_name):
+        sort_list = list(object.keys())
+        first = sort_list.index(before_name)
+
+        sort_list = sort_list[first: ]
+        sort_list.pop(sort_list.index(move_name))
+
+        for object_name in sort_list:
+            object.move_to_end(object_name)
 
 
     def add_child(self, path, name, data='', parent=None):
@@ -286,9 +276,11 @@ class Descriptor:
             self.generate_object(path, name, data)
             
             new_path = path + [name]
-            self.add_child(new_path, 'valueType', 'Branch', parent[name])
-            for setting in self.object_type['Branch'][1:]:
-                self.add_child(new_path, setting, '', parent[name])
+            # self.add_child(new_path, 'valueType', 'Branch', parent[name])
+            
+            model = self.object_type['Branch']
+            for setting in model:
+                self.add_child(new_path, setting, model[setting], parent[name])
         else:
             parent[name] = data
             self.generate_object(path, name, data)
