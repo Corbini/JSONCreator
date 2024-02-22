@@ -1,9 +1,10 @@
-from tkinter import Frame, Button, Canvas, PhotoImage, Text, Entry, END
+from tkinter import Frame, Button, Canvas, PhotoImage, Text, Entry, END, Menu
 from source.frame.setting import Setting
 from source.frame.translation import Translation
 from source.frame.parameter._name import Name
 from source.frame.parameter._generals import General
 from source.frame.parameter._child import Child
+from source.frame.settings.valueConfig import valueConfig
 
 
 class Parameter(Frame):
@@ -23,7 +24,7 @@ class Parameter(Frame):
         self.translations = Translation(self._general, self.get_parent)
         
         self.child = Child(self, self.get_parent)
-
+      
     def get_parent(self, parents = list()):
         parent = self.par_parent
         
@@ -65,7 +66,10 @@ class Parameter(Frame):
                     self.child.hide_addable()
 
         elif name not in self.child.list:
-            self.child.list[name] = Setting(self, self.child, name, value)
+            if name == 'valueConfig':
+                self.child.list[name] = valueConfig(self, self.child, name, value)
+            else:
+                self.child.list[name] = Setting(self, self.child, name, value)
         else:
             self.child.list[name].update(value)
 

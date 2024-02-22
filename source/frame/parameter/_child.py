@@ -36,3 +36,9 @@ class Child(Frame):
 
     def rename(self, old_name, new_name):
         self.list[new_name] = self.list.pop(old_name)
+        
+    def refresh_list(self, list):
+        for name in list:
+            self.list[name].pack_forget()
+            self.list[name].pack(side='top', anchor='nw')
+        

@@ -1,4 +1,4 @@
-from tkinter import Frame, Button, Text, Entry
+from tkinter import Frame, Button, Text, Entry, Menu
 from source.frame.call import Call
 
 class Name(Frame):
@@ -24,6 +24,20 @@ class Name(Frame):
         self.button.pack(fill='both', expand=True)
         
         self.grid(in_=frame, row=0, column=0, sticky='nw')
+
+        #Add Menu
+        self.popup = Menu(self, tearoff=0)
+
+        #Adding Menu Items
+        self.popup.add_command(label="Move Up", command= lambda: self.move_input("move_up"))
+        self.popup.add_command(label="Move Down", command= lambda: self.move_input("move_down"))
+        self.popup.add_separator()
+        self.popup.add_command(label="New before", command= lambda: self.menu_input("add_before"))
+        self.popup.add_separator()
+        self.popup.add_command(label="Duplicate before", command= lambda: self.menu_input("duplicate_before"))
+        self.popup.add_command(label="Duplicate at the end", command= lambda: self.menu_input("duplicate_end"))
+        
+        self.button.bind("<Button-3>", self.menu_popup)
 
     def _show_entry(self):
         self.entry.pack(fill='both', expand=True)
@@ -61,3 +75,21 @@ class Name(Frame):
 
     def get(self):
         return self.button.cget('text')
+
+    def menu_popup(self, event):
+        # display the popup menu
+        try:
+            self.popup.tk_popup(event.x_root, event.y_root, 0)
+        finally:
+            #Release the grab
+            self.popup.grab_release()
+
+    def move_input(self, command):
+        parents = list()
+        self._parents(parents)
+        Call.call(parents[:-1], parents[-1], None, command)
+
+    def menu_input(self, command):
+        parents = list()
+        self._parents(parents)
+        Call.call(parents[:-1], 'NewParameter', parents[-1], command)
