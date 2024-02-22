@@ -14,6 +14,7 @@ class Descriptor:
         self.generate_object = lambda parents, name, data: print(parents, name, "\n", data, "\n")
         self.remove_object = lambda parents, name: print(parents, name, "\n")
         self.create_tree = lambda name: print(name)
+        self.reload_list = lambda parents, name, list: print(parents, name, "\n", list, "\n")
 
         self.filename = filename
         self.json = None
@@ -171,6 +172,10 @@ class Descriptor:
                 
                 self.add_child(rel_path, name, None, path)
                 self.move_before(path, name, data)
+                
+                updates_list = list(path.keys())
+                updates_list.remove('valueType')
+                self.reload_list(rel_path[:-1], rel_path[-1], updates_list)
 
             case 'move_up':
                 sort_list = list(path.keys())
@@ -179,6 +184,10 @@ class Descriptor:
                     return
 
                 self.move_before(path, name, sort_list[before])
+
+                updates_list = list(path.keys())
+                updates_list.remove('valueType')
+                self.reload_list(rel_path[:-1], rel_path[-1], updates_list)
             case 'move_down':
                 sort_list = list(path.keys())
                 before = sort_list.index(name) +1
@@ -187,12 +196,20 @@ class Descriptor:
 
                 self.move_before(path, sort_list[before], name)
 
+                updates_list = list(path.keys())
+                updates_list.remove('valueType')
+                self.reload_list(rel_path[:-1], rel_path[-1], updates_list)
+
             case 'duplicate_before':
                 if self.duplicate(path, name, data, rel_path) is False:
                     print("name is used: ", data + '_duplicate')
                     return 
                 
                 self.move_before(path, data + '_duplicate', data)
+
+                updates_list = list(path.keys())
+                updates_list.remove('valueType')
+                self.reload_list(rel_path[:-1], rel_path[-1], updates_list)
 
             case 'duplicate_end':
                 if self.duplicate(path, name, data, rel_path) is False:
@@ -263,6 +280,7 @@ class Descriptor:
 
         for object_name in sort_list:
             object.move_to_end(object_name)
+            
 
 
     def add_child(self, path, name, data='', parent=None):

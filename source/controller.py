@@ -32,6 +32,8 @@ class Controller:
         self.model.create_tree = lambda name: self.view.tree_create(name)
         self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
         self.model.remove_object = lambda parents, name: self.view.tree_remove(parents, name)
+        self.model.reload_list = lambda parents, name, list: self.view.tree_reload_list(parents, name, list)
+
 
         self.view.bind("<<tree_new>>", lambda w: self.model.new_structure("new_tree"))
         self.view.bind_all("<Control-z>", lambda event: self.model.load_last())
