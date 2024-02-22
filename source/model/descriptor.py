@@ -187,7 +187,7 @@ class Descriptor:
 
                 updates_list = list(path.keys())
                 updates_list.remove('valueType')
-                self.reload_list(rel_path[:-1], rel_path[-1], updates_list)
+                self.reload_list(rel_path, name, updates_list)
             case 'move_down':
                 sort_list = list(path.keys())
                 before = sort_list.index(name) +1
@@ -198,7 +198,7 @@ class Descriptor:
 
                 updates_list = list(path.keys())
                 updates_list.remove('valueType')
-                self.reload_list(rel_path[:-1], rel_path[-1], updates_list)
+                self.reload_list(rel_path, name, updates_list)
 
             case 'duplicate_before':
                 if self.duplicate(path, name, data, rel_path) is False:
