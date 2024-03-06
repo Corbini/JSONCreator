@@ -10,10 +10,17 @@
             "valueType": "String", 
             "obis": "", 
             "valueAccess": "", 
-            "valueDefault": "", 
-            "valueMinimum": "", 
-            "valueMaximum": "50",
-            "valueConfig": "0|50||||"
+            "valueDefault": "",
+            "valueMaximum": 15,
+            "valueConfig": "0|15|"
+        },
+        "Numeric": {
+            "valueType": "String",
+            "obis": "",
+            "valueAccess": "",
+            "valueDefault": "",
+            "valueMaximum": 15,
+            "valueConfig": "|||0||"
         },
         "Boolean": {
             "valueType": "Boolean",
@@ -28,146 +35,155 @@
             "valueInitial": ""
         },
         "SerialPort": {
-            "valueType": "SerialPort"
+            "valueType": "SerialPort",
+            "valueMaximum": 15,
+            "valueConfig": "0|15|"
         },
         "IP": {
             "valueType": "IP",
             "obis": "", 
-            "valueAccess": ""
+            "valueAccess": "",
+            "valueMaximum": 63,
+            "valueConfig": "0|63|"
         },
         "IPv4": {
             "valueType": "IPv4", 
             "obis": "", 
-            "valueAccess": ""
+            "valueAccess": "",
+            "valueMaximum": 63,
+            "valueConfig": "0|63|"
         },
         "IPv6": {
             "valueType": "IPv6", 
             "obis": "", 
-            "valueAccess": ""
+            "valueAccess": "",
+            "valueMaximum": 63,
+            "valueConfig": "0|63|"
         },
         "UserName": {
             "valueType": "UserName", 
             "obis": "", 
             "valueAccess": "", 
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": 15,
+            "valueConfig": "0|15|"
         },
         "Password": {
             "valueType": "Password", 
             "obis": "", 
             "valueAccess": "", 
             "valueMinimum": "", 
-            "valueMaximum": ""
+            "valueMaximum": 15,
+            "valueConfig": "0|15|1"
         },
         "UInt8":{
             "valueType": "UInt8", 
             "obis": "", 
             "valueAccess": "", 
             "valueDefault": "",
-            "valueMinimum": "", 
-            "valueMaximum": "",
-            "valueConfig": "|||||"
+            "valueConfig": "0|||0||"
         },
         "UInt16":{
             "valueType": "UInt16", 
             "obis": "", 
             "valueAccess": "", 
             "valueDefault": "",
-            "valueMinimum": "", 
-            "valueMaximum": "",
-            "valueConfig": "|||||"
+            "valueConfig": "0|||0||"
         },
         "UInt32":{
             "valueType": "UInt32", 
             "obis": "", 
             "valueAccess": "", 
             "valueDefault": "",
-            "valueMinimum": "", 
-            "valueMaximum": "",
-            "valueConfig": "|||||"
+            "valueConfig": "0|||0||"
         },
         "UInt64":{
             "valueType": "UInt64", 
             "obis": "", 
             "valueAccess": "", 
             "valueDefault": "",
-            "valueMinimum": "", 
-            "valueMaximum": "",
-            "valueConfig": "|||||"
+            "valueConfig": "0|||0||"
         },
         "Int8":{
             "valueType": "Int8", 
             "obis": "", 
             "valueAccess": "", 
             "valueDefault": "",
-            "valueMinimum": "", 
-            "valueMaximum": "",
-            "valueConfig": "|||||"
+            "valueConfig": "0|||0||"
         },
         "Int16":{
             "valueType": "Int16", 
             "obis": "", 
             "valueAccess": "", 
             "valueDefault": "",
-            "valueMinimum": "", 
-            "valueMaximum": "",
-            "valueConfig": "|||||"
+            "valueConfig": "0|||0||"
         },
         "Int32":{
             "valueType": "Int32", 
             "obis": "", 
             "valueAccess": "", 
             "valueDefault": "",
-            "valueMinimum": "", 
             "valueMaximum": "",
-            "valueConfig": "|||||"
+            "valueConfig": "0|||0||"
         },
         "Int64":{
             "valueType": "Int64", 
             "obis": "", 
             "valueAccess": "", 
             "valueDefault": "",
-            "valueMinimum": "", 
-            "valueMaximum": "",
-            "valueConfig": "|||||"
+            "valueConfig": "|||0||"
         },
         "Real32":{
             "valueType": "Real32", 
             "obis": "", 
             "valueAccess": "", 
             "valueDefault": "",
-            "valueMinimum": "", 
-            "valueMaximum": "",
-            "valueConfig": "|||||"
+            "valueConfig": "|||1||"
         },
         "Real64":{
             "valueType": "Real64", 
             "obis": "", 
             "valueAccess": "", 
             "valueDefault": "",
-            "valueMinimum": "", 
-            "valueMaximum": "",
-            "valueConfig": "|||||"
+            "valueConfig": "|||1||"
         },
         "Enum": {
-            "valueType": "Enum", 
+            "valueType": "Enum",
             "obis": "", 
             "valueAccess": "", 
-            "valueInitial": "", 
-            "valueEnum": ""
+            "valueInitial": 0,
+            "valueEnum": ["first"],
+            "valueKey": [0]
         },
+        "MultiChoice": {
+            "valueType": "MultiChoice",
+            "valueMaximum": 250,
+            "obis": "",
+            "valueAccess": "",
+            "valueInitial": 0,
+            "valueConfig": "5||option1",
+            "valueKey": [0]
+        },
+        "Tariff": {
+            "valueType": "Tariff",
+            "valueAccess": "",
+            "valueConfig": "10"
+        },
+
         "ReportBranch":{
             "valueType": "ReportBranch", 
             "profileObis": {
               "valueType": "String",
               "valueInitial": "1.0.99.1.0.255",
               "valueAccess": "W",
-              "valueMaximum": 30
+              "valueMaximum": 50,
+              "valueConfig": "0|50|"
             },
             "dateFrom": {
               "valueType": "String",
               "valueAccess": "W",
-              "valueMaximum": 30
+              "valueMaximum": 50,
+              "valueConfig": "0|50|"
             },
             "dateTo": {
               "valueType": "String",
@@ -183,7 +199,8 @@
               "valueType": "String",
               "valueInitial": "Read me!",
               "valueAccess": "R",
-              "valueMaximum": 65000
+              "valueMaximum": 65000,
+              "valueConfig": "0|50|"
             }
         }
     }
