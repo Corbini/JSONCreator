@@ -5,6 +5,7 @@ from source.frame.parameter._name import Name
 from source.frame.parameter._generals import General
 from source.frame.parameter._child import Child
 from source.frame.settings.valueConfig import valueConfig
+from source.frame.settings.valueEnum import valueEnum
 
 
 class Parameter(Frame):
@@ -65,11 +66,20 @@ class Parameter(Frame):
                 else:
                     self.child.hide_addable()
 
+                if 'valueConfig' in self.child.list:
+                    self.child.list['valueConfig']
+
         elif name not in self.child.list:
-            if name == 'valueConfig':
-                self.child.list[name] = valueConfig(self, self.child, name, value)
-            else:
-                self.child.list[name] = Setting(self, self.child, name, value)
+            match name:
+                case 'valueConfig':
+                    self.child.list[name] = valueConfig(self, self.child, name, value, self._general.type.get())
+                case 'valueEnum':
+                    self.child.list[name] = valueEnum(self, self.child, name, value)
+                case 'EnumKey':
+                    self.child.list[name] = valueEnum(self, self.child, name, value)
+
+                case _:
+                    self.child.list[name] = Setting(self, self.child, name, value)
         else:
             self.child.list[name].update(value)
 
