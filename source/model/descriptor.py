@@ -2,6 +2,8 @@ import json
 from collections import OrderedDict
 from copy import deepcopy
 from source.model.conventer import clean_json
+from source.model.undo_redo import UndoRedo
+# from source.model.value_formats import ValueFormats
 
 
 class Descriptor:
@@ -23,7 +25,9 @@ class Descriptor:
         else:
             self.json = None
 
-        self.saves = list()
+        self.saves = UndoRedo(8)
+
+        # self.checker = ValueFormats()
 
         self._path = ''
         self._name = ''
@@ -60,8 +64,7 @@ class Descriptor:
         self._name = self.json['content']['device']['nameRik']
         self.create_tree(self._name)
 
-        parents = []
-        parents.append(self._name)
+        parents = [self._name]
         self.generate_tree(self.json['content']['properties'], parents)
 
     def generate_tree(self, position, parents=list()):
@@ -72,7 +75,7 @@ class Descriptor:
                 self.generate_tree(position[node], parents)
                 parents.pop()
             else:
-                self.generate_object(list(parents), node, position[node])
+                self.generate_object(list(parents), node, deepcopy(position[node]))
 
     def validate_tree(self, position, validate_position, parents=list(), keep_data=False, on_screen=True):
         nodes = list(validate_position.keys())
@@ -99,7 +102,7 @@ class Descriptor:
 
                 elif position[node] != validate_position[node] and not keep_data:
                     position[node] = validate_position[node]
-                    self.generate_object(list(parents), node, position[node])
+                    self.generate_object(list(parents), node, deepcopy(position[node]))
 
             elif node not in position:
                 #new object
@@ -137,7 +140,7 @@ class Descriptor:
         self.create_tree(self.json['content']['properties'])
 
     def change_param(self, rel_path: list, name, data, operation) -> bool:
-        self.last_operations()
+        self.saves.save(self.json)
         path = self.json['content']['properties']
 
         for object in rel_path[1:]:
@@ -159,7 +162,7 @@ class Descriptor:
             case 'add':
                 if name in path:
                     print("Object have: ", name)
-                    return
+                    return False
                 
                 self.add_child(rel_path, name, data, path)
 
@@ -168,20 +171,21 @@ class Descriptor:
             case 'add_before':
                 if name in path:
                     print("Object have: ", name)
-                    return
+                    return False
                 
                 self.add_child(rel_path, name, None, path)
                 self.move_before(path, name, data)
                 
                 updates_list = list(path.keys())
                 updates_list.remove('valueType')
+
                 self.reload_list(rel_path[:-1], rel_path[-1], updates_list)
 
             case 'move_up':
                 sort_list = list(path.keys())
                 before = sort_list.index(name) -1
                 if before <0:
-                    return
+                    return False
 
                 self.move_before(path, name, sort_list[before])
 
@@ -192,7 +196,7 @@ class Descriptor:
                 sort_list = list(path.keys())
                 before = sort_list.index(name) +1
                 if before <0:
-                    return
+                    return False
 
                 self.move_before(path, sort_list[before], name)
 
@@ -203,8 +207,8 @@ class Descriptor:
             case 'duplicate_before':
                 if self.duplicate(path, name, data, rel_path) is False:
                     print("name is used: ", data + '_duplicate')
-                    return 
-                
+                    return False
+
                 self.move_before(path, data + '_duplicate', data)
 
                 updates_list = list(path.keys())
@@ -214,48 +218,54 @@ class Descriptor:
             case 'duplicate_end':
                 if self.duplicate(path, name, data, rel_path) is False:
                     print("name is used: ", data + '_duplicate')
-                    return 
-                
+                    return False
 
             case _:
-                #update
-                if self.value_checker(name, data):
-                    if name not in path:
-                       path[name] = data
-                    
-                    elif isinstance(path[name], OrderedDict):
-                        if name == data:
-                            return 
-                        
-                        if data in path:
-                            return
-                        
-                        keys = list(path.keys())
-                        keys[keys.index(name)] = data
-                        path[data] = path.pop(name)
+                return self._update(path, name, data, rel_path)
 
-                        flag = False
-                        for key in keys:
-                            if flag:
-                                path.move_to_end(key)
-                            elif key == data:
-                                flag=True
+    def _update(self, parent, name, data, rel_path) -> bool:
+        # Checks if value is correct
+        # if not self.value_checker(parent, name, data):
+        if not self.checker.check(data, name):
+            # reset data to last correct value
+            if name in parent:
+                self.generate_object(rel_path, name, parent[name])
+            else:
+                self.generate_object(rel_path, name, '')
 
-                        rel_path.append(name)
-                        name = 'name'
-                    else:
-                        path[name] = data
+            return False
 
-                    if name == 'valueType':
-                        self.change_type(rel_path, path, data)
-                else:
-                    if name in path:
-                        data = path[name]
-                    else:
-                        data = ''
-            
-                self.generate_object(rel_path, name, data)
-        
+        if isinstance(parent[name], OrderedDict):
+            # Rename object
+            if name == data:
+                return False
+
+            if data in parent:
+                return False
+
+            keys = list(parent.keys())
+            keys[keys.index(name)] = data
+            parent[data] = parent.pop(name)
+
+            flag = False
+            for key in keys:
+                if flag:
+                    parent.move_to_end(key)
+                elif key == data:
+                    flag = True
+
+            rel_path.append(name)
+            name = 'name'
+        else:
+            parent[name] = deepcopy(data)
+            if name == 'valueType':
+                self.change_type(rel_path, parent, data)
+
+
+        self.generate_object(rel_path, name, data)
+        return True
+
+
     def duplicate(self, path, name, data, rel_path) -> bool:
         new_name = data + '_duplicate'
         if new_name in path:
@@ -282,7 +292,6 @@ class Descriptor:
             object.move_to_end(object_name)
             
 
-
     def add_child(self, path, name, data='', parent=None):
         if parent is None:
             parent = self.json['content']['properties']
@@ -303,7 +312,8 @@ class Descriptor:
             parent[name] = data
             self.generate_object(path, name, data)
 
-    def is_unsigned_int(self, value, max_value = 20000) -> bool:
+
+    def is_unsigned_int(self, value, max_value = 50000) -> bool:
         if not value.isdigit():
             return False
                 
@@ -313,12 +323,19 @@ class Descriptor:
         return True
 
 
-    def value_checker(self, name, value: str) -> bool:
+    def value_checker(self, parent, name, value: str) -> bool:
         match name:
             case 'valueType':
                 return value in self.object_type
             case 'valueMaximum':
-                return self.is_unsigned_int(value)
+                if not self.is_unsigned_int(value):
+                    return False
+
+                if 'valueMinimum' in parent:
+                    return value > parent['valueMinimum']
+
+                return True
+
             case 'valueMinimum':
                 return self.is_unsigned_int(value)
             case 'valueUnit':
@@ -331,7 +348,7 @@ class Descriptor:
                 if self.is_unsigned_int(seperated_class[0]) is False:
                     print('Incorrect format of class')
                     return False
-                
+
                 seperated_atribute = seperated_class[1].split(';')
                 if len(seperated_atribute) != 2:
                     print('Incorrect amount of atribute')
@@ -341,7 +358,7 @@ class Descriptor:
                     return False
 
                 obis = seperated_atribute[0].split('.')
-                
+
                 if len(obis) != 6:
                     print('Incorrect amount of obis numbers')
                     return False
@@ -351,43 +368,41 @@ class Descriptor:
                         return False
 
                 return True
-            
+
             case _:
                 return True
 
     def change_type(self, rel_path, object: OrderedDict, object_type):
-        childs = list(object.keys())
-        if object_type in self.object_type:
-            acceptable_settings = self.object_type[object_type]
-        else:
-            acceptable_settings = self.object_type['Branch']
+        if object_type not in self.object_type:
+            return
 
         if object_type == "Branch":
-            for child in childs:
-                if not isinstance(object[child], OrderedDict):
-                    if child in acceptable_settings:
-                        continue
+            children = list(object.keys())
+            acceptable_settings = self.object_type[object_type]
 
+            for child in children:
+                if not isinstance(object[child], OrderedDict) and child not in acceptable_settings:
                     object.pop(child)
                     self.remove_object(rel_path, child)
+
         else:
-            if object_type == object['valueType']:
-                self.validate_tree(object, self.object_type[object_type], rel_path, True)
-            else:
-                self.validate_tree(object, self.object_type[object_type], rel_path)
+            data_keep = object_type == object['valueType']
+            self.validate_tree(object, self.object_type[object_type], rel_path, data_keep)
 
-    def last_operations(self):
-        if len(self.saves) >=8:
-            self.saves.pop()
+    def undo(self):
+        saved = self.saves.undo()
 
-        self.saves.insert(0, deepcopy(self.json))
-
-    def load_last(self):
-        if len(self.saves) < 1:
+        if saved is None:
             return
-        
-        save = self.saves.pop(0)
-        
-        parents = []
-        parents.append(self._name)
-        self.validate_tree(self.json['content']['properties'], save['content']['properties'], parents)
+
+        parents = [self._name]
+        self.validate_tree(self.json['content']['properties'], saved['content']['properties'], parents)
+
+    def redo(self):
+        saved = self.saves.redo()
+
+        if saved is None:
+            return
+
+        parents = [self._name]
+        self.validate_tree(self.json['content']['properties'], saved['content']['properties'], parents)

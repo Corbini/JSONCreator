@@ -1,4 +1,3 @@
-import tkinter as tk
 from source.window.main import MainWindow
 from source.frame.main import Main
 from source.controller import Controller

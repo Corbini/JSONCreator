@@ -36,7 +36,8 @@ class Controller:
 
 
         self.view.bind("<<tree_new>>", lambda w: self.model.new_structure("new_tree"))
-        self.view.bind_all("<Control-z>", lambda event: self.model.load_last())
+        self.view.bind_all("<Control-z>", lambda event: self.model.undo())
+        self.view.bind_all("<Control-y>", lambda event: self.model.redo())
 
     def save(self, w):
         path = save_as()
