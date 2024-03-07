@@ -71,7 +71,7 @@ class Name(Frame):
 
         name = parents.pop(-1)
 
-        Call.call(parents, name, value, 'change')
+        Call.call(parents, name, value, 'update')
 
     def get(self):
         return self.button.cget('text')

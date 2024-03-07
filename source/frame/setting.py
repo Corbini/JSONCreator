@@ -80,7 +80,7 @@ class Setting(Frame):
 
         name = self.name_label.cget("text")
 
-        Call.call(parents, name, value, 'change')
+        Call.call(parents, name, value, 'update')
 
     def reset(self, event):
         self.data.delete(0, END)

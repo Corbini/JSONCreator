@@ -1,12 +1,15 @@
 from tkinter import Frame, Entry, Label, Text, Button, END, OptionMenu, StringVar
 from source.frame.call import Call
 
+
 class General(Frame):
     
-    type_list = ('Branch','String','Boolean','DataTime','SerialPort',
-                        'IP','IPv4','IPv6','UserName','password',
-                        'UInt8','UInt16','UInt32','UInt64','Int8','Int16','Int32','Int64',
-                        'Real32','Real64', 'ReportBranch', 'Enum')
+    type_list = (
+        'Branch', 'String', 'Boolean', 'DataTime', 'SerialPort',
+        'IP', 'IPv4', 'IPv6', 'UserName', 'password',
+        'UInt8', 'UInt16', 'UInt32', 'UInt64', 'Int8', 'Int16', 'Int32', 'Int64',
+        'Real32', 'Real64', 'ReportBranch', 'Enum'
+    )
 
     def __init__(self, frame, parents = lambda empty_list: list(empty_list), name = lambda: str('name')):
         super().__init__(
@@ -21,7 +24,7 @@ class General(Frame):
 
         self.type_menu = OptionMenu(self, self.type, *self.type_list, command=self.call_input)
         self.type_menu.config(width=15, padx=0, pady=0)
-        self.type_menu.pack(side='top',fill='x', expand=True)
+        self.type_menu.pack(side='top', fill='x', expand=True)
 
         empty_list = list()
         if self.parents(empty_list) is not None:
@@ -39,7 +42,7 @@ class General(Frame):
         parents = []
         self.parents(parents)
         value = self.type.get()
-        Call.call(parents, 'valueType', value, 'change')
+        Call.call(parents, 'valueType', value, 'update')
         
     def call_set(self, value):
         self.type.set(value)

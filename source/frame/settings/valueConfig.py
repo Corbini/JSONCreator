@@ -166,7 +166,7 @@ class valueConfig(Frame):
             new_value += '|'
             new_value += str(value)
 
-        Call.call(parents, name, new_value, 'change')
+        Call.call(parents, name, new_value, 'update')
 
     def reset(self, event, name):
         values = self.old_data.split('|')

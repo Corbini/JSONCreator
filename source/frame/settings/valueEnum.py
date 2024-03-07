@@ -63,7 +63,7 @@ class valueEnum(Frame):
         new_values.append("new")
 
         name = self.label.cget("text")
-        Call.call(parents, name, new_values, 'change')
+        Call.call(parents, name, new_values, 'update')
 
     def input(self, event: Event, index: int):
         if self.par_parent is None:
