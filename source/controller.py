@@ -64,7 +64,25 @@ class Controller:
         if name in self.languages_storage:
             self.languages_storage[name].call(parents, value, operation)
         else:
-            self.model.change_param(parents, name, value, operation)
+            match operation:
+                case 'remove':
+                    self.model.remove(parents, name, value)
+                case 'read':
+                    self.model.read(parents, name, value)
+                case 'add_before':
+                    self.model.add_before(parents, name, value)
+                case 'move_up':
+                    self.model.move_up(parents, name, value)
+                case 'move_down':
+                    self.model.move_down(parents, name, value)
+                case 'duplicate_before':
+                    self.model.duplicate_before(parents, name, value)
+                case 'duplicate_end':
+                    self.model.duplicate_end(parents, name, value)
+                case 'update':
+                    self.model.update(parents, name, value)
+                case _:
+                    print("Unsupported operation: ", operation)
 
     def load_language(self, path, data):
 

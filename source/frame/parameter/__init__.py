@@ -20,7 +20,7 @@ class Parameter(Frame):
 
         self.name = Name(self, name, self.get_parent, self.change_size)
 
-        self._general = General(self, self.get_parent, self.name.get)
+        self._general = General(self, self.get_parent, self.name.get())
 
         self.translations = Translation(self._general, self.get_parent)
         

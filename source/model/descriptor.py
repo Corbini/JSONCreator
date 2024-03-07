@@ -141,97 +141,195 @@ class Descriptor:
 
     def change_param(self, rel_path: list, name, data, operation) -> bool:
         self.saves.save(self.json)
-        path = self.json['content']['properties']
+        parent = self.json['content']['properties']
 
         for object in rel_path[1:]:
-            path = path[object]
+            parent = parent[object]
 
         match operation:
             case 'remove':
-                path.pop(name)
+                parent.pop(name)
                 self.remove_object(rel_path, name)
 
-            case 'read':
-                if name in path:    
-                    data = path[name]
-                else:
-                    data = ''
-                    
-                self.generate_object(rel_path, name, data)
 
-            case 'add':
-                if name in path:
-                    print("Object have: ", name)
-                    return False
-                
-                self.add_child(rel_path, name, data, path)
+    def _go_to_parent(self, parents):
+        parent = self.json['content']['properties']
 
-                self.generate_object(rel_path, name, data)
+        try:
+            for object in parents[1:]:
+                parent = parent[object]
+        except:
+            print("Incorrect parents")
+            return None
 
-            case 'add_before':
-                if name in path:
-                    print("Object have: ", name)
-                    return False
-                
-                self.add_child(rel_path, name, None, path)
-                self.move_before(path, name, data)
-                
-                updates_list = list(path.keys())
-                updates_list.remove('valueType')
+        return parent
 
-                self.reload_list(rel_path[:-1], rel_path[-1], updates_list)
+    def remove(self, parents, name, data):
+        parent = self._go_to_parent(parents)
+        if parent is None:
+            return False
 
-            case 'move_up':
-                sort_list = list(path.keys())
-                before = sort_list.index(name) -1
-                if before <0:
-                    return False
+        if name not in parent:
+            return False
 
-                self.move_before(path, name, sort_list[before])
+        self.saves.save(self.json)
+        parent.pop(name)
+        self.remove_object(parents, name)
+        return True
 
-                updates_list = list(path.keys())
-                updates_list.remove('valueType')
-                self.reload_list(rel_path, name, updates_list)
-            case 'move_down':
-                sort_list = list(path.keys())
-                before = sort_list.index(name) +1
-                if before <0:
-                    return False
+    def read(self, parents, name, data):
+        parent = self._go_to_parent(parents)
+        if parent is None:
+            return False
 
-                self.move_before(path, sort_list[before], name)
+        if name not in parent:
+            self.generate_object(parents, name, '')
+            return False
 
-                updates_list = list(path.keys())
-                updates_list.remove('valueType')
-                self.reload_list(rel_path, name, updates_list)
+        self.generate_object(parents, name, parent[name])
 
-            case 'duplicate_before':
-                if self.duplicate(path, name, data, rel_path) is False:
-                    print("name is used: ", data + '_duplicate')
-                    return False
+        return True
 
-                self.move_before(path, data + '_duplicate', data)
+    def move_before(self, object, move_name, before_name):
+        sort_list = list(object.keys())
+        first = sort_list.index(before_name)
 
-                updates_list = list(path.keys())
-                updates_list.remove('valueType')
-                self.reload_list(rel_path[:-1], rel_path[-1], updates_list)
+        sort_list = sort_list[first:]
+        sort_list.pop(sort_list.index(move_name))
 
-            case 'duplicate_end':
-                if self.duplicate(path, name, data, rel_path) is False:
-                    print("name is used: ", data + '_duplicate')
-                    return False
+        for object_name in sort_list:
+            object.move_to_end(object_name)
 
-            case _:
-                return self._update(path, name, data, rel_path)
+    def move_up(self, parents, name, data) -> bool:
+        parent = self._go_to_parent(parents)
+        if parent is None:
+            return False
 
-    def _update(self, parent, name, data, rel_path) -> bool:
+        self.saves.save(self.json)
+        sort_list = list(parent.keys())
+        before = sort_list.index(name) - 1
+        if before < 0:
+            return False
+
+        self.move_before(parent, name, sort_list[before])
+
+        updates_list = list(parent.keys())
+        updates_list.remove('valueType')
+        self.reload_list(parents, name, updates_list)
+
+        return True
+
+    def move_down(self, parents, name, data) -> bool:
+        parent = self._go_to_parent(parents)
+        if parent is None:
+            return False
+
+        self.saves.save(self.json)
+        sort_list = list(parent.keys())
+        before = sort_list.index(name) + 1
+        if before < 0:
+            return False
+
+        self.move_before(parent, sort_list[before], name)
+
+        updates_list = list(parent.keys())
+        updates_list.remove('valueType')
+        self.reload_list(parents, name, updates_list)
+
+        return True
+
+    def add_before(self, parents, name, data) -> bool:
+        parent = self._go_to_parent(parents)
+        if parent is None:
+            return False
+
+        if name in parent:
+            print("Object have: ", name)
+            return False
+
+        self.saves.save(self.json)
+        self.add_child(parents, name, data, parent)
+        self.generate_object(parents, name, data)
+
+        self.move_before(parent, name, data)
+
+        updates_list = list(parent.keys())
+        updates_list.remove('valueType')
+        self.reload_list(parents[:-1], parents[-1], updates_list)
+
+        return True
+
+    def add(self, parents, name, data) -> bool:
+        parent = self._go_to_parent(parents)
+        if parent is None:
+            return False
+
+        if name in parent:
+            print("Object have: ", name)
+            return False
+
+        self.saves.save(self.json)
+        self.add_child(parents, name, data, parent)
+        self.generate_object(parents, name, data)
+
+        return True
+
+    def _duplicate(self, parents, name, data, parent):
+        parent[name] = deepcopy(parent[data])
+        self.generate_object(parents, name, None)
+        parents.append(name)
+        self.generate_tree(parent[name], parents)
+
+    def duplicate_before(self, parents, name, data) -> bool:
+        parent = self._go_to_parent(parents)
+        if parent is None:
+            return False
+
+        new_name = data + '_duplicate'
+        if new_name in parent:
+            print("Object have: ", name)
+            return False
+
+        self.saves.save(self.json)
+        self._duplicate(parents, new_name, data, parent)
+
+        self.move_before(parent, new_name, data)
+
+        updates_list = list(parent.keys())
+        updates_list.remove('valueType')
+        self.reload_list(parents[:-1], parents[-1], updates_list)
+
+        return True
+
+    def duplicate_end(self, parents, name, data) -> bool:
+        parent = self._go_to_parent(parents)
+        if parent is None:
+            return False
+
+        new_name = data + '_duplicate'
+        if new_name in parent:
+            print("Object have: ", name)
+            return False
+
+        self.saves.save(self.json)
+        self._duplicate(parents, new_name, data, parent)
+
+        return True
+
+    def update(self, parents, name, data) -> bool:
+        parent = self._go_to_parent(parents)
+        if parent is None:
+            return False
+
+        self.saves.save(self.json)
         # Checks if value is correct
-        # if not self.value_checker(parent, name, data):
-        if not self.checker.check(data, name):
+        if not self.value_checker(parent, name, data):
+        # if not self.checker.check(data, name):
             # reset data to last correct value
             if name in parent:
-                self.generate_object(rel_path, name, parent[name])
+                self.generate_object(parents, name, parent[name])
             else:
-                self.generate_object(rel_path, name, '')
+                self.generate_object(parents, name, '')
 
             return False
 
@@ -254,43 +352,16 @@ class Descriptor:
                 elif key == data:
                     flag = True
 
-            rel_path.append(name)
+            parents.append(name)
             name = 'name'
         else:
             parent[name] = deepcopy(data)
             if name == 'valueType':
-                self.change_type(rel_path, parent, data)
+                self.change_type(parents, parent, data)
 
 
-        self.generate_object(rel_path, name, data)
+        self.generate_object(parents, name, data)
         return True
-
-
-    def duplicate(self, path, name, data, rel_path) -> bool:
-        new_name = data + '_duplicate'
-        if new_name in path:
-            print("Object have: ", name)
-            return False
-        
-        path[new_name] = deepcopy(path[data])
-        self.generate_object(rel_path, new_name, None)
-
-        rel_path.append(new_name)
-        self.generate_tree(path[new_name], rel_path)
-        rel_path.remove(new_name)
-
-        return True
-
-    def move_before(self, object, move_name, before_name):
-        sort_list = list(object.keys())
-        first = sort_list.index(before_name)
-
-        sort_list = sort_list[first: ]
-        sort_list.pop(sort_list.index(move_name))
-
-        for object_name in sort_list:
-            object.move_to_end(object_name)
-            
 
     def add_child(self, path, name, data='', parent=None):
         if parent is None:
