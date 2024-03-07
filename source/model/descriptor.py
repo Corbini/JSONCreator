@@ -3,12 +3,12 @@ from collections import OrderedDict
 from copy import deepcopy
 from source.model.conventer import clean_json
 from source.model.undo_redo import UndoRedo
-# from source.model.value_formats import ValueFormats
+from source.model.value_formats import ValueFormats
 
 
 class Descriptor:
 
-    object_type= {}
+    object_type = {}
 
 
     def __init__(self, name="", filename=""):
@@ -27,7 +27,7 @@ class Descriptor:
 
         self.saves = UndoRedo(8)
 
-        # self.checker = ValueFormats()
+        self.checker = ValueFormats(self.object_type)
 
         self._path = ''
         self._name = ''
@@ -323,11 +323,15 @@ class Descriptor:
 
         self.saves.save(self.json)
         # Checks if value is correct
-        if not self.value_checker(parent, name, data):
-        # if not self.checker.check(data, name):
+        if not self.checker.check(parent['valueType'], name, data):
             # reset data to last correct value
+            print('Incorrect value')
             if name in parent:
-                self.generate_object(parents, name, parent[name])
+                if isinstance(parent[name], OrderedDict):
+                    parents.append(name)
+                    self.generate_object(parents, 'name', name)
+                else:
+                    self.generate_object(parents, name, parent[name])
             else:
                 self.generate_object(parents, name, '')
 
@@ -382,66 +386,6 @@ class Descriptor:
         else:
             parent[name] = data
             self.generate_object(path, name, data)
-
-
-    def is_unsigned_int(self, value, max_value = 50000) -> bool:
-        if not value.isdigit():
-            return False
-                
-        if int(value) < 0 or int(value) > max_value:
-            return False
-        
-        return True
-
-
-    def value_checker(self, parent, name, value: str) -> bool:
-        match name:
-            case 'valueType':
-                return value in self.object_type
-            case 'valueMaximum':
-                if not self.is_unsigned_int(value):
-                    return False
-
-                if 'valueMinimum' in parent:
-                    return value > parent['valueMinimum']
-
-                return True
-
-            case 'valueMinimum':
-                return self.is_unsigned_int(value)
-            case 'valueUnit':
-                return True # value in ['ms', 's', 'min', 'hour', 'mV', 'V', 'MV',  'mA', 'A', 'MA', 'Wh', 'kWh', 'MWh', 'varh', 'kvarh', 'Mvarh', 'Degree', 'C', 'F', 'percent', 'Hz', 'VA', 'kVA', 'MVA']
-            case 'obis':
-                seperated_class = value.split(':')
-                if len(seperated_class) != 2:
-                    print('Incorrect amount of class')
-                    return False
-                if self.is_unsigned_int(seperated_class[0]) is False:
-                    print('Incorrect format of class')
-                    return False
-
-                seperated_atribute = seperated_class[1].split(';')
-                if len(seperated_atribute) != 2:
-                    print('Incorrect amount of atribute')
-                    return False
-                if self.is_unsigned_int(seperated_atribute[1]) is False:
-                    print('Incorrect format of atribute')
-                    return False
-
-                obis = seperated_atribute[0].split('.')
-
-                if len(obis) != 6:
-                    print('Incorrect amount of obis numbers')
-                    return False
-                for number in obis:
-                    if self.is_unsigned_int(number, 255) is False:
-                        print('Incorrect format of obis numbers')
-                        return False
-
-                return True
-
-            case _:
-                return True
 
     def change_type(self, rel_path, object: OrderedDict, object_type):
         if object_type not in self.object_type:
