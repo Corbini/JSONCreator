@@ -49,7 +49,7 @@ class valueConfig(Frame):
 
         self._lines[name] = [frame, label, entry]
 
-    def __init__(self, parent, frame, name, data="", type="None"):
+    def __init__(self, parent, frame, name, data="", config_type="None"):
         super().__init__(
             master=frame,
         )
@@ -59,7 +59,7 @@ class valueConfig(Frame):
 
         self._lines = dict()
 
-        self._load_type(type)
+        self._load_type(config_type)
 
         self.update(data)
 
@@ -75,7 +75,8 @@ class valueConfig(Frame):
             ["Maximum Chars", self._add_entry],
             ["Hidden", self._add_entry]
         ]
-        valueable = ['UInt8', 'UInt16', 'UInt32', 'Uint64', 'Int8', 'Int16', 'Int32', 'Int64', 'Real32', 'Real64']
+        valueable = ['UInt8', 'UInt16', 'UInt32', 'Uint64', 'Int8', 'Int16', 'Int32', 'Int64', 'Real32', 'Real64',
+                     'Numeric']
         valueable_settings = [
             ["Minimum", self._add_entry],
             ["Maximum", self._add_entry],
@@ -119,9 +120,12 @@ class valueConfig(Frame):
 
         for value in self._lines:
             if isinstance(self._lines[value][2], OptionMenu):
-                self._update_option_menu(self._lines[value][3], values.pop(0))
-            elif isinstance(self._lines[value][2], OptionMenu):
-                pass
+                if values.pop(0) == '1':
+                    my_value = 'True'
+                else:
+                    my_value = 'False'
+
+                self._update_option_menu(self._lines[value][3], my_value)
             else:
                 self._lines[value][2].delete(0, END)
                 self._lines[value][2].insert(0, values.pop(0))
@@ -144,14 +148,13 @@ class valueConfig(Frame):
 
         index = list(self._lines).index(name)
 
-
         if isinstance(self._lines[name][2], OptionMenu):
-                value = self._lines[name][3].get()
+            value = self._lines[name][3].get()
 
-                if value == 'True':
-                    value = True
-                if value == 'False':
-                    value = False
+            if value == 'True':
+                value = 1
+            if value == 'False':
+                value = 0
         else:
             value = self._lines[name][2].get()
 

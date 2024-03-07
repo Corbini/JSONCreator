@@ -10,13 +10,12 @@ class Descriptor:
 
     object_type = {}
 
-
     def __init__(self, name="", filename=""):
 
-        self.generate_object = lambda parents, name, data: print(parents, name, "\n", data, "\n")
-        self.remove_object = lambda parents, name: print(parents, name, "\n")
-        self.create_tree = lambda name: print(name)
-        self.reload_list = lambda parents, name, list: print(parents, name, "\n", list, "\n")
+        self.generate_object = lambda parents, object_name, data: print(parents, object_name, "\n", data, "\n")
+        self.remove_object = lambda parents, object_name: print(parents, object_name, "\n")
+        self.create_tree = lambda object_name: print(object_name)
+        self.reload_list = lambda parents, object_name, order_list: print(parents, object_name, "\n", order_list, "\n")
 
         self.filename = filename
         self.json = None
