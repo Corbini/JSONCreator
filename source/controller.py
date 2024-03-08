@@ -7,6 +7,7 @@ from source.frame.translation import Translation as FrameTranslation
 from source.frame.call import Call
 from source.frame.parameter._generals import General
 
+
 class Controller:
     def __init__(self, view: Main, model: Descriptor):
         self.view = view
@@ -84,12 +85,12 @@ class Controller:
                 case _:
                     print("Unsupported operation: ", operation)
 
-    def load_language(self, path, data):
+    def load_language(self, path, data_json):
 
         translation = Translation()
         translation.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
 
-        if translation.data_load(path, data):
+        if translation.data_load(path, data_json):
             self.languages_storage[translation.name] = translation
             print("Language: ", translation.name, ", Loaded")
 
@@ -103,7 +104,6 @@ class Controller:
         for data in language_list:
             if data_type(data[1]) == 'languageDefinition':
                 self.load_language(data[0], data[1])
-
 
     def save_languages(self, e):
         for language_name in self.languages_storage:

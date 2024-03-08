@@ -1,14 +1,46 @@
-from tkinter import Frame, Text, Canvas, Entry, Label, END, OptionMenu, StringVar
+from tkinter import Frame, Text, Canvas, Entry, Label, END, OptionMenu, StringVar, Button
 from source.frame.call import Call
 
 
-class valueConfig(Frame):
+class EnumEntry(Entry):
 
-    def _add_enum(self, name, value, option=['True', 'False']):
+    remove = lambda data: print('Remove: ', data)
+
+    def __init__(self, parent, data):
+        self._main_frame = Frame(parent)
+        self._main_frame.pack(side='top')
+
+        super().__init__(self._main_frame)
+        self.insert(0, data)
+        self.pack(side='left')
+
+        self.remove_button = Button(self._main_frame, text='remove', command=self._remove)
+        self.remove_button.pack(side='right')
+
+    def _remove(self):
+        EnumEntry.remove(self.get())
+
+
+class EntryList(Frame):
+    def __init__(self, parent, name):
+        self._main_frame = Frame(parent)
+        self._main_frame.pack(side='top')
+
+        self.label = Label(self._main_frame, text=name)
+        self.label.pack(side='left', anchor='nw')
+
+        super().__init__(self._main_frame)
+        self.pack(side='left', anchor='nw')
+
+        self.add_button = Button(self, text='Add')
+        self.add_button.pack(side='bottom')
+
+
+class valueConfig(Frame):
+    def _add_enum(self, name, value):
         frame = Frame(self, height=40, width=300)
         label = Label(frame, text=name)
         variable = StringVar(frame)
-        variable.set(value)  # default value
 
         menu = OptionMenu(frame, variable, "True", "False", command=lambda event: self.input(event, name))
         menu.config(width=15, padx=0, pady=0)
@@ -18,13 +50,21 @@ class valueConfig(Frame):
         frame.pack(side='top', anchor='nw')
 
         self._lines[name] = [frame, label, menu, variable]
+        self._update_enum(name, value)
+
+    def _update_enum(self, name, value):
+        if value == '1':
+            value = 'True'
+        else:
+            value = 'False'
+        self._lines[name][3].set(value)
+
 
     def _add_entry(self, name, value):
         frame = Frame(self, height=40, width=300)
         label = Label(frame, text=name)
         entry = Entry(frame)
 
-        entry.insert(0, value)
         entry.bind('<Return>', lambda event: self.input(event, name))
         entry.bind('<FocusOut>', lambda event: self.reset(event, name))
 
@@ -33,21 +73,46 @@ class valueConfig(Frame):
         frame.pack(side='top', anchor='nw')
 
         self._lines[name] = [frame, label, entry]
+        self._update_entry(name, value)
+
+    def _update_entry(self, name, value):
+        self._lines[name][2].delete(0, END)
+        self._lines[name][2].insert(0, value)
 
     def _add_entry_list(self, name, value):
-        frame = Frame(self, height=300, width=300)
+        frame = Frame(self)
         label = Label(frame, text=name)
-        entry = Entry(frame)
-
-        entry.insert(0, value)
-        entry.bind('<Return>', lambda event: self.input(event, name))
-        entry.bind('<FocusOut>', lambda event: self.reset(event, name))
-
-        entry.pack(side='left', fill='y', expand=True)
-        label.pack(side='left', fill='y', expand=True)
+        label.pack(side='top')
         frame.pack(side='top', anchor='nw')
 
-        self._lines[name] = [frame, label, entry]
+        entry_list = dict()
+
+        self._lines[name] = [frame, label, entry_list]
+        self._update_list(name, value)
+
+    def _update_list(self, name, value):
+        list_rik = value.split(';')
+
+        for rik in list_rik:
+            if rik in self._lines[name][2]:
+                # update
+                self._lines[name][2][rik].delete(0, END)
+                self._lines[name][2][rik].insert(0, rik)
+            else:
+                sub_address = rik.split('/')
+
+                # go through parent
+                previous = self
+                for parent in sub_address[:-1]:
+                    if parent not in self._lines[name][2]:
+                        entry_list = EntryList(previous, parent)
+
+                        self._lines[name][2][parent] = entry_list
+                    previous = self._lines[name][2][parent]
+
+                # create
+                entry = EnumEntry(previous, rik)
+                self._lines[name][2][rik] = entry
 
     def __init__(self, parent, frame, name, data="", config_type="None"):
         super().__init__(
@@ -59,7 +124,7 @@ class valueConfig(Frame):
 
         self._lines = dict()
 
-        self._load_type(config_type)
+        self._load_type(config_type, data)
 
         self.update(data)
 
@@ -68,7 +133,7 @@ class valueConfig(Frame):
         self.pack(side='top', anchor='nw')
         self.old_data = data
 
-    def _load_type(self, type):
+    def _load_type(self, type, data):
         stringables = ['String', 'IP', 'IPv4', 'IPv6', 'SerialPort', 'UserName', 'Password']
         stringables_settings = [
             ["Maximum Bytes", self._add_entry],
@@ -80,8 +145,9 @@ class valueConfig(Frame):
         valueable_settings = [
             ["Minimum", self._add_entry],
             ["Maximum", self._add_entry],
-            ["Scaler", self._add_entry],
+            ["Precision", self._add_entry],
             ["Is Float", self._add_enum],
+            ["preUnit", self._add_entry],
             ["Unit", self._add_entry]
         ]
 
@@ -93,42 +159,40 @@ class valueConfig(Frame):
         ]
 
         self._lines = dict()
+        data = data.split('|')
+
+        settings = ''
 
         if type in stringables:
-            for setting in stringables_settings:
-                setting[1](setting[0], '')
+            settings = stringables_settings
 
         elif type in valueable:
-            for setting in valueable_settings:
-                setting[1](setting[0], '')
+            settings = valueable_settings
 
         elif type in multi_choice:
-            for setting in multi_choice_settings:
-                setting[1](setting[0], '')
+            settings = multi_choice_settings
 
-    def _update_option_menu(self, object, value):
-        if isinstance(value, bool):
-            if value:
-                object.set('True')
+        for setting in settings:
+            if len(data) > 0:
+                setting[1](setting[0], data.pop(0))
             else:
-                object.set('False')
-        else:
-            object.set(value)
+                setting[1](setting[0], '')
 
     def update(self, data):
         values = data.split('|')
 
-        for value in self._lines:
-            if isinstance(self._lines[value][2], OptionMenu):
-                if values.pop(0) == '1':
-                    my_value = 'True'
-                else:
-                    my_value = 'False'
-
-                self._update_option_menu(self._lines[value][3], my_value)
+        for name in self._lines:
+            if len(values) != 0:
+                my_value = values.pop(0)
             else:
-                self._lines[value][2].delete(0, END)
-                self._lines[value][2].insert(0, values.pop(0))
+                my_value = ''
+
+            if isinstance(self._lines[name][2], OptionMenu):
+                self._update_enum(name, my_value)
+            elif isinstance(self._lines[name][2], dict):
+                self._update_list(name, my_value)
+            else:
+                self._update_entry(name, my_value)
 
         n = 1 + len(self._lines)
         for overload in values:
