@@ -1,6 +1,6 @@
 from tkinter import Frame, Text, Canvas, Entry, Label, END, OptionMenu, StringVar
 from source.frame.call import Call
-
+from source.frame.warning import WarningPopUp
 
 class Setting(Frame):
     def __init__(self, parent, frame, name, data=""):
@@ -32,7 +32,8 @@ class Setting(Frame):
                 self.data = Entry(self)
                 self.data.insert(0, data)
                 self.data.bind('<Return>', self.input)
-                self.data.bind('<FocusOut>', self.reset)
+                self.data.bind('<FocusOut>', lambda e: self.data.unbind('<Leave>'))
+                self.data.bind('<FocusIn>', lambda e: self.data.bind('<Leave>',self.input))
 
         self.data.pack(side='left', fill='y', expand=True)
 
@@ -43,6 +44,8 @@ class Setting(Frame):
         
         self.pack(side='top', anchor='nw')
         self.old_data = data
+
+        self.warning = WarningPopUp([self.data])
 
     def update(self, value):
         
@@ -64,6 +67,8 @@ class Setting(Frame):
     def input(self, event):
         if self.par_parent is None:
             return
+
+        self.warning.clear()
         
         parents = list()
         self.par_parent.get_parent(parents)
@@ -82,6 +87,5 @@ class Setting(Frame):
 
         Call.call(parents, name, value, 'update')
 
-    def reset(self, event):
-        self.data.delete(0, END)
-        self.data.insert(0, self.old_data)
+    def set_warn(self, text):
+        self.warning.warn(text)

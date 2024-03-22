@@ -16,6 +16,8 @@ class Descriptor:
         self.remove_object = lambda parents, object_name: print(parents, object_name, "\n")
         self.create_tree = lambda object_name: print(object_name)
         self.reload_list = lambda parents, object_name, order_list: print(parents, object_name, "\n", order_list, "\n")
+        self.warning = lambda parents, object_name, text: print(parents, object_name, "\n", "Warning: ")
+        self.error = lambda parents, object_name, text: print(parents, object_name, "\n", "Error: ")
 
         self.filename = filename
         self.json = None
@@ -322,17 +324,16 @@ class Descriptor:
 
         self.saves.save(self.json)
         # Checks if value is correct
-        if not self.checker.check(parent['valueType'], name, data):
+        if not self.checker.check(parents, parent['valueType'], name, data):
             # reset data to last correct value
-            print('Incorrect value')
-            if name in parent:
-                if isinstance(parent[name], OrderedDict):
-                    parents.append(name)
-                    self.generate_object(parents, 'name', name)
-                else:
-                    self.generate_object(parents, name, parent[name])
-            else:
-                self.generate_object(parents, name, '')
+            # if name in parent:
+            #     if isinstance(parent[name], OrderedDict):
+            #         parents.append(name)
+            #         self.generate_object(parents, 'name', name)
+            #     else:
+            #         self.generate_object(parents, name, parent[name])
+            # else:
+            #     self.generate_object(parents, name, '')
 
             return False
 

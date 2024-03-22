@@ -1,5 +1,7 @@
 from tkinter import Frame, Button, Text, Entry, Menu
 from source.frame.call import Call
+from source.frame.warning import WarningPopUp
+
 
 class Name(Frame):
 
@@ -12,16 +14,20 @@ class Name(Frame):
             text=name
         )
 
+        self._name = name
+
         self._parents = parents
 
         self.button.propagate(False)
         self.button.bind("<Button-1>", lambda w: func())
         self.button.bind("<Double-Button-1>", lambda w: self._show_entry())
+        self.button_color = self.button.cget('bg')
         
         self.entry = Entry(self)
         self.entry.propagate(False)
+        self.entry_color = self.entry.cget('bg')
 
-        self.button.pack(fill='both', expand=True)
+        self.button.pack(side='left', fill='both', expand=True)
         
         self.grid(in_=frame, row=0, column=0, sticky='nw')
 
@@ -39,7 +45,11 @@ class Name(Frame):
         
         self.button.bind("<Button-3>", self.menu_popup)
 
+        self.warning = WarningPopUp([self.button, self.entry])
+
     def _show_entry(self):
+        name = self.button.cget('text')
+        self.entry.insert(0, name)
         self.entry.pack(fill='both', expand=True)
         self.entry.bind("<Leave>", self._hide_entry)
         self.entry.bind("<FocusOut>", self._hide_entry)
@@ -47,6 +57,10 @@ class Name(Frame):
         self.button.pack_forget()
 
     def _hide_entry(self, event):
+        self.call_input(None)
+
+        self.warning.unload()
+
         self.entry.pack_forget()
         self.entry.delete(0, 'end')
         self.entry.unbind('<Leave>')
@@ -55,12 +69,13 @@ class Name(Frame):
         self.button.pack(fill='both', expand=True)
 
     def call_set(self, value):
+        self._name = value
         self.button.configure(text=value)
         self.button.update()
-        
 
     def call_input(self, event):
         value = self.entry.get()
+        self.button.config(text=value)
 
         if value == '':
             self._hide_entry(None)
@@ -71,10 +86,12 @@ class Name(Frame):
 
         name = parents.pop(-1)
 
+        self.warning.clear()
+
         Call.call(parents, name, value, 'update')
 
     def get(self):
-        return self.button.cget('text')
+        return self._name
 
     def menu_popup(self, event):
         # display the popup menu
@@ -93,3 +110,6 @@ class Name(Frame):
         parents = list()
         self._parents(parents)
         Call.call(parents[:-1], 'NewParameter', parents[-1], command)
+
+    def warn(self, text):
+        self.warning.warn(text)

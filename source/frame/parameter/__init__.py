@@ -87,4 +87,15 @@ class Parameter(Frame):
         if name not in self.child.list:
             self.child.list[name] = Parameter(self, self.child, name)
             self.child.list[name].translations.reload_language()
- 
+
+    def set_warn(self, text):
+        self.name.warn(text)
+
+    def warn(self, name, value):
+        if name in Translation.names:
+            self.translations.color(name, '#FF0000')
+
+        elif name == 'valueType':
+            self._general.color('#FF0000')
+        else:
+            self.child.list[name].set_warn(value)

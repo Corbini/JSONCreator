@@ -1,6 +1,6 @@
 from tkinter import Frame, Text, Canvas, Entry, Label, END, OptionMenu, StringVar, Button
 from source.frame.call import Call
-
+from source.frame.warning import WarningPopUp
 
 class EnumEntry(Entry):
 
@@ -17,9 +17,13 @@ class EnumEntry(Entry):
         self.remove_button = Button(self._main_frame, text='remove', command=self._remove)
         self.remove_button.pack(side='right')
 
+        self.warning = WarningPopUp([self])
+
     def _remove(self):
         EnumEntry.remove(self.get())
 
+    def set_warn(self, text):
+        self.warning.warn(text)
 
 class EntryList(Frame):
     def __init__(self, parent, name):
@@ -34,7 +38,7 @@ class EntryList(Frame):
 
         self.add_button = Button(self, text='Add')
         self.add_button.pack(side='bottom')
-
+        
 
 class valueConfig(Frame):
     def _add_enum(self, name, value):
@@ -243,3 +247,6 @@ class valueConfig(Frame):
     
         self._lines[name][2].delete(0, END)
         self._lines[name][2].insert(0, value)
+
+    def set_warn(self, text):
+        pass

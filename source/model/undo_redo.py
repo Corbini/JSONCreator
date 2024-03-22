@@ -27,7 +27,7 @@ class UndoRedo:
         return self._saves[self._position]
 
     def redo(self):
-        if self._position > len(self._saves) - 1:
+        if self._position >= len(self._saves) - 1:
             return None
 
         self._position += 1

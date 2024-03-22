@@ -49,3 +49,6 @@ class Translation:
         text = event.widget.get()
 
         Call.call(parents, name, text, 'set')
+
+    def color(self, name, color):
+        self._languages[name][1].configure(bg=color)

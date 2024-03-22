@@ -19,12 +19,22 @@ def tree_update(self, parents, name, value=None):
     else:
         parent.update_setting(name, value)
 
+
+def tree_data_error(self, parents, name, value):
+    parent = self.parameter_tree
+    for _parent in parents[1:]:
+        parent = parent.child.list[_parent]
+
+    parent.warn(name, value)
+
+
 def tree_remove(self, parents, name):
     parent = self.parameter_tree
     for _parent in parents[1:]:
         parent = parent.child.list[_parent]
 
     parent.child.remove(name)
+
 
 def tree_reload_list(self, parents, name, list):
 

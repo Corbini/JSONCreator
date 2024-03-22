@@ -52,3 +52,6 @@ class General(Frame):
 
     def hide(self):
         self.grid_forget()
+
+    def color(self, color):
+        self.type_menu.configure(bg=color)

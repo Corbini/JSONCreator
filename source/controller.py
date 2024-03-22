@@ -6,6 +6,7 @@ from source.json_loader import data_load, data_save, data_type, dir_load
 from source.frame.translation import Translation as FrameTranslation
 from source.frame.call import Call
 from source.frame.parameter._generals import General
+from source.model.value_formats import ValueFormats
 
 
 class Controller:
@@ -34,7 +35,8 @@ class Controller:
         self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
         self.model.remove_object = lambda parents, name: self.view.tree_remove(parents, name)
         self.model.reload_list = lambda parents, name, list: self.view.tree_reload_list(parents, name, list)
-
+        ValueFormats.call_error = lambda parents, name, text: self.view.tree_data_error(parents, name, text)
+        ValueFormats.object_type = object_type['content']
 
         self.view.bind("<<tree_new>>", lambda w: self.model.new_structure("new_tree"))
         self.view.bind_all("<Control-z>", lambda event: self.model.undo())
