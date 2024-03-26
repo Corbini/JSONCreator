@@ -51,6 +51,11 @@ class Parameter(Frame):
             self.widen = False
 
     def update_setting(self, name, value):
+        if name == 'enumKey':
+            if 'valueConfig' in self.child.list:
+                self.child.list['valueConfig'].update_keys(value)
+                return
+
         if name == 'name':
             self.par_parent.child.rename(self.name.get(), value)
             self.name.call_set(value)

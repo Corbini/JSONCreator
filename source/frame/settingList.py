@@ -3,6 +3,7 @@ from source.frame.call import Call
 from source.frame.warning import WarningPopUp
 from source.frame.setting import Setting
 
+
 class ObjectList:
     def __init__(self, parent, value, call_value, call_translation, number=0):
         self.frame = Frame(parent, padx=10, pady=5)
@@ -22,7 +23,7 @@ class ObjectList:
 
 
 class SettingList:
-    def __init__(self,parent, parent_frame, name, data="", call=None, seperator='|', translation=False):
+    def __init__(self, parent, parent_frame, name, data="", call=None, seperator='|', translation=False):
 
         self.frame = Frame(parent_frame)
         self.frame.pack(side='top', anchor='nw')
@@ -30,7 +31,6 @@ class SettingList:
         self.label = Label(self.frame, text=name)
         self.label.grid(column=0)
 
-        self.old_values = data
         self.seperator = seperator
         self.parent = parent
 
@@ -46,10 +46,12 @@ class SettingList:
             call_translation = self._call_translation
 
         for value in data:
-            self.entries.append(ObjectList(self.frame, value, self._call_value, call_translation, self.number))
+            if call is not None:
+                self.entries.append(ObjectList(self.frame, value, call, call_translation, self.number))
+            else:
+                self.entries.append(ObjectList(self.frame, value, self._call_value, call_translation, self.number))
             self.number += 1
 
-        self.call = call
 
     def update_keys(self, keys_list):
         keys = keys_list.split(';')
@@ -86,21 +88,27 @@ class SettingList:
         pass
         # self.call(parents, name, value, operation)
 
-    def _call_value(self, parents, name, value, operation):
+    def _call_value(self, event):
 
+        new_data = ''
 
-        if self.parent is None:
-            return
+        for entry in self.entries:
+            new_data += entry.setting.get() + ';'
 
-        parents = list()
+        new_data = new_data[:-1]
+
+        parents = []
         self.parent.get_parent(parents)
 
-        new_values = list(self.old_values)
-        new_values[index] = event.widget.get()
+        Call.call(parents, self.name, new_data, 'update')
 
-        name = self.label.cget("text")
+    def get(self):
+        new_data = ''
 
-        Call.call(parents, name, new_values, 'change')
+        for entry in self.entries:
+            new_data += entry.setting.get() + ';'
+
+        return new_data[:-1]
 
     def _call_translation(self, parents, name, value, operation):
         pass

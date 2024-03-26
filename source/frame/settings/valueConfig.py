@@ -80,6 +80,8 @@ class valueConfig(Frame):
 
         elif type in multi_choice:
             settings = multi_choice_settings
+        elif type == 'Tariff':
+            settings = ['view_height']
 
         lists = ["Enum List"]
 
@@ -95,13 +97,11 @@ class valueConfig(Frame):
                 else:
                     self._lines[setting] = Setting(None, self, setting, '', self._call_value)
 
-
     def update_keys(self, value):
         for setting in self._lines:
             if isinstance(self._lines[setting], SettingList):
                 self._lines[setting].update_keys(value)
                 return
-
 
     def update(self, data):
         values = data.split('|')
@@ -121,8 +121,15 @@ class valueConfig(Frame):
 
         self.old_data = data
 
-    def _call_value(self, parents, name, value, operation):
-        print(parents, name, value, operation)
+    def _call_value(self, event):
+        data = ''
+
+        for setting in self._lines:
+            data += self._lines[setting].get() + ';'
+
+        data = data[:-1]
+
+        print(data)
 
     def get_parent(self, parent: list):
         return self.par_parent.get_parent(parent)

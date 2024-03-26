@@ -22,31 +22,36 @@ class Setting(Frame):
             else:
                 self.variable.set("False")  # default value
 
-            self.data = OptionMenu(self, self.variable, "True", "False", command=lambda event: self.input(event))
+            if call is not None:
+                self.data = OptionMenu(self, self.variable, "True", "False", command=lambda event: call(event))
+            else:
+                self.data = OptionMenu(self, self.variable, "True", "False", command=lambda event: self.input(event))
             self.data.config(width=15, padx=0, pady=0)
 
-            if call is not None:
-                self.data.config(command=lambda event: call(event))
         elif name in 'valueAccess':
             self.variable = StringVar(self)
             self.variable.set(data)  # default value
 
-            self.data = OptionMenu(self, self.variable, "R", "W", "A", "N", command=lambda event: self.input(event))
-            self.data.config(width=15, padx=0, pady=0)
-
             if call is not None:
-                self.data.config(command=lambda event: call(event))
-
+                self.data = OptionMenu(self, self.variable, "R", "W", "A", "N", command=lambda event: call(event))
+            else:
+                self.data = OptionMenu(self, self.variable, "R", "W", "A", "N", command=lambda event: self.input(event))
+            self.data.config(width=15, padx=0, pady=0)
         else:
             self.data = Entry(self)
             self.data.insert(0, data)
-            self.data.bind('<Return>', self.input)
-            if call is not None:
-                pass
-            else:
-                self.data.bind('<FocusOut>', lambda e: self.data.unbind('<Leave>'))
-                self.data.bind('<FocusIn>', lambda e: self.data.bind('<Leave>',self.input))
 
+            if call is not None:
+                self.data.bind('<Return>', call)
+            else:
+                self.data.bind('<Return>', self.input)
+
+            self.data.bind('<FocusOut>', lambda e: self.data.unbind('<Leave>'))
+
+            if call is not None:
+                self.data.bind('<FocusIn>', lambda e: self.data.bind('<Leave>', call))
+            else:
+                self.data.bind('<FocusIn>', lambda e: self.data.bind('<Leave>', self.input))
 
         self.data.pack(side='left', fill='y', expand=True)
 
@@ -78,6 +83,12 @@ class Setting(Frame):
 
         print(value)
         self.old_data = value
+
+    def get(self) -> str:
+        if isinstance(self.data, OptionMenu):
+            return self.variable.get()
+        else:
+            return self.data.get()
 
     def input(self, event):
         if isinstance(self.data, OptionMenu):
