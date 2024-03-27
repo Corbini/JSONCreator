@@ -81,7 +81,6 @@ class Setting(Frame):
             self.data.delete(0, END)
             self.data.insert(0, value)
 
-        print(value)
         self.old_data = value
 
     def get(self) -> str:

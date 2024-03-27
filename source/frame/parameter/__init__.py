@@ -6,6 +6,7 @@ from source.frame.parameter._generals import General
 from source.frame.parameter._child import Child
 from source.frame.settings.valueConfig import valueConfig
 from source.frame.settings.valueEnum import valueEnum
+from source.frame.settingList import SettingList
 
 
 class Parameter(Frame):
@@ -26,7 +27,7 @@ class Parameter(Frame):
         
         self.child = Child(self, self.get_parent)
       
-    def get_parent(self, parents = list()):
+    def get_parent(self, parents: list):
         parent = self.par_parent
         
         parents.insert(0, self.name.get())
@@ -52,9 +53,12 @@ class Parameter(Frame):
 
     def update_setting(self, name, value):
         if name == 'enumKey':
-            if 'valueConfig' in self.child.list:
-                self.child.list['valueConfig'].update_keys(value)
-                return
+            contains = ['valueEnum', 'valueConfig']
+
+            for container in contains:
+                if container in self.child.list:
+                    if self.child.list[container].update_keys(value):
+                        return
 
         if name == 'name':
             self.par_parent.child.rename(self.name.get(), value)
@@ -79,7 +83,8 @@ class Parameter(Frame):
                 case 'valueConfig':
                     self.child.list[name] = valueConfig(self, self.child, name, value, self._general.type.get())
                 case 'valueEnum':
-                    self.child.list[name] = valueEnum(self, self.child, name, value)
+                    self.child.list[name] = SettingList(self, self.child, name, value, translation=True)
+                    # self.child.list[name] = valueEnum(self, self.child, name, value)
                 case 'EnumKey':
                     self.child.list[name] = valueEnum(self, self.child, name, value)
 

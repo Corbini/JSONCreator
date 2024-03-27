@@ -337,6 +337,10 @@ class Descriptor:
 
             return False
 
+        if name not in parent:
+            self.add(parents, name, data)
+            return
+
         if isinstance(parent[name], OrderedDict):
             # Rename object
             if name == data:

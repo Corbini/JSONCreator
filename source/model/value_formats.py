@@ -188,6 +188,8 @@ class ValueFormats:
 
                 self.error = False
                 return False
+            case 'enumKey':
+                return True
             case 'valueAccess':
                 return self._is_value_access(data)
             case 'valueMaximum':

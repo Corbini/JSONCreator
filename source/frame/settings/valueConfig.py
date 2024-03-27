@@ -88,20 +88,24 @@ class valueConfig(Frame):
         for setting in settings:
             if len(data) > 0:
                 if setting in lists:
-                    self._lines[setting] = SettingList(self, self, setting, data.pop(0), self._call_value, ';', True)
+                    data_list = data.pop(0)
+                    data_list = data_list.split(';')
+                    self._lines[setting] = SettingList(self, self, setting, data_list, self._call_value,  True)
                 else:
-                    self._lines[setting] = Setting(self, self, setting, data.pop(0), self._call_value)
+                    self._lines[setting] = Setting(None, self, setting, data.pop(0), self._call_value)
             else:
                 if setting in lists:
-                    self._lines[setting] = SettingList(self, setting, '', self._call_value, ';', True)
+                    self._lines[setting] = SettingList(self, self, setting, [], self._call_value, True)
                 else:
                     self._lines[setting] = Setting(None, self, setting, '', self._call_value)
 
-    def update_keys(self, value):
+    def update_keys(self, value) -> bool:
         for setting in self._lines:
             if isinstance(self._lines[setting], SettingList):
                 self._lines[setting].update_keys(value)
-                return
+                return True
+
+        return False
 
     def update(self, data):
         values = data.split('|')
@@ -111,6 +115,9 @@ class valueConfig(Frame):
                 my_value = values.pop(0)
             else:
                 my_value = ''
+
+            if ';' in my_value:
+                my_value = my_value.split(';')
 
             self._lines[name].update(my_value)
 
@@ -128,8 +135,6 @@ class valueConfig(Frame):
             data += self._lines[setting].get() + ';'
 
         data = data[:-1]
-
-        print(data)
 
     def get_parent(self, parent: list):
         return self.par_parent.get_parent(parent)
