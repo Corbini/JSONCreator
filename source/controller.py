@@ -7,6 +7,7 @@ from source.frame.translation import Translation as FrameTranslation
 from source.frame.call import Call
 from source.frame.parameter._generals import General
 from source.model.value_formats import ValueFormats
+from source.model.oparation import Operation
 
 
 class Controller:
@@ -29,7 +30,7 @@ class Controller:
         self.view.bind_all('<<input>>', lambda w, data:self.input(w = data))
 
         object_type = data_load('assets/type_templates.json')
-        self.model.object_type = object_type['content']
+        Operation.object_type = object_type['content']
         General.type_list = object_type['content']
         self.model.create_tree = lambda name: self.view.tree_create(name)
         self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
@@ -67,25 +68,7 @@ class Controller:
         if name in self.languages_storage:
             self.languages_storage[name].call(parents, value, operation)
         else:
-            match operation:
-                case 'remove':
-                    self.model.remove(parents, name, value)
-                case 'read':
-                    self.model.read(parents, name, value)
-                case 'add_before':
-                    self.model.add_before(parents, name, value)
-                case 'move_up':
-                    self.model.move_up(parents, name, value)
-                case 'move_down':
-                    self.model.move_down(parents, name, value)
-                case 'duplicate_before':
-                    self.model.duplicate_before(parents, name, value)
-                case 'duplicate_end':
-                    self.model.duplicate_end(parents, name, value)
-                case 'update':
-                    self.model.update(parents, name, value)
-                case _:
-                    print("Unsupported operation: ", operation)
+            self.model.operation.input(parents, name, value, operation)
 
     def load_language(self, path, data_json):
 

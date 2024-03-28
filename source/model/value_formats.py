@@ -9,9 +9,8 @@ class ValueFormats:
 
     error = ''
 
-    def __init__(self, object_type):
+    def __init__(self):
         self._types = []
-        # self._checks[format_name](value)
 
     def _is_setting_name(self, name) -> bool:
         if name not in self._types:
