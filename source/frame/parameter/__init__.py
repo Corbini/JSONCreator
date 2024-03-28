@@ -52,6 +52,7 @@ class Parameter(Frame):
             self.widen = False
 
     def update_setting(self, name, value):
+
         if name == 'enumKey':
             contains = ['valueEnum', 'valueConfig']
 
@@ -65,6 +66,14 @@ class Parameter(Frame):
             self.name.call_set(value)
 
         elif name in Translation.names:
+            if isinstance(value, list):
+                contains = ['valueEnum', 'valueConfig']
+
+                for container in contains:
+                    if container in self.child.list:
+                        if self.child.list[container].update_translation(name, value):
+                            return
+
             self.translations.call_set(name, value)
 
         elif name == 'valueType':

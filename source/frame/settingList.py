@@ -50,17 +50,12 @@ class SettingList:
         self.entries = []
         self.number = 0
 
-        self.translation = translation
-        call_translation = None
-        if self.translation:
-            call_translation = self._call_translation
-
         for value in data:
             if call is not None:
                 self.entries.append(ObjectList(self.frame, value, call, self.parent.get_parent,
                                                self._call_key, self.number))
             else:
-                self.entries.append(ObjectList(self.frame, value, self._call_value, call_translation, self._call_key,
+                self.entries.append(ObjectList(self.frame, value, self._call_value, self.parent.get_parent, self._call_key,
                                                self.number))
             self.number += 1
 
@@ -71,10 +66,6 @@ class SettingList:
                 self.entries[n].key.update(key)
                 n += 1
             except IndexError:
-                call_translation = None
-                if self.translation:
-                    call_translation = self._call_translation
-
                 self.entries.append(ObjectList(self.frame, 'value' + str(n), self._call_value, self.parent.get_parent,
                                                self._call_key, self.number))
 
@@ -90,10 +81,6 @@ class SettingList:
             try:
                 self.entries[n].setting.update(value)
             except IndexError:
-                translation_call = None
-                if self.translation:
-                    translation_call = self._call_translation
-
                 self.entries.append(ObjectList(self.frame, value, self._call_value, self.parent.get_parent,
                                                self._call_key, self.number))
                 self.number += 1
@@ -117,33 +104,12 @@ class SettingList:
         Call.call(parents, self.name, new_data, 'update')
 
     def get(self):
-        new_data = ''
+        new_data = []
 
         for entry in self.entries:
-            new_data += entry.setting.get() + ';'
+            new_data.append(entry.setting.get())
 
-        return new_data[:-1]
-
-    def _call_translation(self, event):
-        name_with_catalogs = ''
-        value = ''
-
-        for entry in self.entries:
-            if entry.translation is event.widget.master:
-                name_with_catalogs = entry.setting.get()
-                value = entry.translation.get()
-
-        parents = []
-        self.parent.get_parent(parents)
-        name_with_catalogs = name_with_catalogs.split('/')
-        parents = parents + name_with_catalogs[:-1]
-        name = name_with_catalogs [-1]
-
-        print(parents[:-1], '\n new_value: ', parents[-1])
-
-        Call.call(parents, name, value, )
-
-        # self.call(parents, name, value, operation)
+        return new_data
 
     def _call_key(self, event):
         key_list = []
@@ -155,3 +121,7 @@ class SettingList:
         self.parent.get_parent(parents)
 
         Call.call(parents, 'enumKey', key_list, 'update')
+
+    def update_translation(self, name, value) -> bool:
+        print(name, value)
+        return True

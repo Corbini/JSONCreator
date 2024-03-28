@@ -132,9 +132,23 @@ class valueConfig(Frame):
         data = ''
 
         for setting in self._lines:
-            data += self._lines[setting].get() + ';'
+            new_data = self._lines[setting].get()
+            if isinstance(new_data, list):
+                string_data = ''
+
+                for sub_data in new_data:
+                    string_data += sub_data + ';'
+
+                data += string_data[:-1]
+            else:
+                data += self._lines[setting].get() + '|'
 
         data = data[:-1]
+
+        parents = []
+        self.par_parent.get_parent(parents)
+
+        Call.call(parents, 'valueConfig', data, 'update')
 
     def get_parent(self, parent: list):
         return self.par_parent.get_parent(parent)
@@ -172,6 +186,10 @@ class valueConfig(Frame):
             new_value += str(value)
 
         Call.call(parents, name, new_value, 'update')
+
+    def update_translation(self, name, value) -> bool:
+        print(name, value)
+        return True
 
     def reset(self, event, name):
         values = self.old_data.split('|')
