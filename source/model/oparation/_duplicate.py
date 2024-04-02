@@ -15,6 +15,7 @@ def duplicate_before(self, parents, name, data, parent) -> bool:
 
     return True
 
+
 def duplicate_end(self, parents, name, data, parent) -> bool:
     new_name = data + '_duplicate'
     if new_name in parent:

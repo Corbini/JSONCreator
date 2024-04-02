@@ -22,6 +22,8 @@ class EntryList(Frame):
 
 class valueConfig(Frame):
 
+    template = {}
+
     def __init__(self, parent, frame, name, data="", config_type="None"):
         super().__init__(
             master=frame,
@@ -43,45 +45,22 @@ class valueConfig(Frame):
         self.old_data = data
 
     def _load_type(self, type, data):
-        stringables = ['String', 'IP', 'IPv4', 'IPv6', 'SerialPort', 'UserName', 'Password']
-        stringables_settings = [
-            "Maximum Bytes",
-            "Maximum Chars",
-            "Hidden"
-        ]
-        valueable = ['UInt8', 'UInt16', 'UInt32', 'Uint64', 'Int8', 'Int16', 'Int32', 'Int64', 'Real32', 'Real64',
-                     'Numeric']
-        valueable_settings = [
-            "Minimum",
-            "Maximum",
-            "Precision",
-            "Is Float",
-            "preUnit",
-            "Unit"
-        ]
-
-        multi_choice = ['MultiChoice']
-        multi_choice_settings = [
-            "View Height",
-            "Is Ordered",
-            "Enum List"
-        ]
 
         self._lines = dict()
         data = data.split('|')
 
         settings = ''
 
-        if type in stringables:
-            settings = stringables_settings
+        if type in valueConfig.template['Strings']['types']:
+            settings = valueConfig.template['Strings']['settings']
 
-        elif type in valueable:
-            settings = valueable_settings
+        elif type in valueConfig.template['Values']['types']:
+            settings = valueConfig.template['Values']['settings']
 
-        elif type in multi_choice:
-            settings = multi_choice_settings
-        elif type == 'Tariff':
-            settings = ['view_height']
+        elif type in valueConfig.template['MultiChoices']['types']:
+            settings = valueConfig.template['MultiChoices']['settings']
+        elif type in valueConfig.template['Tariffs']['types']:
+            settings = valueConfig.template['Tariffs']['settings']
 
         lists = ["Enum List"]
 

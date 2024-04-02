@@ -6,6 +6,7 @@ def add_end(self, parents, name, data, parent) -> bool:
     self.descriptor.saves.save(self.descriptor.json)
     return self._add(parents, name, data, parent)
 
+
 def add_before(self, parents, name, data, parent) -> bool:
     if name in parent:
         print("Object have: ", name)

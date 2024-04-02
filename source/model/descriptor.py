@@ -138,7 +138,6 @@ class Descriptor:
 
         self.create_tree(self.json['content']['properties'])
 
-
     def undo(self):
         saved = self.saves.undo()
 

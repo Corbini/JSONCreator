@@ -13,6 +13,7 @@ def move_down(self, parents, name, data, parent) -> bool:
 
     return True
 
+
 def move_up(self, parents, name, data, parent) -> bool:
     self.descriptor.saves.save(self.descriptor.json)
     sort_list = list(parent.keys())

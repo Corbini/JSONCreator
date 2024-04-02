@@ -8,6 +8,7 @@ from source.frame.call import Call
 from source.frame.parameter._generals import General
 from source.model.value_formats import ValueFormats
 from source.model.oparation import Operation
+from source.frame.settings.valueConfig import valueConfig
 
 
 class Controller:
@@ -28,6 +29,10 @@ class Controller:
         self.view.bind("<<load_languages>>", self.load_languages)
         self.view.bind("<<save_languages>>", self.save_languages)
         self.view.bind_all('<<input>>', lambda w, data:self.input(w = data))
+
+        object_valueConfig = data_load('assets/valueconfig_templates.json')
+        valueConfig.template = object_valueConfig['content']
+        ValueFormats.valueconfig_template = object_valueConfig['content']
 
         object_type = data_load('assets/type_templates.json')
         Operation.object_type = object_type['content']
