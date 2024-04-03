@@ -91,8 +91,10 @@ class Parameter(Frame):
             match name:
                 case 'valueConfig':
                     self.child.list[name] = valueConfig(self, self.child, name, value, self._general.type.get())
+                    self.child.list[name].reload_language()
                 case 'valueEnum':
                     self.child.list[name] = SettingList(self, self.child, name, value, translation=True)
+                    self.child.list[name].reload_language()
                     # self.child.list[name] = valueEnum(self, self.child, name, value)
                 case 'EnumKey':
                     self.child.list[name] = valueEnum(self, self.child, name, value)

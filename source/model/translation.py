@@ -19,6 +19,7 @@ class Translation:
 
     def create(self, filename, name):
         self._name = name
+        self._filepath = filename
         self._translations = dict()
 
         print('Program wants to create ', name, ' language in file: ', filename)
@@ -48,7 +49,7 @@ class Translation:
 
         return encoded
     
-    def _decode(self, encoded: list) ->dict:
+    def _decode(self, encoded: list) -> dict:
         decoded = dict()
         for data in encoded:
             formated_data = data.split(':', 1)
@@ -61,9 +62,12 @@ class Translation:
         if len(parents) > 1:
             rik = '/drv/content/properties'
             for parent in parents[1:]:
-                rik+='/' + parent
+                rik += '/' + parent
         else:
             rik = parents[0]
+
+        if 'reg0x1x96x50x6' in rik:
+            pass
 
         if operation == 'set':
             self._translations[rik] = value

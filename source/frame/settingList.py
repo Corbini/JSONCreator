@@ -1,4 +1,4 @@
-from tkinter import Frame, Text, Canvas, Entry, Label, END, OptionMenu, StringVar
+from tkinter import Frame, Text, Canvas, Entry, Label, END, OptionMenu, StringVar, Button, Menu
 from source.frame.call import Call
 from source.frame.warning import WarningPopUp
 from source.frame.setting import Setting
@@ -6,7 +6,9 @@ from source.frame.translation import Translation
 
 
 class ObjectList:
-    def __init__(self, parent, value, call_value, get_parent, call_key, number=0):
+
+    def __init__(self, parent, value, call_value, get_parent, call_key, number,
+                 menu_input=lambda text, object: print(text, str(object))):
         self.frame = Frame(parent, padx=10, pady=5)
 
         self.parent = parent
@@ -20,6 +22,28 @@ class ObjectList:
 
         self.frame.grid(column=((number % 3) + 1), row=(number // 3))
 
+        #Add Menu
+        self.popup = Menu(self.frame, tearoff=0)
+
+        self.menu_input = menu_input
+
+        #Adding Menu Items
+        self.popup.add_command(label="Move Up", command=lambda: self.menu_input("move_up", self))
+        self.popup.add_command(label="Move Down", command=lambda: self.menu_input("move_down", self))
+        self.popup.add_separator()
+        self.popup.add_command(label="New before", command=lambda: self.menu_input("add_before", self))
+        self.popup.add_command(label="New before", command=lambda: self.menu_input("add_after", self))
+
+        self.setting.data.bind("<Button-3>", self.menu_popup)
+
+    def menu_popup(self, event):
+        # display the popup menu
+        try:
+            self.popup.tk_popup(event.x_root, event.y_root, 0)
+        finally:
+            #Release the grab
+            self.popup.grab_release()
+
     def get_parent(self, parents: list):
         name_with_catalog = self.setting.get()
 
@@ -32,7 +56,9 @@ class ObjectList:
 
         self._get_parent(parents)
 
-        print(parents)
+    def move(self, index):
+        self.frame.grid_forget()
+        self.frame.grid(column=((index % 3) + 1), row=(index // 3))
 
 
 class SettingList:
@@ -45,19 +71,59 @@ class SettingList:
         self.label.grid(column=0)
 
         self.parent = parent
+        self.par_parent = parent
 
         self.name = name
         self.entries = []
         self.number = 0
 
+        if call is not None:
+            self.callable = call
+        else:
+            self.callable = self._call_value
+
         for value in data:
-            if call is not None:
-                self.entries.append(ObjectList(self.frame, value, call, self.parent.get_parent,
-                                               self._call_key, self.number))
-            else:
-                self.entries.append(ObjectList(self.frame, value, self._call_value, self.parent.get_parent, self._call_key,
-                                               self.number))
-            self.number += 1
+            self._add(value)
+
+        self._addable_button()
+
+    def _add_at(self, index, value='value'):
+        if value == 'value':
+            value += str(index)
+
+        objectlist = ObjectList(self.frame, value, self.callable, self.parent.get_parent, self._call_key,
+                            index, self.menu_update)
+
+        self.entries.insert(index, objectlist)
+        self.number += 1
+
+        n = index
+        for entry in self.entries[n:]:
+            entry.move(n)
+            n += 1
+
+    def reload_language(self):
+        for entry in self.entries:
+            entry.translation.reload_language()
+
+    def _add(self, value='value'):
+        if value == 'value':
+            value += str(self.number)
+
+        objectlist = ObjectList(self.frame, value, self.callable, self.parent.get_parent, self._call_key,
+                            self.number, self.menu_update)
+
+        self.entries.append(objectlist)
+        self.number += 1
+
+    def _addable_button(self):
+        self.addable = Button(self.frame, text='add', command=self.call_add, padx=10, pady=5)
+
+        self.addable.grid(column=2, row=100)
+
+    def call_add(self):
+        self._add()
+        self.callable(None)
 
     def update_keys(self, keys):
         n = 0
@@ -73,21 +139,48 @@ class SettingList:
 
         return True
 
+    def menu_update(self, text, object):
+        index = self.entries.index(object)
+        match text:
+            case 'move_up':
+                if index <= 0:
+                    return
+
+                entry = self.entries.pop(index)
+                self.entries.insert(index - 1, entry)
+                entry.move(index - 1)
+                self.entries[index].move(index)
+
+                self.callable(None)
+
+            case 'move_down':
+                if index >= len(self.entries) - 1:
+                    return
+
+                entry = self.entries.pop(index)
+                self.entries.insert(index + 1, entry)
+                entry.move(index + 1)
+                self.entries[index].move(index)
+
+                self.callable(None)
+            case 'add_before':
+                self._add_at(index)
+
+                self.callable(None)
+            case 'add_after':
+                self._add_at(index+1)
+
+                self.callable(None)
+
     def update(self, data):
-        return
 
         n = 0
-        for value in data:
-            try:
-                self.entries[n].setting.update(value)
-            except IndexError:
-                self.entries.append(ObjectList(self.frame, value, self._call_value, self.parent.get_parent,
-                                               self._call_key, self.number))
-                self.number += 1
+        for value in data[:len(self.entries)-1]:
+            self.entries[n].setting.update(value)
+            n += 1
 
-    def _translations(self, parents, name, value, operation):
-        pass
-        # self.call(parents, name, value, operation)
+        for value in data[len(self.entries):]:
+            self._add(value)
 
     def _call_value(self, event):
 
@@ -97,6 +190,7 @@ class SettingList:
             new_data.append(entry.setting.get())
 
         new_data = new_data[:-1]
+        print(new_data)
 
         parents = []
         self.parent.get_parent(parents)
@@ -124,4 +218,21 @@ class SettingList:
 
     def update_translation(self, name, value) -> bool:
         print(name, value)
+
+        parents = value[:-1]
+
+
+        setting_name = ''
+
+        for parent in parents:
+            setting_name += parent + '/'
+
+        setting_name = setting_name[:-1]
+
+        value = value[-1]
+
+        for entry in self.entries:
+            if entry.setting.get() == setting_name:
+                entry.translation.call_set(name, value)
+
         return True

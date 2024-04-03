@@ -29,6 +29,8 @@ class valueConfig(Frame):
             master=frame,
         )
 
+        self.parent = parent
+
         self.label = Label(self, text=name)
         self.label.pack(side='left', fill='y', expand=True)
 
@@ -39,8 +41,6 @@ class valueConfig(Frame):
 
         self.update(data)
 
-        self.par_parent = parent
-        
         self.pack(side='top', anchor='nw')
         self.old_data = data
 
@@ -120,24 +120,31 @@ class valueConfig(Frame):
 
                 data += string_data[:-1]
             else:
-                data += self._lines[setting].get() + '|'
+                data += new_data
+
+            data += '|'
 
         data = data[:-1]
 
         parents = []
-        self.par_parent.get_parent(parents)
+        self.parent.get_parent(parents)
 
         Call.call(parents, 'valueConfig', data, 'update')
 
+    def reload_language(self):
+        for entry in self._lines:
+            if isinstance(self._lines[entry], SettingList):
+                self._lines[entry].reload_language()
+
     def get_parent(self, parent: list):
-        return self.par_parent.get_parent(parent)
+        return self.parent.get_parent(parent)
 
     def input(self, event, name):
-        if self.par_parent is None:
+        if self.parent is None:
             return
         
         parents = list()
-        self.par_parent.get_parent(parents)
+        self.parent.get_parent(parents)
 
         values = self.old_data.split('|')
 
@@ -167,8 +174,9 @@ class valueConfig(Frame):
         Call.call(parents, name, new_value, 'update')
 
     def update_translation(self, name, value) -> bool:
-        print(name, value)
-        return True
+        for entry in self._lines:
+            if isinstance(self._lines[entry], SettingList):
+                return self._lines[entry].update_translation(name, value)
 
     def reset(self, event, name):
         values = self.old_data.split('|')

@@ -1,0 +1,63 @@
+{
+    "application": "golink",
+    "type": "typeTemplates",
+    "content": {
+        "Strings": {
+            "types": [
+                "String",
+                "IP",
+                " IPv4",
+                "IPv6",
+                "SerialPort",
+                "UserName",
+                "Password"
+            ],
+            "settings": [
+                "Maximum Bytes",
+                "Maximum Chars",
+                "Hidden"
+            ]
+        },
+        "Values": {
+            "types": [
+                "UInt8",
+                "UInt16",
+                "UInt32",
+                "Uint64",
+                "Int8",
+                "Int16",
+                "Int32",
+                "Int64",
+                "Real32",
+                "Real64",
+                "Numeric"
+            ],
+            "settings": [
+                "Minimum",
+                "Maximum",
+                "Precision",
+                "Is Float",
+                "preUnit",
+                "Unit"
+            ]
+        },
+        "MultiChoices": {
+            "types": [
+                "MultiChoice"
+            ],
+            "settings": [
+                "View Height",
+                "Is Ordered",
+                "Enum List"
+            ]
+        },
+        "Tariffs": {
+            "types": [
+                "Tariff"
+            ],
+            "settings": [
+                "View Height"
+            ]
+        }
+    }
+}

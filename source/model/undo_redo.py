@@ -18,6 +18,9 @@ class UndoRedo:
 
         self._saves.insert(self._position, saved_data)
 
+    def reload(self):
+        return self._saves[self._position]
+
     def undo(self):
         if self._position < 0:
             return None

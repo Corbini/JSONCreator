@@ -4,9 +4,6 @@ class ValueFormats:
 
     valueconfig_template = {}
 
-    stringables = ['String', 'IP', 'IPv4', 'IPv6', 'SerialPort', 'UserName', 'Password']
-    valueable = ['UInt8', 'UInt16', 'UInt32', 'Uint64', 'Int8', 'Int16', 'Int32', 'Int64', 'Real32', 'Real64', 'Numeric']
-
     call_error = lambda parents, name, text: print(parents, name, text)
 
     error = ''
@@ -66,8 +63,11 @@ class ValueFormats:
             self.error = 'Config: ' + str(config_list) + 'is not a list of 3'
             return False
 
+        if config_list[0] == '':
+            return False
+
         return (
-            (self._is_int(config_list[0], 0, 100000) or config_list[0] == '')
+            (self._is_int(config_list[0], 0, 100000))
             and (self._is_int(config_list[1], 0, 100000) or config_list[1] == '')
             and (self._is_bool(config_list[2]) or config_list[2] == '')
         )
@@ -130,7 +130,7 @@ class ValueFormats:
         if object_type in ValueFormats.valueconfig_template['Strings']['types']:
             return self._is_config_stringable(config_list, size)
 
-        elif object_type in ValueFormats.valueconfig_template['Value']['types']:
+        elif object_type in ValueFormats.valueconfig_template['Values']['types']:
             return self._is_config_valueable(config_list, size)
 
         elif object_type in ValueFormats.valueconfig_template['MultiChoices']['types']:
@@ -138,7 +138,7 @@ class ValueFormats:
         elif object_type in ValueFormats.valueconfig_template['Tariffs']['types']:
             return self._is_config_tariff(config_list, size)
 
-        return True
+        return False
 
     def _is_value_access(self, value):
         if value in ['W', 'R', 'A', 'N']:
@@ -199,16 +199,17 @@ class ValueFormats:
             return False
         return True
 
-    def _check(self, parent_type, name, data):
-        print(parent_type, name, data)
+    def _is_type(self, value):
+        if value in ValueFormats.object_type:
+            return True
 
+        self.error = ''
+        return False
+
+    def _check(self, parent_type, name, data):
         match name:
             case 'valueType':
-                if data in ValueFormats.object_type:
-                    return True
-
-                self.error = False
-                return False
+                return self._is_type(data)
             case 'enumKey':
                 return True
             case 'valueAccess':
@@ -222,7 +223,7 @@ class ValueFormats:
             case _:
                 return self._is_rik_name(data)
 
-    def check(self, parents, parent_type, name, data):
+    def check(self, parents: list, parent_type: str, name: str, data: str):
         if not self._check(parent_type, name, data):
             result = list()
             ValueFormats.call_error(parents, name, self.error)
