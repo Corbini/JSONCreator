@@ -195,6 +195,8 @@ class SettingList:
         parents = []
         self.parent.get_parent(parents)
 
+        self.clear_warn()
+
         Call.call(parents, self.name, new_data, 'update')
 
     def get(self):
@@ -236,3 +238,16 @@ class SettingList:
                 entry.translation.call_set(name, value)
 
         return True
+
+    def set_warn(self, text: str):
+        text = text.split(';')
+
+        for line_text, entry in zip(text, self.entries):
+            if line_text == '':
+                continue
+
+            entry.setting.set_warn(line_text)
+
+    def clear_warn(self):
+        for entry in self.entries:
+            entry.setting.clear_warn()

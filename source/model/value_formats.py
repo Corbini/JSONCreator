@@ -101,11 +101,20 @@ class ValueFormats:
             self.error = 'Config: ' + str(config_list) + ' is not a list of 3'
             return False
 
+
+        self.error = ''
+        result = True
+        error = ''
+
         if not self._is_int(config_list[0], 1, 40):
-            return False
+            result = False
+        error += self.error + '|'
+        self.error = ''
 
         if not self._is_bool(config_list[1]):
-            return False
+            result = False
+        error += self.error + '|'
+        self.error = ''
 
         options = config_list[2].split(';')
 
@@ -115,9 +124,12 @@ class ValueFormats:
 
         for option in options:
             if not self._is_rik(option):
-                return False
+                result = False
+            error += self.error + ';'
+            self.error = ''
 
-        return True
+        self.error = error[:-1]
+        return result
 
     def _is_config(self, value: str, object_type: str) -> bool:
         if not isinstance(value, str):
@@ -185,6 +197,7 @@ class ValueFormats:
             is_digit = value.isdigit()
 
         if not is_digit:
+            self.error = 'Not a digit'
             return False
 
         if not minimum <= int(value) <= maximum:

@@ -129,6 +129,8 @@ class valueConfig(Frame):
         parents = []
         self.parent.get_parent(parents)
 
+        self.clear_warn()
+
         Call.call(parents, 'valueConfig', data, 'update')
 
     def reload_language(self):
@@ -187,5 +189,18 @@ class valueConfig(Frame):
         self._lines[name][2].delete(0, END)
         self._lines[name][2].insert(0, value)
 
-    def set_warn(self, text):
-        pass
+    def set_warn(self, text: str):
+        text = text.split('|')
+
+        if len(text) == 1 and len(self._lines) != 1:
+            print(text[0])
+        else:
+            for line_text, line in zip(text, self._lines):
+                if line_text == '':
+                    continue
+
+                self._lines[line].set_warn(line_text)
+
+    def clear_warn(self):
+        for line in self._lines:
+            self._lines[line].clear_warn()

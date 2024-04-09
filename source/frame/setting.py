@@ -103,12 +103,15 @@ class Setting(Frame):
         if self.par_parent is None:
             return
 
-        self.warning.clear()
+        self.clear_warn()
 
         parents = list()
         self.par_parent.get_parent(parents)
 
         Call.call(parents, self.name, value, 'update')
+
+    def clear_warn(self):
+        self.warning.clear()
 
     def set_warn(self, text):
         self.warning.warn(text)
