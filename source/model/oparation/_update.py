@@ -2,24 +2,26 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
+def _reset_correct_data(self, parents, name, parent):
+        if name in parent:
+            if isinstance(parent[name], OrderedDict):
+                parents.append(name)
+                self.generate_object(parents, 'name', name)
+            else:
+                self.generate_object(parents, name, parent[name])
+        else:
+            self.generate_object(parents, name, '')
+
+
 def update(self, parents, name, data, parent) -> bool:
     self.descriptor.saves.save(self.descriptor.json)
     # Checks if value is correct
     if not self.checker.check(parents, parent['valueType'], name, data):
-        # reset data to last correct value
-        # if name in parent:
-        #     if isinstance(parent[name], OrderedDict):
-        #         parents.append(name)
-        #         self.generate_object(parents, 'name', name)
-        #     else:
-        #         self.generate_object(parents, name, parent[name])
-        # else:
-        #     self.generate_object(parents, name, '')
-
+        # _reset_correct_data(self, parents, name, parent)
         return False
 
     if name not in parent:
-        return self.add_end(parents, name, data)
+        return self.add_end(parents, name, data, parent)
 
     if isinstance(parent[name], OrderedDict):
         # Rename object

@@ -97,7 +97,7 @@ class Parameter(Frame):
                     self.child.list[name] = SettingList(self, self.child, name, value, translation=True)
                     self.child.list[name].reload_language()
 
-                case 'EnumKey':
+                case 'enumKey':
                     self.child.list[name] = valueEnum(self, self.child, name, value)
 
                 case _:
@@ -119,5 +119,12 @@ class Parameter(Frame):
 
         elif name == 'valueType':
             self._general.color('#FF0000')
+        elif name == 'enumKey':
+            if 'valueConfig' in self.child:
+                self.child.list[name].set_warn(value)
+            elif 'valueEnum' in self.child:
+                self.child.list[name].set_warn(value)
+            else:
+                self.child.list[name].set_warn(value)
         else:
             self.child.list[name].set_warn(value)

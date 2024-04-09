@@ -216,6 +216,8 @@ class SettingList:
         parents = []
         self.parent.get_parent(parents)
 
+        self.clear_warn_keys()
+
         Call.call(parents, 'enumKey', key_list, 'update')
 
     def update_translation(self, name, value) -> bool:
@@ -251,3 +253,17 @@ class SettingList:
     def clear_warn(self):
         for entry in self.entries:
             entry.setting.clear_warn()
+
+    def clear_warn_keys(self):
+        for entry in self.entries:
+            entry.key.clear_warn()
+
+    def set_warn_keys(self, text: str):
+        text = text.split(';')
+
+        for line_text, entry in zip(text, self.entries):
+            if line_text == '':
+                continue
+
+            entry.key.set_warn(line_text)
+

@@ -204,3 +204,10 @@ class valueConfig(Frame):
     def clear_warn(self):
         for line in self._lines:
             self._lines[line].clear_warn()
+
+    def set_warn_keys(self, text: str):
+
+        for line in self._lines:
+            if isinstance(self._lines[line], SettingList):
+                self._lines[line].set_warn_keys(text)
+                return
