@@ -11,13 +11,29 @@ def tree_create(self, name):
 
 def tree_update(self, parents, name, value=None):
     parent = self.parameter_tree
-    for _parent in parents[1:]:
-        parent = parent.child.list[_parent]
+    parents.pop(0)
+    while len(parents):
+        if parents[0] in parent.child.list:
+            parent = parent.child.list[parents.pop(0)]
+        else:
+            break
 
     if value is None:
         parent.add_child(name)
     else:
-        parent.update_setting(name, value)
+        if len(parents):
+            parent.update_setting(name, parents + [value])
+        else:
+            parent.update_setting(name, value)
+
+
+def tree_data_error(self, parents, name, value):
+    parent = self.parameter_tree
+    for _parent in parents[1:]:
+        parent = parent.child.list[_parent]
+
+    parent.warn(name, value)
+
 
 def tree_remove(self, parents, name):
     parent = self.parameter_tree
@@ -25,6 +41,7 @@ def tree_remove(self, parents, name):
         parent = parent.child.list[_parent]
 
     parent.child.remove(name)
+
 
 def tree_reload_list(self, parents, name, list):
 

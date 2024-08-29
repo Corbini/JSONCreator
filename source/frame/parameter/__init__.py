@@ -6,6 +6,7 @@ from source.frame.parameter._generals import General
 from source.frame.parameter._child import Child
 from source.frame.settings.valueConfig import valueConfig
 from source.frame.settings.valueEnum import valueEnum
+from source.frame.settingList import SettingList
 
 
 class Parameter(Frame):
@@ -26,7 +27,7 @@ class Parameter(Frame):
         
         self.child = Child(self, self.get_parent)
       
-    def get_parent(self, parents = list()):
+    def get_parent(self, parents: list):
         parent = self.par_parent
         
         parents.insert(0, self.name.get())
@@ -51,11 +52,28 @@ class Parameter(Frame):
             self.widen = False
 
     def update_setting(self, name, value):
+
+        if name == 'enumKey':
+            contains = ['valueEnum', 'valueConfig']
+
+            for container in contains:
+                if container in self.child.list:
+                    if self.child.list[container].update_keys(value):
+                        return
+
         if name == 'name':
             self.par_parent.child.rename(self.name.get(), value)
             self.name.call_set(value)
 
         elif name in Translation.names:
+            if isinstance(value, list):
+                contains = ['valueEnum', 'valueConfig']
+
+                for container in contains:
+                    if container in self.child.list:
+                        if self.child.list[container].update_translation(name, value):
+                            return
+
             self.translations.call_set(name, value)
 
         elif name == 'valueType':
@@ -73,9 +91,13 @@ class Parameter(Frame):
             match name:
                 case 'valueConfig':
                     self.child.list[name] = valueConfig(self, self.child, name, value, self._general.type.get())
+                    self.child.list[name].reload_language()
+
                 case 'valueEnum':
-                    self.child.list[name] = valueEnum(self, self.child, name, value)
-                case 'EnumKey':
+                    self.child.list[name] = SettingList(self, self.child, name, value, translation=True)
+                    self.child.list[name].reload_language()
+
+                case 'enumKey':
                     self.child.list[name] = valueEnum(self, self.child, name, value)
 
                 case _:
@@ -87,4 +109,22 @@ class Parameter(Frame):
         if name not in self.child.list:
             self.child.list[name] = Parameter(self, self.child, name)
             self.child.list[name].translations.reload_language()
- 
+
+    def set_warn(self, text):
+        self.name.warn(text)
+
+    def warn(self, name, value):
+        if name in Translation.names:
+            self.translations.color(name, '#FF0000')
+
+        elif name == 'valueType':
+            self._general.color('#FF0000')
+        elif name == 'enumKey':
+            if 'valueConfig' in self.child:
+                self.child.list[name].set_warn(value)
+            elif 'valueEnum' in self.child:
+                self.child.list[name].set_warn(value)
+            else:
+                self.child.list[name].set_warn(value)
+        else:
+            self.child.list[name].set_warn(value)

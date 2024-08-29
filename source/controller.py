@@ -6,6 +6,10 @@ from source.json_loader import data_load, data_save, data_type, dir_load
 from source.frame.translation import Translation as FrameTranslation
 from source.frame.call import Call
 from source.frame.parameter._generals import General
+from source.model.value_formats import ValueFormats
+from source.model.oparation import Operation
+from source.frame.settings.valueConfig import valueConfig
+
 
 class Controller:
     def __init__(self, view: Main, model: Descriptor):
@@ -26,14 +30,19 @@ class Controller:
         self.view.bind("<<save_languages>>", self.save_languages)
         self.view.bind_all('<<input>>', lambda w, data:self.input(w = data))
 
+        object_valueConfig = data_load('assets/valueconfig_templates.json')
+        valueConfig.template = object_valueConfig['content']
+        ValueFormats.valueconfig_template = object_valueConfig['content']
+
         object_type = data_load('assets/type_templates.json')
-        self.model.object_type = object_type['content']
+        Operation.object_type = object_type['content']
         General.type_list = object_type['content']
         self.model.create_tree = lambda name: self.view.tree_create(name)
         self.model.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
         self.model.remove_object = lambda parents, name: self.view.tree_remove(parents, name)
         self.model.reload_list = lambda parents, name, list: self.view.tree_reload_list(parents, name, list)
-
+        ValueFormats.call_error = lambda parents, name, text: self.view.tree_data_error(parents, name, text)
+        ValueFormats.object_type = object_type['content']
 
         self.view.bind("<<tree_new>>", lambda w: self.model.new_structure("new_tree"))
         self.view.bind_all("<Control-z>", lambda event: self.model.undo())
@@ -64,34 +73,15 @@ class Controller:
         if name in self.languages_storage:
             self.languages_storage[name].call(parents, value, operation)
         else:
-            match operation:
-                case 'remove':
-                    self.model.remove(parents, name, value)
-                case 'read':
-                    self.model.read(parents, name, value)
-                case 'add_before':
-                    self.model.add_before(parents, name, value)
-                case 'move_up':
-                    self.model.move_up(parents, name, value)
-                case 'move_down':
-                    self.model.move_down(parents, name, value)
-                case 'duplicate_before':
-                    self.model.duplicate_before(parents, name, value)
-                case 'duplicate_end':
-                    self.model.duplicate_end(parents, name, value)
-                case 'update':
-                    self.model.update(parents, name, value)
-                case _:
-                    print("Unsupported operation: ", operation)
+            self.model.operation.input(parents, name, value, operation)
 
-    def load_language(self, path, data):
+    def load_language(self, path, data_json):
 
         translation = Translation()
         translation.generate_object = lambda parents, name, data: self.view.tree_update(parents, name, data)
 
-        if translation.data_load(path, data):
+        if translation.data_load(path, data_json):
             self.languages_storage[translation.name] = translation
-            print("Language: ", translation.name, ", Loaded")
 
         FrameTranslation.names = self.languages_storage.keys()
     
@@ -103,7 +93,6 @@ class Controller:
         for data in language_list:
             if data_type(data[1]) == 'languageDefinition':
                 self.load_language(data[0], data[1])
-
 
     def save_languages(self, e):
         for language_name in self.languages_storage:

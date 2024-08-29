@@ -1,48 +1,71 @@
 from tkinter import Frame, Text, Canvas, Entry, Label, END, OptionMenu, StringVar
 from source.frame.call import Call
+from source.frame.warning import WarningPopUp
 
 
 class Setting(Frame):
-    def __init__(self, parent, frame, name, data=""):
+    def __init__(self, parent, frame, name, data="", call=None, label=True):
         super().__init__(
             master=frame,
             height=40,
             width=300
         )
 
-        match name:
-            case 'valueAccess':
-                self.variable = StringVar(self)
-                self.variable.set(data)  # default value
+        self.call = call
 
-                self.data = OptionMenu(self, self.variable, "R", "W", "A", "N", command=lambda event: self.input(event))
-                self.data.config(width=15, padx=0, pady=0)
+        true_false = ["Is Float", "Is Ordered", 'readOnOpen']
 
-            case 'readOnOpen':
-                self.variable = StringVar(self)
-                if data:
-                    self.variable.set("True")  # default value
-                else:
-                    self.variable.set("False")  # default value
+        if name in true_false:
+            self.variable = StringVar(self)
+            if data:
+                self.variable.set("True")  # default value
+            else:
+                self.variable.set("False")  # default value
 
+            if call is not None:
+                self.data = OptionMenu(self, self.variable, "True", "False", command=lambda event: call(event))
+            else:
                 self.data = OptionMenu(self, self.variable, "True", "False", command=lambda event: self.input(event))
-                self.data.config(width=15, padx=0, pady=0)
+            self.data.config(width=15, padx=0, pady=0)
 
-            case _:
-                self.data = Entry(self)
-                self.data.insert(0, data)
+        elif name in 'valueAccess':
+            self.variable = StringVar(self)
+            self.variable.set(data)  # default value
+
+            if call is not None:
+                self.data = OptionMenu(self, self.variable, "R", "W", "A", "N", command=lambda event: call(event))
+            else:
+                self.data = OptionMenu(self, self.variable, "R", "W", "A", "N", command=lambda event: self.input(event))
+            self.data.config(width=15, padx=0, pady=0)
+        else:
+            self.data = Entry(self)
+            self.data.insert(0, data)
+
+            if call is not None:
+                self.data.bind('<Return>', call)
+            else:
                 self.data.bind('<Return>', self.input)
-                self.data.bind('<FocusOut>', self.reset)
+
+            self.data.bind('<FocusOut>', lambda e: self.data.unbind('<Leave>'))
+
+            if call is not None:
+                self.data.bind('<FocusIn>', lambda e: self.data.bind('<Leave>', call))
+            else:
+                self.data.bind('<FocusIn>', lambda e: self.data.bind('<Leave>', self.input))
 
         self.data.pack(side='left', fill='y', expand=True)
 
-        self.name_label = Label(self, text=name)
-        self.name_label.pack(side='left', fill='y', expand=True)
+        self.name = name
+        if label:
+            self.name_label = Label(self, text=name)
+            self.name_label.pack(side='left', fill='y', expand=True)
 
         self.par_parent = parent
         
         self.pack(side='top', anchor='nw')
         self.old_data = data
+
+        self.warning = WarningPopUp([self.data])
 
     def update(self, value):
         
@@ -58,16 +81,15 @@ class Setting(Frame):
             self.data.delete(0, END)
             self.data.insert(0, value)
 
-        print(value)
         self.old_data = value
 
-    def input(self, event):
-        if self.par_parent is None:
-            return
-        
-        parents = list()
-        self.par_parent.get_parent(parents)
+    def get(self) -> str:
+        if isinstance(self.data, OptionMenu):
+            return self.variable.get()
+        else:
+            return self.data.get()
 
+    def input(self, event):
         if isinstance(self.data, OptionMenu):
                 value = self.variable.get()
 
@@ -78,10 +100,18 @@ class Setting(Frame):
         else:
             value = self.data.get()
 
-        name = self.name_label.cget("text")
+        if self.par_parent is None:
+            return
 
-        Call.call(parents, name, value, 'update')
+        self.clear_warn()
 
-    def reset(self, event):
-        self.data.delete(0, END)
-        self.data.insert(0, self.old_data)
+        parents = list()
+        self.par_parent.get_parent(parents)
+
+        Call.call(parents, self.name, value, 'update')
+
+    def clear_warn(self):
+        self.warning.clear()
+
+    def set_warn(self, text):
+        self.warning.warn(text)

@@ -11,7 +11,7 @@ class General(Frame):
         'Real32', 'Real64', 'ReportBranch', 'Enum'
     )
 
-    def __init__(self, frame, parents = lambda empty_list: list(empty_list), name = lambda: str('name')):
+    def __init__(self, frame, parents=lambda empty_list: list(empty_list), name=lambda: str('name')):
         super().__init__(
             frame,
             width=150
@@ -52,3 +52,6 @@ class General(Frame):
 
     def hide(self):
         self.grid_forget()
+
+    def color(self, color):
+        self.type_menu.configure(bg=color)
