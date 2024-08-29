@@ -1,5 +1,6 @@
 import json
 
+
 class Translation:
     generate_object = lambda self, parents, name, data: print(parents, name, data)
 
@@ -65,9 +66,6 @@ class Translation:
                 rik += '/' + parent
         else:
             rik = parents[0]
-
-        if 'reg0x1x96x50x6' in rik:
-            pass
 
         if operation == 'set':
             self._translations[rik] = value

@@ -77,17 +77,38 @@ class ValueFormats:
             self.error = 'Config: ' + str(config_list) + 'is not a list of 6'
             return False
 
-        if not (self._is_int_unlimited(config_list[0]) and
-                self._is_int_unlimited(config_list[1])):
-            return False
+        result = True
+        self.error = ''
+        error = ''
 
-        if config_list[1] != '' and config_list[0] != '' and int(config_list[0]) > int(config_list[1]):
+        if not self._is_int_unlimited(config_list[0]):
+            error += self.error
+            self.error = ''
+            result = False
+        self.error += '|'
+
+        if not self._is_int_unlimited(config_list[1]):
+            error += self.error
+            self.error = ''
+            result = False
+        self.error += '|'
+
+        if result and config_list[1] != '' and config_list[0] != '' and int(config_list[0]) > int(config_list[1]):
             self.error = 'Minimum: ' + str(config_list[0]) + ' is bigger than Maximum: ' + str(config_list[1])
             return False
 
-        return (self._is_int(config_list[2], -100000, 100000) and
-                self._is_bool(config_list[3]))
+        if not self._is_int(config_list[2], -100000, 100000):
+            error += self.error
+            self.error = ''
+            result = False
 
+        self.error += '|'
+        if not self._is_bool(config_list[3]):
+            error += self.error
+            self.error = ''
+            result = False
+
+        return result
 
     def _is_config_tariff(self, config_list, size) -> bool:
         if size != 1:
@@ -161,6 +182,7 @@ class ValueFormats:
         return False
 
     def _is_obis(self, value):
+        # class
         seperated_class = value.split(':')
         if len(seperated_class) != 2:
             self.error = 'Obis: ' + str(value) + ' incorrect amount of class'
@@ -168,14 +190,24 @@ class ValueFormats:
         if self._is_int(seperated_class[0], 1, 327767) is False:
             return False
 
-        seperated_atribute = seperated_class[1].split(';')
-        if len(seperated_atribute) != 2:
+        # attribiutes
+        seperated_attribute = seperated_class[1].split(';')
+        if len(seperated_attribute) != 2:
             self.error = 'Obis: ' + str(value) + ' incorrect amount of class'
             return False
-        if self._is_int(seperated_atribute[1], 0, 255) is False:
+
+        if (seperated_attribute[-1] == ';' and seperated_attribute[0] == ';'):
+            self.error = 'Obis: ' + str(value) + ' incorrect atribiute'
             return False
 
-        obis = seperated_atribute[0].split('.')
+        attributes = seperated_attribute[1].split(',')
+
+        for attribute in attributes:
+            if self._is_int(attribute, 0, 255) is False:
+                return False
+
+        # obis
+        obis = seperated_attribute[0].split('.')
 
         if len(obis) != 6:
             self.error = 'Obis: ' + value + ' incorrect amount of obis int'
@@ -200,8 +232,12 @@ class ValueFormats:
             self.error = 'Not a digit'
             return False
 
-        if not minimum <= int(value) <= maximum:
-            self.error = 'Int: ' + value + ' not between ' + str(minimum) + ' and ' + str(maximum)
+        if not minimum <= int(value):
+            self.error = 'Value too small'
+            return False
+
+        if not int(value) <= maximum:
+            self.error = 'Value too big'
             return False
 
         return True

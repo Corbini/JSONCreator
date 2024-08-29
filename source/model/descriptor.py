@@ -5,6 +5,7 @@ from source.model.conventer import clean_json
 from source.model.undo_redo import UndoRedo
 from source.model.oparation import Operation
 
+
 class Descriptor:
 
     object_type = {}

@@ -82,7 +82,6 @@ class Controller:
 
         if translation.data_load(path, data_json):
             self.languages_storage[translation.name] = translation
-            print("Language: ", translation.name, ", Loaded")
 
         FrameTranslation.names = self.languages_storage.keys()
     

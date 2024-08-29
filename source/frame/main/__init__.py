@@ -1,6 +1,4 @@
 import tkinter as tk
-from tkinter import Canvas, PhotoImage, Text
-from source.button import Button
 
 
 class Main(tk.Frame):

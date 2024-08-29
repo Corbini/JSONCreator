@@ -26,6 +26,10 @@ class Translation:
         entry = Entry(self._frame)
         entry.bind('<Return>', lambda event: self.call_input(name, event))
         entry.bind('<FocusOut>', lambda event: self.call_get(name))
+
+        entry.bind('<FocusOut>', lambda e: entry.unbind('<Leave>'))
+        entry.bind('<FocusIn>', lambda e: entry.bind('<Leave>', self.call_input(name, e)))
+
         entry.pack(side='top',fill='x', expand=True)
         entry.language_name = name
         self._languages[name] = [label, entry]
